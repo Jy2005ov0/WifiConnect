@@ -3,6 +3,8 @@ import SwiftUI
 struct ContentView: View {
     @State private var model = ConnectionModel()
     @State private var hasCredentials = Credentials.isConfigured
+    @State private var studentID = Credentials.studentID
+    @AppStorage(SettingsKey.wifiName) private var wifiName = ""
     @State private var showSettings = false
     @State private var showAutomationGuide = false
     @Environment(\.scenePhase) private var scenePhase
@@ -10,50 +12,75 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                Spacer()
+                Spacer(minLength: 8)
 
                 StatusBadge(state: model.state)
 
-                VStack(spacing: 8) {
+                VStack(spacing: 6) {
                     Text(title)
-                        .font(.title2.weight(.semibold))
+                        .font(.title.weight(.bold))
                     Text(subtitle)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                .padding(.top, 28)
+                .padding(.top, 26)
                 .padding(.horizontal, 32)
                 .animation(.default, value: model.state)
 
-                Spacer()
+                Spacer(minLength: 24)
 
-                VStack(spacing: 14) {
+                DetailsCard {
+                    DetailRow(symbol: "wifi", color: .blue, title: "Network",
+                              value: wifiName.isEmpty ? "Not Set" : wifiName)
+                    Divider().padding(.leading, 58)
+                    DetailRow(symbol: "person.text.rectangle.fill", color: .indigo, title: "Student ID",
+                              value: studentID.isEmpty ? "Not Set" : studentID)
+                    Divider().padding(.leading, 58)
                     Button {
-                        if hasCredentials {
-                            Task { await model.connect() }
-                        } else {
-                            showSettings = true
-                        }
-                    } label: {
-                        Text(buttonTitle)
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 6)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    .controlSize(.large)
-                    .disabled(model.state == .working)
-
-                    Button("Set Up Auto-Connect") {
                         showAutomationGuide = true
+                    } label: {
+                        DetailRow(symbol: "bolt.fill", color: .green, title: "Auto Sign-In",
+                                  value: "Set Up", showsChevron: true)
                     }
-                    .font(.subheadline.weight(.medium))
+                    .buttonStyle(.plain)
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 20)
+                .padding(.horizontal, 20)
+
+                Button {
+                    if hasCredentials {
+                        Task { await model.connect() }
+                    } else {
+                        showSettings = true
+                    }
+                } label: {
+                    Text(buttonTitle)
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .controlSize(.large)
+                .disabled(model.state == .working)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+                .padding(.bottom, 12)
+            }
+            .background {
+                // A soft glow in the status color, like the lock screen's wallpaper tint.
+                ZStack {
+                    Color(.systemGroupedBackground)
+                    RadialGradient(
+                        colors: [model.state.tint.opacity(0.22), .clear],
+                        center: UnitPoint(x: 0.5, y: 0.3),
+                        startRadius: 0,
+                        endRadius: 420
+                    )
+                }
+                .ignoresSafeArea()
+                .animation(.easeInOut(duration: 0.6), value: model.state)
             }
             .navigationTitle("Campus Wi-Fi")
             .toolbar {
@@ -68,6 +95,7 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showSettings, onDismiss: {
                 hasCredentials = Credentials.isConfigured
+                studentID = Credentials.studentID
             }) {
                 SettingsView()
             }
@@ -114,6 +142,7 @@ struct ContentView: View {
             Credentials.password = "password"
         }
         hasCredentials = Credentials.isConfigured
+        studentID = Credentials.studentID
         switch demoState {
         case "working": model.state = .working
         case "connected": model.state = .connected("You're signed in and ready to go.")
@@ -158,36 +187,99 @@ struct ContentView: View {
 
 private struct StatusBadge: View {
     let state: ConnectionModel.State
+    @State private var breathing = false
 
     var body: some View {
         ZStack {
             Circle()
-                .fill(tint.opacity(0.12))
-                .frame(width: 168, height: 168)
+                .fill(state.tint.opacity(0.10))
+                .frame(width: 188, height: 188)
+                .scaleEffect(breathing ? 1.04 : 0.96)
             Circle()
-                .fill(tint.opacity(0.18))
-                .frame(width: 124, height: 124)
-            Image(systemName: symbol)
-                .font(.system(size: 52, weight: .semibold))
-                .foregroundStyle(tint)
+                .fill(state.tint.opacity(0.14))
+                .frame(width: 148, height: 148)
+            Circle()
+                .fill(state.tint.gradient)
+                .overlay {
+                    // A gentle highlight so the disc reads like glass.
+                    Circle().fill(
+                        LinearGradient(colors: [.white.opacity(0.28), .clear], startPoint: .top, endPoint: .center)
+                    )
+                }
+                .frame(width: 108, height: 108)
+                .shadow(color: state.tint.opacity(0.45), radius: 18, y: 10)
+            Image(systemName: state.symbol)
+                .font(.system(size: 44, weight: .semibold))
+                .foregroundStyle(.white)
                 .contentTransition(.symbolEffect(.replace))
                 .symbolEffect(.variableColor.iterative, isActive: state == .working)
         }
-        .animation(.spring(duration: 0.4), value: state)
+        .animation(.spring(duration: 0.5), value: state)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                breathing = true
+            }
+        }
         .accessibilityHidden(true)
     }
+}
 
-    private var symbol: String {
-        switch state {
+/// An inset, rounded group like the rows in the Settings app.
+private struct DetailsCard<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content
+        }
+        .background(Color(.secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
+private struct DetailRow: View {
+    let symbol: String
+    let color: Color
+    let title: String
+    let value: String
+    var showsChevron = false
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: symbol)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 30, height: 30)
+                .background(color.gradient, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
+            Text(title)
+            Spacer(minLength: 8)
+            Text(value)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+            if showsChevron {
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+        }
+        .padding(.horizontal, 14)
+        .frame(minHeight: 50)
+        .contentShape(Rectangle())
+    }
+}
+
+private extension ConnectionModel.State {
+    var symbol: String {
+        switch self {
         case .idle, .working: return "wifi"
         case .connected: return "checkmark"
         case .failed: return "wifi.exclamationmark"
         }
     }
 
-    private var tint: Color {
-        switch state {
-        case .idle, .working: return .accentColor
+    var tint: Color {
+        switch self {
+        case .idle, .working: return .blue
         case .connected: return .green
         case .failed: return .orange
         }

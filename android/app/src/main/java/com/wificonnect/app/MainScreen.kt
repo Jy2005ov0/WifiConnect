@@ -14,7 +14,22 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Badge
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -65,7 +80,6 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val autoLogin = PortalSettings.load(context).autoLogin
 
     LaunchedEffect(state) {
         val feedback = when {
@@ -76,8 +90,22 @@ fun MainScreen(
         feedback?.let { view.performHapticFeedback(it) }
     }
 
+    val tint by animateColorAsState(state.tint(MaterialTheme.colorScheme.primary), tween(600), label = "tint")
+    val background = MaterialTheme.colorScheme.background
+
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = Color.Transparent,
+        modifier = Modifier.drawBehind {
+            drawRect(background)
+            // A soft glow in the status color behind the badge.
+            drawRect(
+                Brush.radialGradient(
+                    colors = listOf(tint.copy(alpha = 0.22f), Color.Transparent),
+                    center = Offset(size.width / 2, size.height * 0.3f),
+                    radius = size.width * 1.1f,
+                )
+            )
+        },
         topBar = {
             LargeTopAppBar(
                 title = { Text("Campus Wi-Fi", fontWeight = FontWeight.Bold) },
@@ -87,8 +115,8 @@ fun MainScreen(
                     }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    scrolledContainerColor = MaterialTheme.colorScheme.background,
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
                 ),
             )
         },
@@ -97,35 +125,61 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.weight(1f))
 
-            StatusBadge(state)
+            StatusBadge(state, tint)
 
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(26.dp))
             Text(
                 text = title(state, hasCredentials),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(6.dp))
             Text(
                 text = subtitle(state, hasCredentials),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier.padding(horizontal = 12.dp),
             )
 
             Spacer(Modifier.weight(1f))
+
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column {
+                    val settings = PortalSettings.load(context)
+                    DetailRow(
+                        Icons.Rounded.Wifi, Blue, "Network",
+                        networkName(context) ?: if (PortalLogin.wifiNetwork(context) != null) "Wi-Fi" else "Not Connected",
+                    )
+                    RowDivider()
+                    DetailRow(
+                        Icons.Rounded.Badge, Indigo, "Student ID",
+                        Credentials.studentId(context).ifEmpty { "Not Set" },
+                    )
+                    RowDivider()
+                    DetailRow(
+                        Icons.Rounded.Bolt, Green, "Auto Sign-In",
+                        if (settings.autoLogin) "On" else "Off",
+                        onClick = onOpenSettings,
+                    )
+                }
+            }
 
             Button(
                 onClick = onConnect,
                 enabled = state != ConnectionState.Working,
                 shape = CircleShape,
                 modifier = Modifier
+                    .padding(top = 20.dp, bottom = 16.dp)
                     .fillMaxWidth()
                     .height(54.dp),
             ) {
@@ -139,49 +193,54 @@ fun MainScreen(
                     fontWeight = FontWeight.SemiBold,
                 )
             }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(top = 14.dp, bottom = 20.dp),
-            ) {
-                Icon(
-                    Icons.Rounded.Bolt,
-                    contentDescription = null,
-                    tint = if (autoLogin) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
-                )
-                Spacer(Modifier.width(4.dp))
-                Text(
-                    text = if (autoLogin) "Signs in automatically when you join" else "Automatic sign-in is off",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
         }
     }
 }
 
 @Composable
-private fun StatusBadge(state: ConnectionState) {
-    val tint by animateColorAsState(
-        targetValue = when (state) {
-            is ConnectionState.Connected -> Green
-            is ConnectionState.Failed -> Orange
-            else -> MaterialTheme.colorScheme.primary
-        },
-        label = "tint",
+private fun StatusBadge(state: ConnectionState, tint: Color) {
+    val transition = rememberInfiniteTransition(label = "badge")
+    val breathing by transition.animateFloat(
+        initialValue = 0.96f,
+        targetValue = 1.04f,
+        animationSpec = infiniteRepeatable(tween(2000), RepeatMode.Reverse),
+        label = "breathing",
     )
-    val pulse by rememberInfiniteTransition(label = "pulse").animateFloat(
+    val pulse by transition.animateFloat(
         initialValue = 1f,
-        targetValue = 0.3f,
+        targetValue = 0.35f,
         animationSpec = infiniteRepeatable(tween(700), RepeatMode.Reverse),
         label = "pulse",
     )
 
     Box(contentAlignment = Alignment.Center) {
-        Circle(168, tint.copy(alpha = 0.12f))
-        Circle(124, tint.copy(alpha = 0.18f))
+        Box(
+            Modifier
+                .size(188.dp)
+                .scale(breathing)
+                .clip(CircleShape)
+                .background(tint.copy(alpha = 0.10f))
+        )
+        Box(
+            Modifier
+                .size(148.dp)
+                .clip(CircleShape)
+                .background(tint.copy(alpha = 0.14f))
+        )
+        Box(
+            Modifier
+                .size(108.dp)
+                .shadow(18.dp, CircleShape, ambientColor = tint, spotColor = tint)
+                .clip(CircleShape)
+                .background(Brush.verticalGradient(listOf(lighten(tint), tint)))
+                // A gentle highlight so the disc reads like glass.
+                .background(
+                    Brush.verticalGradient(
+                        0f to Color.White.copy(alpha = 0.28f),
+                        0.5f to Color.Transparent,
+                    )
+                )
+        )
         AnimatedContent(
             targetState = when (state) {
                 is ConnectionState.Connected -> Icons.Rounded.Check
@@ -194,9 +253,9 @@ private fun StatusBadge(state: ConnectionState) {
             Icon(
                 icon,
                 contentDescription = null,
-                tint = tint,
+                tint = Color.White,
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(52.dp)
                     .alpha(if (state == ConnectionState.Working) pulse else 1f),
             )
         }
@@ -204,13 +263,69 @@ private fun StatusBadge(state: ConnectionState) {
 }
 
 @Composable
-private fun Circle(size: Int, color: Color) {
-    Box(
-        Modifier
-            .size(size.dp)
-            .clip(CircleShape)
-            .background(color)
-    )
+private fun DetailRow(
+    icon: ImageVector,
+    color: Color,
+    title: String,
+    value: String,
+    onClick: (() -> Unit)? = null,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .heightIn(min = 52.dp)
+            .padding(horizontal = 14.dp),
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(30.dp)
+                .clip(RoundedCornerShape(7.dp))
+                .background(Brush.verticalGradient(listOf(lighten(color), color))),
+        ) {
+            Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+        }
+        Spacer(Modifier.width(14.dp))
+        Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Text(
+            value,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.widthIn(max = 180.dp),
+        )
+        if (onClick != null) {
+            Icon(
+                Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.outline,
+                modifier = Modifier.padding(start = 4.dp).size(20.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun RowDivider() {
+    HorizontalDivider(Modifier.padding(start = 58.dp), color = MaterialTheme.colorScheme.outlineVariant)
+}
+
+private fun lighten(color: Color) = lerp(color, Color.White, 0.18f)
+
+private fun ConnectionState.tint(primary: Color) = when (this) {
+    is ConnectionState.Connected -> Green
+    is ConnectionState.Failed -> Orange
+    else -> primary
+}
+
+/** The joined Wi-Fi's name. Android hides it from apps without location access, so this is often null. */
+@Suppress("DEPRECATION")
+private fun networkName(context: android.content.Context): String? {
+    val wifi = context.applicationContext.getSystemService(android.net.wifi.WifiManager::class.java)
+    return wifi?.connectionInfo?.ssid?.trim('"')?.takeIf { it.isNotEmpty() && it != "<unknown ssid>" }
 }
 
 private fun title(state: ConnectionState, hasCredentials: Boolean) = when (state) {

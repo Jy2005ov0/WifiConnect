@@ -36,6 +36,8 @@ private val Dark = darkColorScheme(
     outlineVariant = Color(0xFF38383A),
 )
 
+val Blue = Color(0xFF007AFF)
+val Indigo = Color(0xFF5856D6)
 val Green = Color(0xFF34C759)
 val Orange = Color(0xFFFF9500)
 
