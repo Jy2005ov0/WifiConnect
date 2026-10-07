@@ -104,6 +104,11 @@ struct SettingsView: View {
                     } label: {
                         Label("Sign-In History", systemImage: "clock.arrow.circlepath")
                     }
+                    NavigationLink {
+                        ShareSetupView()
+                    } label: {
+                        Label("Share Setup with Friends", systemImage: "qrcode")
+                    }
                 } header: {
                     Text("Help")
                 }

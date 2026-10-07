@@ -66,6 +66,7 @@ fun SettingsScreen(
     appearance: Appearance,
     onAppearanceChange: (Appearance) -> Unit,
     onOpenHistory: () -> Unit,
+    onOpenShare: () -> Unit,
     onDone: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -193,6 +194,24 @@ fun SettingsScreen(
                         .padding(horizontal = 16.dp, vertical = 14.dp),
                 ) {
                     Text(stringResource(R.string.history_title), modifier = Modifier.weight(1f))
+                    Icon(
+                        Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.outline,
+                    )
+                }
+                Divider()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            save()
+                            onOpenShare()
+                        }
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                ) {
+                    Text(stringResource(R.string.share_with_friends), modifier = Modifier.weight(1f))
                     Icon(
                         Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                         contentDescription = null,
@@ -333,7 +352,7 @@ internal fun Section(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(Modifier.padding(top = 20.dp)) {
-        Text(
+        if (header.isNotEmpty()) Text(
             header.uppercase(),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

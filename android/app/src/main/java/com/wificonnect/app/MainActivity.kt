@@ -3,7 +3,12 @@ package com.wificonnect.app
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.content.Intent
 import android.os.Bundle
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.res.stringResource
 import androidx.activity.ComponentActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.activity.SystemBarStyle
@@ -29,8 +34,17 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : FragmentActivity() {
+    /** A classmate's setup from a wificonnect://setup link, waiting for confirmation. */
+    private val incomingSetup = mutableStateOf<SharedSetup?>(null)
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        SharedSetup.fromUrl(intent.dataString)?.let { incomingSetup.value = it }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) incomingSetup.value = SharedSetup.fromUrl(intent?.dataString)
         enableEdgeToEdge()
         AutoLogin.sync(this)
 
@@ -60,6 +74,7 @@ class MainActivity : FragmentActivity() {
                 var hasCredentials by remember { mutableStateOf(Credentials.isConfigured(context)) }
                 var showSettings by rememberSaveable { mutableStateOf(demo?.showSettings ?: !hasCredentials) }
                 var showHistory by rememberSaveable { mutableStateOf(demo?.showHistory ?: false) }
+                var showShare by rememberSaveable { mutableStateOf(demo?.showShare ?: false) }
 
                 // Lets automatic sign-in tell you when it has signed you in.
                 val notificationPermission = rememberLauncherForActivityResult(RequestPermission()) { }
@@ -84,8 +99,34 @@ class MainActivity : FragmentActivity() {
                     onPauseOrDispose { }
                 }
 
+                incomingSetup.value?.let { setup ->
+                    AlertDialog(
+                        onDismissRequest = { incomingSetup.value = null },
+                        title = { Text(stringResource(R.string.import_title)) },
+                        text = {
+                            Text(
+                                stringResource(
+                                    R.string.import_message,
+                                    setup.wifiName,
+                                    stringResource(if (setup.useCustomPortal) R.string.login_mode_manual else R.string.login_mode_auto),
+                                )
+                            )
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                setup.apply(context)
+                                incomingSetup.value = null
+                            }) { Text(stringResource(R.string.import_use)) }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { incomingSetup.value = null }) { Text(stringResource(R.string.cancel)) }
+                        },
+                    )
+                }
+
                 AnimatedContent(
                     targetState = when {
+                        showSettings && showShare -> 3
                         showSettings && showHistory -> 2
                         showSettings -> 1
                         else -> 0
@@ -93,13 +134,19 @@ class MainActivity : FragmentActivity() {
                     transitionSpec = { fadeIn() togetherWith fadeOut() },
                     label = "screen",
                 ) { screen ->
-                    if (screen == 2) {
+                    if (screen == 3) {
+                        ShareSetupScreen(
+                            onBack = { showShare = false },
+                            onImport = { incomingSetup.value = it },
+                        )
+                    } else if (screen == 2) {
                         HistoryScreen(onBack = { showHistory = false })
                     } else if (screen == 1) {
                         SettingsScreen(
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
                             onOpenHistory = { showHistory = true },
+                            onOpenShare = { showShare = true },
                             onDone = {
                                 hasCredentials = Credentials.isConfigured(context)
                                 showSettings = false
@@ -140,7 +187,12 @@ private fun ComponentActivity.applyTestExtras() {
 }
 
 /** Debug-only launch extras used to take the README screenshots. */
-private class Demo(val state: ConnectionState?, val showSettings: Boolean, val showHistory: Boolean) {
+private class Demo(
+    val state: ConnectionState?,
+    val showSettings: Boolean,
+    val showHistory: Boolean,
+    val showShare: Boolean,
+) {
     companion object {
         fun from(intent: android.content.Intent, context: android.content.Context): Demo? {
             val stateName = intent.getStringExtra("demoState") ?: return null
@@ -156,7 +208,12 @@ private class Demo(val state: ConnectionState?, val showSettings: Boolean, val s
             }
             val screen = intent.getStringExtra("demoScreen")
             if (screen == "history") History.seedDemo(context)
-            return Demo(state, screen == "settings" || screen == "history", screen == "history")
+            return Demo(
+                state,
+                showSettings = screen in setOf("settings", "history", "share"),
+                showHistory = screen == "history",
+                showShare = screen == "share",
+            )
         }
     }
 }

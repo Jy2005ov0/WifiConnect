@@ -113,6 +113,22 @@
         }
       }
     },
+    "Ask a classmate to scan this with their phone's camera. WiFi Connect opens with your Wi-Fi and login page settings filled in.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minta rakan sekelas mengimbas kod ini dengan kamera telefon mereka. WiFi Connect akan dibuka dengan tetapan Wi-Fi dan halaman log masuk anda telah diisi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请同学用手机相机扫描此二维码。WiFi Connect 会打开并自动填好你的 Wi-Fi 和登录页面设置。"
+          }
+        }
+      }
+    },
     "Asks for %@ before showing Settings, where your password is saved.": {
       "localizations": {
         "ms": {
@@ -173,6 +189,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "校园 Wi-Fi"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batal"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
           }
         }
       }
@@ -801,6 +833,22 @@
         }
       }
     },
+    "Only the Wi-Fi name and login page settings are shared. Never your student ID or password.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hanya nama Wi-Fi dan tetapan halaman log masuk dikongsi. Tidak sekali-kali ID pelajar atau kata laluan anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只会分享 Wi-Fi 名称和登录页面设置，绝不会分享你的学号或密码。"
+          }
+        }
+      }
+    },
     "Open Shortcuts": {
       "localizations": {
         "ms": {
@@ -909,6 +957,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "密码字段"
+          }
+        }
+      }
+    },
+    "QR code": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod QR"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "二维码"
           }
         }
       }
@@ -1085,6 +1149,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "设置"
+          }
+        }
+      }
+    },
+    "Share Setup": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kongsi Tetapan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享设置"
+          }
+        }
+      }
+    },
+    "Share Setup Link": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kongsi Pautan Tetapan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享设置链接"
+          }
+        }
+      }
+    },
+    "Share Setup with Friends": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kongsi Tetapan dengan Rakan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "与朋友分享设置"
           }
         }
       }
@@ -1665,6 +1777,22 @@
         }
       }
     },
+    "Use Setup": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guna Tetapan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用设置"
+          }
+        }
+      }
+    },
     "Welcome": {
       "localizations": {
         "ms": {
@@ -1693,6 +1821,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开应用时"
+          }
+        }
+      }
+    },
+    "Wi-Fi: %@. Login page: %@. Your own student ID and password stay the same.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi: %@. Halaman log masuk: %@. ID pelajar dan kata laluan anda sendiri kekal sama."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi：%@。登录页面：%@。你自己的学号和密码保持不变。"
           }
         }
       }
@@ -1821,6 +1965,38 @@
           "stringUnit": {
             "state": "translated",
             "value": "学校的登录页面没有提供退出链接。你可以在“设置 › 登录页面”中添加。"
+          }
+        }
+      }
+    },
+    "automatic": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "automatik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动"
+          }
+        }
+      }
+    },
+    "set manually": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ditetapkan secara manual"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手动设置"
           }
         }
       }

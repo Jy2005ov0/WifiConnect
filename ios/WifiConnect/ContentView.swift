@@ -8,6 +8,8 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var showAutomationGuide = false
     @State private var showDemoHistory = false
+    @State private var showDemoShare = false
+    @State private var pendingSetup: SharedSetup?
     @State private var speed: String?
     @State private var testingSpeed = false
     @Environment(\.scenePhase) private var scenePhase
@@ -132,6 +134,23 @@ struct ContentView: View {
             .sheet(isPresented: $showDemoHistory) {
                 NavigationStack { HistoryView() }
             }
+            .sheet(isPresented: $showDemoShare) {
+                NavigationStack { ShareSetupView() }
+            }
+            .alert(
+                "Use a classmate's setup?",
+                isPresented: Binding(get: { pendingSetup != nil }, set: { if !$0 { pendingSetup = nil } }),
+                presenting: pendingSetup
+            ) { setup in
+                Button("Use Setup") {
+                    setup.apply()
+                    pendingSetup = nil
+                }
+                Button("Cancel", role: .cancel) { pendingSetup = nil }
+            } message: { setup in
+                let mode = setup.useCustomPortal ? String(localized: "set manually") : String(localized: "automatic")
+                Text("Wi-Fi: \(setup.wifiName). Login page: \(mode). Your own student ID and password stay the same.")
+            }
             .sensoryFeedback(trigger: model.state) { _, new in
                 switch new {
                 case .connected: return .success
@@ -159,6 +178,10 @@ struct ContentView: View {
             }
             .onOpenURL { url in
                 guard url.scheme == "wificonnect" else { return }
+                if let setup = SharedSetup(url: url) {
+                    pendingSetup = setup
+                    return
+                }
                 if url.host == "connect", hasCredentials {
                     Task { await model.connect() }
                 }
@@ -238,6 +261,8 @@ struct ContentView: View {
         case "history":
             History.seedDemo()
             showDemoHistory = true
+        case "share":
+            showDemoShare = true
         default: break
         }
         return true
