@@ -23,11 +23,14 @@
     <string name="button_try_again">再試行</string>
     <string name="button_disconnect">切断</string>
     <string name="button_add_student_id">学籍番号を追加</string>
+    <string name="hint_tap_connect">タップして接続</string>
+    <string name="hint_tap_disconnect">タップして切断</string>
+    <string name="hint_tap_try_again">タップして再試行</string>
     <string name="sign_out">サインアウト</string>
     <string name="status_welcome">ようこそ</string>
     <string name="status_welcome_detail">学籍番号とパスワードを追加して始めましょう。</string>
     <string name="status_ready">準備完了</string>
-    <string name="status_ready_detail">学校の Wi-Fi に接続してから「接続」をタップしてください。</string>
+    <string name="status_ready_detail">学校の Wi-Fi に接続してから、円をタップしてください。</string>
     <string name="status_signing_in">サインイン中…</string>
     <string name="status_signing_in_detail">学校のログインページと通信しています。</string>
     <string name="status_connected">接続済み</string>

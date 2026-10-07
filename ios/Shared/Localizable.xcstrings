@@ -505,34 +505,6 @@
         }
       }
     },
-    "Connect": {
-      "localizations": {
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sambung"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "连接"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "接続"
-          }
-        },
-        "ta": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "இணை"
-          }
-        }
-      }
-    },
     "Connected": {
       "localizations": {
         "ms": {
@@ -781,34 +753,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "உள்நுழைவுப் பக்கத்தைக் கண்டறி"
-          }
-        }
-      }
-    },
-    "Disconnect": {
-      "localizations": {
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Putuskan Sambungan"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "断开连接"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "切断"
-          }
-        },
-        "ta": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "துண்டி"
           }
         }
       }
@@ -1177,30 +1121,30 @@
         }
       }
     },
-    "Join your school's Wi-Fi, then tap Connect.": {
+    "Join your school's Wi-Fi, then tap the circle.": {
       "localizations": {
         "ms": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sertai Wi-Fi universiti anda, kemudian ketik Sambung."
+            "value": "Sertai Wi-Fi universiti anda, kemudian ketik bulatan."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "连接学校的 Wi-Fi，然后点按“连接”。"
+            "value": "连接学校的 Wi-Fi，然后点按圆圈。"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "学校の Wi-Fi に接続してから「接続」をタップしてください。"
+            "value": "学校の Wi-Fi に接続してから、円をタップしてください。"
           }
         },
         "ta": {
           "stringUnit": {
             "state": "translated",
-            "value": "உங்கள் பள்ளி Wi-Fi-இல் சேர்ந்து, பிறகு இணை என்பதைத் தட்டவும்."
+            "value": "உங்கள் பள்ளி Wi-Fi-இல் சேர்ந்து, பிறகு வட்டத்தைத் தட்டவும்."
           }
         }
       }
@@ -3025,6 +2969,90 @@
         }
       }
     },
+    "Tap to Connect": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik untuk Sambung"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按以连接"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップして接続"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இணைக்கத் தட்டவும்"
+          }
+        }
+      }
+    },
+    "Tap to Disconnect": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik untuk Putuskan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按以断开连接"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップして切断"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "துண்டிக்கத் தட்டவும்"
+          }
+        }
+      }
+    },
+    "Tap to Try Again": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik untuk Cuba Lagi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按以重试"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップして再試行"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மீண்டும் முயலத் தட்டவும்"
+          }
+        }
+      }
+    },
     "Tap to sign in to campus Wi-Fi.": {
       "localizations": {
         "ms": {
@@ -3329,34 +3357,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "உள்நுழைவுப் பக்கம் தோன்றுவதை நிறுத்த, **Settings › Wi-Fi** ஐத் திறந்து, %@ அருகிலுள்ள **ⓘ** ஐத் தட்டி **Auto-Login** ஐ முடக்கவும்."
-          }
-        }
-      }
-    },
-    "Try Again": {
-      "localizations": {
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cuba Lagi"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "重试"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "再試行"
-          }
-        },
-        "ta": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "மீண்டும் முயல்"
           }
         }
       }

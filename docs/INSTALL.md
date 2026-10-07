@@ -213,7 +213,7 @@ These steps are the same on both phones.
 2. Enter your **Student ID** and **Password**. They're stored encrypted on your phone (Keychain on iPhone, Android Keystore on Android) and are only sent to your school's login page.
 3. Check that **School Wi-Fi** says `utarwifi` (it's the default).
 4. Android only: allow **notifications** when asked, so it can tell you when it has signed you in.
-5. On campus, join `utarwifi` and tap **Connect**. You should see **Connected**.
+5. On campus, join `utarwifi` and tap the big Wi-Fi circle (**Tap to Connect**). You should see **Connected**. Tap the circle again to disconnect.
 
 ### Make it automatic
 

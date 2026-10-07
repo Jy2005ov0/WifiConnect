@@ -4,6 +4,13 @@ import android.os.Build
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -48,8 +55,6 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Speed
 import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material.icons.rounded.WifiOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,7 +64,6 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.ui.res.stringResource
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -147,9 +151,36 @@ fun MainScreen(
         ) {
             Spacer(Modifier.weight(1f))
 
-            StatusBadge(state, tint)
+            // The big circle is the button: Connect, or Disconnect once connected.
+            val connected = hasCredentials && state is ConnectionState.Connected
+            val hint = when {
+                !hasCredentials -> stringResource(R.string.button_add_student_id)
+                state == ConnectionState.Working -> null
+                connected -> stringResource(R.string.hint_tap_disconnect)
+                state is ConnectionState.Failed -> stringResource(R.string.hint_tap_try_again)
+                else -> stringResource(R.string.hint_tap_connect)
+            }
+            StatusBadge(
+                state, tint,
+                enabled = state != ConnectionState.Working,
+                description = hint ?: title(state, hasCredentials),
+                onClick = if (connected) onSignOut else onConnect,
+            )
 
-            Spacer(Modifier.height(26.dp))
+            Text(
+                text = hint ?: " ",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = tint,
+                modifier = Modifier
+                    .padding(top = 6.dp)
+                    .alpha(if (hint == null) 0f else 1f)
+                    .clip(CircleShape)
+                    .background(tint.copy(alpha = 0.12f))
+                    .padding(horizontal = 14.dp, vertical = 6.dp),
+            )
+
+            Spacer(Modifier.height(14.dp))
             Text(
                 text = title(state, hasCredentials),
                 style = MaterialTheme.typography.headlineMedium,
@@ -194,32 +225,7 @@ fun MainScreen(
                 }
             }
 
-            // Connect signs in now; once connected it becomes Disconnect (sign out).
-            val connected = hasCredentials && state is ConnectionState.Connected
-            Button(
-                onClick = if (connected) onSignOut else onConnect,
-                enabled = state != ConnectionState.Working,
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (connected) Color(0xFFFF3B30) else MaterialTheme.colorScheme.primary,
-                    contentColor = Color.White,
-                ),
-                modifier = Modifier
-                    .padding(top = 20.dp, bottom = 16.dp)
-                    .fillMaxWidth()
-                    .height(54.dp),
-            ) {
-                Text(
-                    text = when {
-                        !hasCredentials -> stringResource(R.string.button_add_student_id)
-                        connected -> stringResource(R.string.button_disconnect)
-                        state is ConnectionState.Failed -> stringResource(R.string.button_try_again)
-                        else -> stringResource(R.string.button_connect)
-                    },
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
@@ -257,7 +263,13 @@ private fun AppearanceMenu(appearance: Appearance, onChange: (Appearance) -> Uni
 }
 
 @Composable
-private fun StatusBadge(state: ConnectionState, tint: Color) {
+private fun StatusBadge(
+    state: ConnectionState,
+    tint: Color,
+    enabled: Boolean,
+    description: String,
+    onClick: () -> Unit,
+) {
     val transition = rememberInfiniteTransition(label = "badge")
     val breathing by transition.animateFloat(
         initialValue = 0.96f,
@@ -272,7 +284,25 @@ private fun StatusBadge(state: ConnectionState, tint: Color) {
         label = "pulse",
     )
 
-    Box(contentAlignment = Alignment.Center) {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    val press by animateFloatAsState(if (pressed) 0.92f else 1f, spring(), label = "press")
+
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .scale(press)
+            .clip(CircleShape)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                enabled = enabled,
+                role = Role.Button,
+                onClickLabel = description,
+                onClick = onClick,
+            )
+            .semantics { contentDescription = description },
+    ) {
         Box(
             Modifier
                 .size(188.dp)

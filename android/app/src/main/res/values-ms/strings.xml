@@ -23,11 +23,14 @@
     <string name="button_try_again">Cuba Lagi</string>
     <string name="button_disconnect">Putuskan Sambungan</string>
     <string name="button_add_student_id">Tambah ID Pelajar</string>
+    <string name="hint_tap_connect">Ketik untuk Sambung</string>
+    <string name="hint_tap_disconnect">Ketik untuk Putuskan</string>
+    <string name="hint_tap_try_again">Ketik untuk Cuba Lagi</string>
     <string name="sign_out">Log Keluar</string>
     <string name="status_welcome">Selamat Datang</string>
     <string name="status_welcome_detail">Tambah ID pelajar dan kata laluan anda untuk bermula.</string>
     <string name="status_ready">Sedia</string>
-    <string name="status_ready_detail">Sertai Wi-Fi universiti anda, kemudian ketik Sambung.</string>
+    <string name="status_ready_detail">Sertai Wi-Fi universiti anda, kemudian ketik bulatan.</string>
     <string name="status_signing_in">Sedang Log Masuk…</string>
     <string name="status_signing_in_detail">Sedang berhubung dengan halaman log masuk universiti anda.</string>
     <string name="status_connected">Bersambung</string>

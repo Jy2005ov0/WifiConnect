@@ -23,11 +23,14 @@
     <string name="button_try_again">மீண்டும் முயல்</string>
     <string name="button_disconnect">துண்டி</string>
     <string name="button_add_student_id">மாணவர் எண்ணைச் சேர்</string>
+    <string name="hint_tap_connect">இணைக்கத் தட்டவும்</string>
+    <string name="hint_tap_disconnect">துண்டிக்கத் தட்டவும்</string>
+    <string name="hint_tap_try_again">மீண்டும் முயலத் தட்டவும்</string>
     <string name="sign_out">வெளியேறு</string>
     <string name="status_welcome">வரவேற்கிறோம்</string>
     <string name="status_welcome_detail">தொடங்க உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் சேர்க்கவும்.</string>
     <string name="status_ready">தயார்</string>
-    <string name="status_ready_detail">உங்கள் பள்ளி Wi-Fi-இல் சேர்ந்து, பிறகு இணை என்பதைத் தட்டவும்.</string>
+    <string name="status_ready_detail">உங்கள் பள்ளி Wi-Fi-இல் சேர்ந்து, பிறகு வட்டத்தைத் தட்டவும்.</string>
     <string name="status_signing_in">உள்நுழைகிறது…</string>
     <string name="status_signing_in_detail">உங்கள் பள்ளியின் உள்நுழைவுப் பக்கத்துடன் தொடர்புகொள்கிறது.</string>
     <string name="status_connected">இணைக்கப்பட்டது</string>

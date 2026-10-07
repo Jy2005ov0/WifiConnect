@@ -6,7 +6,7 @@ A small app for **iPhone and Android** that signs you in to your school's Wi-Fi 
 
 Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses too.
 
-- **One tap:** open the app and tap **Connect**. Opening the app also tries to sign in on its own.
+- **One tap:** open the app and tap the big Wi-Fi circle to connect. Opening the app also tries to sign in on its own.
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
 - **"Connected to utarwifi" notification** when the app signs you in on arrival.
 - **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
@@ -24,7 +24,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | **Laptop sign-in** | `windows/Install.cmd` signs your Windows laptop in to `utarwifi` too | |
 | **Sign-in history** | Settings › Sign-In History, with **Copy Diagnostics** to send if something goes wrong | Same |
 | **App lock** | Face ID / Touch ID before showing Settings | Fingerprint, face or screen lock |
-| **Sign out** | Sign Out button when connected | Same |
+| **Disconnect** | Tap the big circle again when connected | Same |
 | **Speed test** | A full test page: live gauge, ping, jitter, download and upload over the Wi-Fi | Same |
 | **Languages** | English, Bahasa Melayu, 简体中文, 日本語 and தமிழ், changed in Settings › Language (or follows the phone) | Same |
 | **Share with classmates** | Settings › Share Setup: a QR code they scan with their camera (no password included) | Same, plus pasting a shared link |
@@ -80,7 +80,7 @@ If you'd rather not install anything, the Shortcuts app can send the login form 
 
 1. Open **WiFi Connect** and enter your **student ID** and **password**.
 2. Enter your school's **Wi-Fi name**. It's used in the setup guide.
-3. On campus, join the school Wi-Fi and tap **Connect**.
+3. On campus, join the school Wi-Fi and tap the big Wi-Fi circle (**Tap to Connect**).
 
 ### Sign in automatically
 

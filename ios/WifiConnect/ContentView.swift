@@ -19,7 +19,25 @@ struct ContentView: View {
             VStack(spacing: 0) {
                 Spacer(minLength: 8)
 
-                StatusBadge(state: model.state)
+                // The big circle is the button: Connect, or Disconnect once connected.
+                Button(action: primaryAction) {
+                    StatusBadge(state: model.state)
+                }
+                .buttonStyle(PressableStyle())
+                .disabled(model.state == .working)
+                .accessibilityLabel(hint ?? title)
+
+                Text(hint ?? " ")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(model.state.tint)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 6)
+                    .background(model.state.tint.opacity(0.12), in: Capsule())
+                    .padding(.top, 6)
+                    .opacity(hint == nil ? 0 : 1)
+                    .contentTransition(.opacity)
+                    .animation(.default, value: hint)
+                    .accessibilityHidden(true)
 
                 VStack(spacing: 6) {
                     Text(title)
@@ -30,7 +48,7 @@ struct ContentView: View {
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                .padding(.top, 26)
+                .padding(.top, 14)
                 .padding(.horizontal, 32)
                 .animation(.default, value: model.state)
 
@@ -61,31 +79,7 @@ struct ContentView: View {
                     .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 20)
-
-                // Connect signs in now; once connected it becomes Disconnect (sign out).
-                Button {
-                    if !hasCredentials {
-                        showSettings = true
-                    } else if isConnected {
-                        Task { await model.signOut() }
-                    } else {
-                        Task { await model.connect() }
-                    }
-                } label: {
-                    Text(buttonTitle)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 6)
-                        .contentTransition(.opacity)
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-                .controlSize(.large)
-                .tint(isConnected ? .red : .blue)
-                .disabled(model.state == .working)
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-                .padding(.bottom, 12)
+                .padding(.bottom, 16)
             }
             .animation(.default, value: isConnected)
             .background {
@@ -279,18 +273,32 @@ struct ContentView: View {
         switch model.state {
         case .idle:
             return hasCredentials
-                ? String(localized: "Join your school's Wi-Fi, then tap Connect.") : String(localized: "Add your student ID and password to get started.")
+                ? String(localized: "Join your school's Wi-Fi, then tap the circle.") : String(localized: "Add your student ID and password to get started.")
         case .working: return String(localized: "Talking to your school's login page.")
         case .connected(let message), .failed(let message): return message
         case .signedOut: return String(localized: "You've signed out of the campus Wi-Fi.")
         }
     }
 
-    private var buttonTitle: String {
+    /// What tapping the circle does, shown under it.
+    private var hint: String? {
         if !hasCredentials { return String(localized: "Add Student ID") }
-        if case .failed = model.state { return String(localized: "Try Again") }
-        if isConnected { return String(localized: "Disconnect") }
-        return String(localized: "Connect")
+        switch model.state {
+        case .working: return nil
+        case .connected: return String(localized: "Tap to Disconnect")
+        case .failed: return String(localized: "Tap to Try Again")
+        case .idle, .signedOut: return String(localized: "Tap to Connect")
+        }
+    }
+
+    private func primaryAction() {
+        if !hasCredentials {
+            showSettings = true
+        } else if isConnected {
+            Task { await model.signOut() }
+        } else {
+            Task { await model.connect() }
+        }
     }
 }
 
@@ -329,7 +337,15 @@ private struct StatusBadge: View {
                 breathing = true
             }
         }
-        .accessibilityHidden(true)
+    }
+}
+
+/// Shrinks a little while pressed, like a physical button.
+private struct PressableStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.92 : 1)
+            .animation(.spring(duration: 0.3), value: configuration.isPressed)
     }
 }
 

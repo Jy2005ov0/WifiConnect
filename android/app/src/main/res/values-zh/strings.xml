@@ -23,11 +23,14 @@
     <string name="button_try_again">重试</string>
     <string name="button_disconnect">断开连接</string>
     <string name="button_add_student_id">添加学号</string>
+    <string name="hint_tap_connect">点按以连接</string>
+    <string name="hint_tap_disconnect">点按以断开连接</string>
+    <string name="hint_tap_try_again">点按以重试</string>
     <string name="sign_out">退出登录</string>
     <string name="status_welcome">欢迎</string>
     <string name="status_welcome_detail">添加你的学号和密码即可开始使用。</string>
     <string name="status_ready">准备就绪</string>
-    <string name="status_ready_detail">连接学校的 Wi-Fi，然后点按“连接”。</string>
+    <string name="status_ready_detail">连接学校的 Wi-Fi，然后点按圆圈。</string>
     <string name="status_signing_in">正在登录…</string>
     <string name="status_signing_in_detail">正在与学校的登录页面通信。</string>
     <string name="status_connected">已连接</string>

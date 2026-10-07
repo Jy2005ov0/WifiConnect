@@ -24,11 +24,14 @@
     <string name="button_try_again">Try Again</string>
     <string name="button_disconnect">Disconnect</string>
     <string name="button_add_student_id">Add Student ID</string>
+    <string name="hint_tap_connect">Tap to Connect</string>
+    <string name="hint_tap_disconnect">Tap to Disconnect</string>
+    <string name="hint_tap_try_again">Tap to Try Again</string>
     <string name="sign_out">Sign Out</string>
     <string name="status_welcome">Welcome</string>
     <string name="status_welcome_detail">Add your student ID and password to get started.</string>
     <string name="status_ready">Ready</string>
-    <string name="status_ready_detail">Join your school\'s Wi-Fi, then tap Connect.</string>
+    <string name="status_ready_detail">Join your school\'s Wi-Fi, then tap the circle.</string>
     <string name="status_signing_in">Signing In…</string>
     <string name="status_signing_in_detail">Talking to your school\'s login page.</string>
     <string name="status_connected">Connected</string>
