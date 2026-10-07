@@ -34,11 +34,22 @@ enum Appearance: String, CaseIterable, Identifiable {
     }
 
     /// Applies the style to every window, so open sheets switch too.
-    func apply() {
+    /// When animated, the old look dissolves into the new one, like switching Dark Mode in Control Center.
+    func apply(animated: Bool = false) {
         for scene in UIApplication.shared.connectedScenes {
             guard let windowScene = scene as? UIWindowScene else { continue }
-            for window in windowScene.windows {
-                window.overrideUserInterfaceStyle = style
+            for window in windowScene.windows where window.overrideUserInterfaceStyle != style {
+                if animated {
+                    UIView.transition(
+                        with: window,
+                        duration: 0.45,
+                        options: [.transitionCrossDissolve, .allowUserInteraction]
+                    ) {
+                        window.overrideUserInterfaceStyle = style
+                    }
+                } else {
+                    window.overrideUserInterfaceStyle = style
+                }
             }
         }
     }

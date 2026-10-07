@@ -156,7 +156,7 @@ fun SettingsScreen(
                             onClick = { onAppearanceChange(option) },
                             shape = SegmentedButtonDefaults.itemShape(index, Appearance.entries.size),
                             icon = {},
-                        ) { Text(option.title) }
+                        ) { Icon(option.icon, contentDescription = option.title, modifier = Modifier.size(20.dp)) }
                     }
                 }
             }
@@ -164,14 +164,14 @@ fun SettingsScreen(
             Section(
                 header = "Login Page",
                 footer = detectMessage
-                    ?: "The login page is found automatically. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually.",
+                    ?: "The login page is found automatically, even when each building uses a different address. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually. Enter just the path, like /login, so it works in every building.",
             ) {
                 SwitchRow("Set Login Page Manually", settings.useCustomPortal) {
                     settings = settings.copy(useCustomPortal = it)
                 }
                 if (settings.useCustomPortal) {
                     Divider()
-                    LabeledField("URL", settings.loginUrl, "https://login.school.edu", KeyboardType.Uri) {
+                    LabeledField("URL or Path", settings.loginUrl, "/login", KeyboardType.Uri) {
                         settings = settings.copy(loginUrl = it)
                     }
                     Divider()
@@ -224,19 +224,24 @@ fun SettingsScreen(
                                     if (form == null) {
                                         "You're already online, so there's no login page to detect. Try again right after joining the school Wi-Fi."
                                     } else {
-                                        val user = form.usernameField ?: settings.usernameField
-                                        val pass = form.passwordField ?: settings.passwordField
+                                        // Save a path rather than this building's address, so it also works in other blocks.
+                                        val url = form.action
+                                        val loginUrl = if (url.host == form.pageUrl.host) {
+                                            url.path.ifEmpty { "/" } + (url.query?.let { "?$it" } ?: "")
+                                        } else {
+                                            url.toString()
+                                        }
                                         settings = settings.copy(
-                                            useCustomPortal = true,
-                                            loginUrl = form.action.toString(),
+                                            loginUrl = loginUrl,
                                             method = form.method,
-                                            usernameField = user,
-                                            passwordField = pass,
-                                            extraFields = form.inputs
-                                                .filter { it.type == "hidden" && it.name != user && it.name != pass }
-                                                .joinToString("\n") { "${it.name}=${it.value}" },
+                                            usernameField = form.usernameField ?: settings.usernameField,
+                                            passwordField = form.passwordField ?: settings.passwordField,
                                         )
-                                        "Found the login page at ${form.action.host}. The details have been filled in above."
+                                        if (settings.useCustomPortal) {
+                                            "Found the login page at ${url.host}. The details above have been updated."
+                                        } else {
+                                            "Found the login page at ${url.host}. Automatic sign-in works here and in other buildings, so there's nothing to set up."
+                                        }
                                     }
                                 } catch (e: LoginError) {
                                     e.message

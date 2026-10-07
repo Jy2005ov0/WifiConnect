@@ -24,6 +24,8 @@ struct HTMLForm {
     var action: URL
     var method: String
     var inputs: [Input]
+    /// The page the form was found on.
+    var pageURL: URL
 
     var passwordField: String? {
         inputs.first { $0.type == "password" }?.name
@@ -88,7 +90,7 @@ struct HTMLForm {
                 ? baseURL
                 : (URL(string: actionString, relativeTo: baseURL)?.absoluteURL ?? baseURL)
             let method = (attrs["method"] ?? "get").uppercased() == "POST" ? "POST" : "GET"
-            return HTMLForm(action: action, method: method, inputs: inputs)
+            return HTMLForm(action: action, method: method, inputs: inputs, pageURL: baseURL)
         }
         return nil
     }

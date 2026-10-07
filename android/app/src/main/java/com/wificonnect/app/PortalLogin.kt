@@ -11,6 +11,11 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
 
 enum class LoginOutcome { ALREADY_ONLINE, LOGGED_IN }
 
@@ -53,9 +58,18 @@ class PortalLogin(private val network: Network) {
             val page = (result as? ProbeResult.Portal)?.page ?: return@withContext LoginOutcome.ALREADY_ONLINE
 
             val submission = if (settings.useCustomPortal) {
-                val url = runCatching { URL(settings.loginUrl.trim()) }.getOrNull()
+                // A path like "/login" is resolved against this building's login page, so one
+                // setting works across blocks whose portals live at different addresses.
+                val url = settings.loginUrl.trim().takeIf { it.isNotEmpty() }
+                    ?.let { HtmlForm.resolve(page.url, it) }
                     ?.takeIf { it.host.isNotEmpty() } ?: throw LoginError.InvalidUrl
-                val fields = settings.parsedExtraFields() +
+                val extra = settings.parsedExtraFields()
+                val overridden = extra.map { it.name }.toSet() + settings.usernameField + settings.passwordField
+                // Hidden one-time tokens change every visit, so take fresh ones from the page when it has a form.
+                val hidden = HtmlForm.loginForm(page.html, page.url)?.inputs.orEmpty()
+                    .filter { it.type == "hidden" && it.name !in overridden }
+                    .map { FormField(it.name, it.value) }
+                val fields = hidden + extra +
                     FormField(settings.usernameField, studentId) +
                     FormField(settings.passwordField, password)
                 FormSubmission(url, settings.method, fields)
@@ -120,6 +134,7 @@ class PortalLogin(private val network: Network) {
 
         for (hop in 0 until MAX_REDIRECTS) {
             val conn = network.openConnection(current) as HttpURLConnection
+            if (conn is HttpsURLConnection && isPrivateAddress(current.host)) trustPortalCertificate(conn)
             try {
                 conn.instanceFollowRedirects = false
                 conn.connectTimeout = TIMEOUT_MS
@@ -196,6 +211,31 @@ class PortalLogin(private val network: Network) {
             "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Mobile Safari/537.36"
 
         private fun encode(s: String): String = URLEncoder.encode(s, "UTF-8")
+
+        /** 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16. */
+        fun isPrivateAddress(host: String): Boolean {
+            val parts = host.split('.').map { it.toIntOrNull() ?: return false }
+            if (parts.size != 4 || parts.any { it !in 0..255 }) return false
+            return parts[0] == 10 ||
+                (parts[0] == 172 && parts[1] in 16..31) ||
+                (parts[0] == 192 && parts[1] == 168)
+        }
+
+        /**
+         * Campus login pages in each building often sit on a bare private IP address with a
+         * certificate that can't match it. Accept those, and only those: other sites are checked as usual.
+         */
+        @Suppress("CustomX509TrustManager", "TrustAllX509TrustManager")
+        private fun trustPortalCertificate(conn: HttpsURLConnection) {
+            val trustAll = object : X509TrustManager {
+                override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) = Unit
+                override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) = Unit
+                override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
+            }
+            val context = SSLContext.getInstance("TLS").apply { init(null, arrayOf(trustAll), SecureRandom()) }
+            conn.sslSocketFactory = context.socketFactory
+            conn.hostnameVerifier = javax.net.ssl.HostnameVerifier { _, _ -> true }
+        }
 
         /** The current Wi-Fi network, even when Android is still routing everything else over mobile data. */
         @Suppress("DEPRECATION")

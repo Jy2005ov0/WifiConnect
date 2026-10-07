@@ -23,10 +23,11 @@ PREFS="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Library/Prefe
 failures=0
 run_case() {
   local name=$1 password=$2 expect_result=$3 expect_authorized=$4
+  shift 4 # Any further arguments are passed to the app, e.g. settings.
   echo "::group::$name"
   xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
   xcrun simctl launch "$UDID" "$BUNDLE_ID" -testRun "$name" \
-    -testProbeURL "$PORTAL/hotspot-detect.html" -testStudentID 2201234 -testPassword "$password"
+    -testProbeURL "$PORTAL/hotspot-detect.html" -testStudentID 2201234 -testPassword "$password" "$@"
 
   local result=""
   for _ in $(seq 1 60); do
@@ -56,5 +57,15 @@ run_case wrong-password wrong-pass 'failed(' false
 curl -s -X POST "$PORTAL/reset" > /dev/null
 run_case sign-in utar-test "signed in" true
 run_case already-online utar-test "already online" true
+# Another block: the campus sends the app to a login page at a different address.
+curl -s -X POST "$PORTAL/reset" > /dev/null
+curl -s -X POST "$PORTAL/move?to=B" > /dev/null
+run_case other-building utar-test "signed in" true
+# Manual settings with just a path, which should work in any building.
+curl -s -X POST "$PORTAL/reset" > /dev/null
+curl -s -X POST "$PORTAL/move?to=B" > /dev/null
+run_case manual-path utar-test "signed in" true \
+  -useCustomPortal YES -loginURL /cgi-bin/login -method POST \
+  -usernameField username -passwordField password -extraFields agree=yes
 
 exit $failures

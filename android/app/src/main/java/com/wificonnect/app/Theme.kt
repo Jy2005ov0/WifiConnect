@@ -1,5 +1,7 @@
 package com.wificonnect.app
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -41,7 +43,29 @@ val Indigo = Color(0xFF5856D6)
 val Green = Color(0xFF34C759)
 val Orange = Color(0xFFFF9500)
 
+/** Switching between light and dark fades every colour across, like iOS does. */
 @Composable
 fun WifiConnectTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = if (dark) Dark else Light, content = content)
+    val target = if (dark) Dark else Light
+    val scheme = target.copy(
+        primary = animated(target.primary),
+        onPrimary = animated(target.onPrimary),
+        secondaryContainer = animated(target.secondaryContainer),
+        onSecondaryContainer = animated(target.onSecondaryContainer),
+        background = animated(target.background),
+        onBackground = animated(target.onBackground),
+        surface = animated(target.surface),
+        onSurface = animated(target.onSurface),
+        surfaceContainer = animated(target.surfaceContainer),
+        surfaceContainerHigh = animated(target.surfaceContainerHigh),
+        surfaceContainerHighest = animated(target.surfaceContainerHighest),
+        onSurfaceVariant = animated(target.onSurfaceVariant),
+        outline = animated(target.outline),
+        outlineVariant = animated(target.outlineVariant),
+    )
+    MaterialTheme(colorScheme = scheme, content = content)
 }
+
+@Composable
+private fun animated(color: Color): Color =
+    animateColorAsState(color, animationSpec = tween(durationMillis = 450), label = "theme").value

@@ -8,7 +8,13 @@ data class FormField(val name: String, val value: String)
 data class FormSubmission(val url: URL, val method: String, val fields: List<FormField>)
 
 /** A small, forgiving HTML scanner that finds the login form on a captive portal page. */
-data class HtmlForm(val action: URL, val method: String, val inputs: List<Input>) {
+data class HtmlForm(
+    val action: URL,
+    val method: String,
+    val inputs: List<Input>,
+    /** The page the form was found on. */
+    val pageUrl: URL,
+) {
     data class Input(val name: String, val type: String, val value: String, val checked: Boolean)
 
     val passwordField: String?
@@ -81,7 +87,7 @@ data class HtmlForm(val action: URL, val method: String, val inputs: List<Input>
                 val actionString = attrs["action"]?.let(::decodeEntities)?.trim().orEmpty()
                 val action = if (actionString.isEmpty()) baseUrl else resolve(baseUrl, actionString) ?: baseUrl
                 val method = if (attrs["method"].equals("post", ignoreCase = true)) "POST" else "GET"
-                return HtmlForm(action, method, inputs)
+                return HtmlForm(action, method, inputs, baseUrl)
             }
             return null
         }

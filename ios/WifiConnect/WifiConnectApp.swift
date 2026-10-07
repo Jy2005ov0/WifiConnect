@@ -8,7 +8,7 @@ struct WifiConnectApp: App {
         WindowGroup {
             ContentView()
                 .onAppear { appearance.apply() }
-                .onChange(of: appearance) { appearance.apply() }
+                .onChange(of: appearance) { appearance.apply(animated: true) }
         }
     }
 }

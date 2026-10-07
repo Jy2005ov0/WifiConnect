@@ -66,7 +66,7 @@ struct PortalLogin {
         config.httpAdditionalHeaders = [
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
         ]
-        session = URLSession(configuration: config)
+        session = URLSession(configuration: config, delegate: PortalTrust(), delegateQueue: nil)
     }
 
     func logIn(studentID: String, password: String, settings: PortalSettings) async throws -> LoginOutcome {
@@ -82,11 +82,21 @@ struct PortalLogin {
 
         let submission: FormSubmission
         if settings.useCustomPortal {
+            // A path like "/login" is resolved against this building's login page, so one
+            // setting works across blocks whose portals live at different addresses.
             let urlString = settings.loginURL.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard let url = URL(string: urlString), url.scheme != nil, url.host != nil else {
+            guard !urlString.isEmpty,
+                  let url = URL(string: urlString, relativeTo: page.url)?.absoluteURL,
+                  url.scheme != nil, url.host != nil else {
                 throw LoginError.invalidURL
             }
-            var fields = settings.parsedExtraFields
+            let extra = settings.parsedExtraFields
+            let overridden = Set(extra.map(\.name) + [settings.usernameField, settings.passwordField])
+            // Hidden one-time tokens change every visit, so take fresh ones from the page when it has a form.
+            var fields = (HTMLForm.loginForm(in: page.html, baseURL: page.url)?.inputs ?? [])
+                .filter { $0.type == "hidden" && !overridden.contains($0.name) }
+                .map { FormField(name: $0.name, value: $0.value) }
+            fields += extra
             fields.append(FormField(name: settings.usernameField, value: studentID))
             fields.append(FormField(name: settings.passwordField, value: password))
             submission = FormSubmission(url: url, method: settings.method, fields: fields)
@@ -176,5 +186,33 @@ struct PortalLogin {
 
     private static func formEncode(_ s: String) -> String {
         s.addingPercentEncoding(withAllowedCharacters: formAllowed) ?? s
+    }
+}
+
+/// Campus login pages in each building often sit on a bare private IP address with a certificate
+/// that can't match it. Accept those, and only those: other sites are checked as usual.
+final class PortalTrust: NSObject, URLSessionDelegate {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge
+    ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+              let trust = challenge.protectionSpace.serverTrust,
+              Self.isPrivateAddress(challenge.protectionSpace.host) else {
+            return (.performDefaultHandling, nil)
+        }
+        return (.useCredential, URLCredential(trust: trust))
+    }
+
+    /// 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16.
+    static func isPrivateAddress(_ host: String) -> Bool {
+        let parts = host.split(separator: ".").compactMap { Int($0) }
+        guard parts.count == 4, parts.allSatisfy({ (0...255).contains($0) }) else { return false }
+        switch (parts[0], parts[1]) {
+        case (10, _): return true
+        case (172, 16...31): return true
+        case (192, 168): return true
+        default: return false
+        }
     }
 }

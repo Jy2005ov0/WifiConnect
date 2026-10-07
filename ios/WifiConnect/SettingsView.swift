@@ -67,7 +67,9 @@ struct SettingsView: View {
                 Section {
                     Picker("Appearance", selection: $appearance) {
                         ForEach(Appearance.allCases) { option in
-                            Text(option.title).tag(option)
+                            Image(systemName: option.symbol)
+                                .accessibilityLabel(option.title)
+                                .tag(option)
                         }
                     }
                     .pickerStyle(.segmented)
@@ -81,7 +83,7 @@ struct SettingsView: View {
                     Toggle("Set Login Page Manually", isOn: $useCustomPortal.animation())
 
                     if useCustomPortal {
-                        LabeledField("URL", text: $loginURL, placeholder: "https://login.school.edu")
+                        LabeledField("URL or Path", text: $loginURL, placeholder: "/login")
                             .keyboardType(.URL)
                         Picker("Method", selection: $method) {
                             Text("POST").tag("POST")
@@ -109,7 +111,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Login Page")
                 } footer: {
-                    Text(detectMessage ?? "The login page is found automatically. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually.")
+                    Text(detectMessage ?? "The login page is found automatically, even when each building uses a different address. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually. Enter just the path, like /login, so it works in every building.")
                 }
             }
             .navigationTitle("Settings")
@@ -137,17 +139,21 @@ struct SettingsView: View {
                 detectMessage = "You're already online, so there's no login page to detect. Try again right after joining the school Wi-Fi."
                 return
             }
-            loginURL = form.action.absoluteString
+            // Save a path rather than this building's address, so it also works in other blocks.
+            if form.action.host == form.pageURL.host {
+                var path = form.action.path.isEmpty ? "/" : form.action.path
+                if let query = form.action.query { path += "?" + query }
+                loginURL = path
+            } else {
+                loginURL = form.action.absoluteString
+            }
             method = form.method
             usernameField = form.usernameField ?? usernameField
             passwordField = form.passwordField ?? passwordField
-            let known: Set<String> = [usernameField, passwordField]
-            extraFields = form.inputs
-                .filter { !known.contains($0.name) && $0.type == "hidden" }
-                .map { "\($0.name)=\($0.value)" }
-                .joined(separator: "\n")
-            useCustomPortal = true
-            detectMessage = "Found the login page at \(form.action.host ?? "your school"). The details have been filled in above."
+            let host = form.action.host ?? "your school"
+            detectMessage = useCustomPortal
+                ? "Found the login page at \(host). The details above have been updated."
+                : "Found the login page at \(host). Automatic sign-in works here and in other buildings, so there's nothing to set up."
         } catch {
             detectMessage = error.localizedDescription
         }
