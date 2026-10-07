@@ -26,6 +26,12 @@ enum Credentials {
     }
 
     private static func read(_ account: String) -> String {
+        #if DEBUG
+        // Unsigned simulator builds (used for screenshots) can't use the Keychain.
+        if let demoID = UserDefaults.standard.string(forKey: "demoStudentID") {
+            return account == "studentID" ? demoID : "password"
+        }
+        #endif
         var q = query(account)
         q[kSecReturnData as String] = true
         q[kSecMatchLimit as String] = kSecMatchLimitOne

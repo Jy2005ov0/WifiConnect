@@ -9,6 +9,11 @@ mkdir -p "$OUT"
 
 adb install -r "$APK"
 
+# Let the freshly booted emulator settle and keep "isn't responding" popups out of the shots.
+adb shell settings put global hide_error_dialogs 1
+sleep 30
+adb shell input keyevent KEYCODE_HOME
+
 # Clean status bar: 9:41, full battery, no notifications.
 adb shell settings put global sysui_demo_allowed 1
 demo() { adb shell am broadcast -a com.android.systemui.demo -e command "$@" > /dev/null; }
@@ -24,6 +29,8 @@ shoot() {
   adb shell am force-stop "$PACKAGE"
   adb shell am start -W -n "$PACKAGE/.MainActivity" --es demoStudentId A0123456X "$@"
   sleep 5
+  adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS > /dev/null || true
+  sleep 1
   adb exec-out screencap -p > "$OUT/android-$name.png"
 }
 
