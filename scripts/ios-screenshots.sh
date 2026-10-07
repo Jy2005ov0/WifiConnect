@@ -59,8 +59,8 @@ if command -v applesimutils > /dev/null; then
   for i in $(seq 1 24); do
     xcrun simctl io "$UDID" screenshot "$shots/shot-$i.png" > /dev/null 2>&1
   done
-  python3 -m pip install --quiet pillow > /dev/null 2>&1 || true
-  python3 - "$shots" "$OUT/ios-13-notification.png" <<'PY'
+  python3 -m venv "$shots/venv" && "$shots/venv/bin/pip" install --quiet pillow
+  "$shots/venv/bin/python" - "$shots" "$OUT/ios-13-notification.png" <<'PY'
 import os, shutil, sys
 from PIL import Image, ImageChops
 folder, out = sys.argv[1], sys.argv[2]
