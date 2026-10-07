@@ -12,9 +12,35 @@ struct ContentView: View {
     @State private var pendingSetup: SharedSetup?
     @State private var speedTest = SpeedTest()
     @State private var showSpeedTest = false
+    @State private var showWelcome = ContentView.startsWithWelcome
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
+        ZStack {
+            main
+                .scaleEffect(showWelcome ? 0.94 : 1)
+                .animation(.spring(duration: 0.45), value: showWelcome)
+            if showWelcome {
+                WelcomeView {
+                    showWelcome = false
+                    if !hasCredentials { showSettings = true }
+                }
+                .zIndex(1)
+            }
+        }
+    }
+
+    /// The welcome page shows each time the app opens, but not in screenshots or tests unless asked for.
+    private static var startsWithWelcome: Bool {
+        #if DEBUG
+        let defaults = UserDefaults.standard
+        if defaults.string(forKey: "demoState") != nil { return defaults.string(forKey: "demoScreen") == "welcome" }
+        if defaults.string(forKey: "testStudentID") != nil { return false }
+        #endif
+        return true
+    }
+
+    private var main: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 Spacer(minLength: 8)
@@ -82,20 +108,7 @@ struct ContentView: View {
                 .padding(.bottom, 16)
             }
             .animation(.default, value: isConnected)
-            .background {
-                // A soft glow in the status color, like the lock screen's wallpaper tint.
-                ZStack {
-                    Color(.systemGroupedBackground)
-                    RadialGradient(
-                        colors: [model.state.tint.opacity(0.22), .clear],
-                        center: UnitPoint(x: 0.5, y: 0.3),
-                        startRadius: 0,
-                        endRadius: 420
-                    )
-                }
-                .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.6), value: model.state)
-            }
+            .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationTitle("Campus Wi-Fi")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -164,11 +177,12 @@ struct ContentView: View {
                     return
                 }
                 #endif
-                if !hasCredentials { showSettings = true }
+                if !hasCredentials && !showWelcome { showSettings = true }
                 Task { await Notifier.requestPermission() }
             }
             .onOpenURL { url in
                 guard url.scheme == "wificonnect" else { return }
+                showWelcome = false
                 if let setup = SharedSetup(url: url) {
                     pendingSetup = setup
                     return
@@ -179,6 +193,7 @@ struct ContentView: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: .connectRequested)) { _ in
                 // From the widget or the Control Center button.
+                showWelcome = false
                 if hasCredentials { Task { await model.connect() } }
             }
             .onChange(of: scenePhase) {

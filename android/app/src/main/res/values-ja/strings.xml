@@ -28,6 +28,8 @@
     <string name="hint_tap_try_again">タップして再試行</string>
     <string name="sign_out">サインアウト</string>
     <string name="status_welcome">ようこそ</string>
+    <string name="welcome_detail">キャンパス Wi-Fi にサインインする準備ができました。</string>
+    <string name="welcome_swipe">上にスワイプして開始</string>
     <string name="status_welcome_detail">学籍番号とパスワードを追加して始めましょう。</string>
     <string name="status_ready">準備完了</string>
     <string name="status_ready_detail">学校の Wi-Fi に接続してから、円をタップしてください。</string>

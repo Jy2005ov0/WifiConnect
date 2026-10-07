@@ -28,6 +28,8 @@
     <string name="hint_tap_try_again">Ketik untuk Cuba Lagi</string>
     <string name="sign_out">Log Keluar</string>
     <string name="status_welcome">Selamat Datang</string>
+    <string name="welcome_detail">Sedia untuk log masuk ke Wi-Fi kampus.</string>
+    <string name="welcome_swipe">Leret ke atas untuk mula</string>
     <string name="status_welcome_detail">Tambah ID pelajar dan kata laluan anda untuk bermula.</string>
     <string name="status_ready">Sedia</string>
     <string name="status_ready_detail">Sertai Wi-Fi universiti anda, kemudian ketik bulatan.</string>

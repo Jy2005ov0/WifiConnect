@@ -22,6 +22,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -82,6 +85,10 @@ class MainActivity : FragmentActivity() {
                 var showHistory by rememberSaveable { mutableStateOf(demo?.showHistory ?: false) }
                 var showShare by rememberSaveable { mutableStateOf(demo?.showShare ?: false) }
                 var showSpeed by rememberSaveable { mutableStateOf(demo?.showSpeed ?: false) }
+                // The welcome page shows each time the app opens (not in screenshots or tests unless asked for).
+                var showWelcome by rememberSaveable {
+                    mutableStateOf(demo?.showWelcome ?: !(BuildConfig.DEBUG && intent.hasExtra("testStudentId")))
+                }
                 LaunchedEffect(Unit) { if (demo?.speedResult == true) speedTest.showDemoResult() }
 
                 // Lets automatic sign-in tell you when it has signed you in.
@@ -132,6 +139,7 @@ class MainActivity : FragmentActivity() {
                     )
                 }
 
+                Box(Modifier.fillMaxSize()) {
                 AnimatedContent(
                     targetState = when {
                         showSpeed -> 4
@@ -188,6 +196,8 @@ class MainActivity : FragmentActivity() {
                         )
                     }
                 }
+                if (showWelcome) WelcomeScreen(onFinish = { showWelcome = false })
+                }
             }
         }
     }
@@ -208,6 +218,7 @@ private class Demo(
     val showShare: Boolean,
     val showSpeed: Boolean,
     val speedResult: Boolean,
+    val showWelcome: Boolean,
 ) {
     companion object {
         fun from(intent: android.content.Intent, context: android.content.Context): Demo? {
@@ -231,6 +242,7 @@ private class Demo(
                 showShare = screen == "share",
                 showSpeed = screen == "speed",
                 speedResult = intent.hasExtra("demoSpeed") || screen == "speed",
+                showWelcome = screen == "welcome",
             )
         }
     }

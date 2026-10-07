@@ -115,17 +115,7 @@ fun MainScreen(
         containerColor = Color.Transparent,
         // With a transparent container Material can't pick a text colour, so set it explicitly.
         contentColor = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.drawBehind {
-            drawRect(background)
-            // A soft glow in the status color behind the badge.
-            drawRect(
-                Brush.radialGradient(
-                    colors = listOf(tint.copy(alpha = 0.22f), Color.Transparent),
-                    center = Offset(size.width / 2, size.height * 0.3f),
-                    radius = size.width * 1.1f,
-                )
-            )
-        },
+        modifier = Modifier.drawBehind { drawRect(background) },
         topBar = {
             LargeTopAppBar(
                 title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.Bold) },

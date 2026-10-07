@@ -29,6 +29,8 @@
     <string name="hint_tap_try_again">Tap to Try Again</string>
     <string name="sign_out">Sign Out</string>
     <string name="status_welcome">Welcome</string>
+    <string name="welcome_detail">Ready to sign in to campus Wi-Fi.</string>
+    <string name="welcome_swipe">Swipe up to start</string>
     <string name="status_welcome_detail">Add your student ID and password to get started.</string>
     <string name="status_ready">Ready</string>
     <string name="status_ready_detail">Join your school\'s Wi-Fi, then tap the circle.</string>

@@ -31,6 +31,8 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 
 | | iPhone | Android |
 | --- | --- | --- |
+| Welcome | <img src="screenshots/ios-0-welcome.png" width="220"> | <img src="screenshots/android-0-welcome.png" width="220"> |
+| Ready | <img src="screenshots/ios-1-ready.png" width="220"> | <img src="screenshots/android-1-ready.png" width="220"> |
 | Main screen | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
 | Settings | <img src="screenshots/ios-3-settings.png" width="220"> | <img src="screenshots/android-3-settings.png" width="220"> |
 | Sign-in history | <img src="screenshots/ios-6-history.png" width="220"> | <img src="screenshots/android-6-history.png" width="220"> |

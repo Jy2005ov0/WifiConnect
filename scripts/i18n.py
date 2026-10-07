@@ -51,6 +51,8 @@ TABLE = [
     ("sign_out", "Sign Out", "Log Keluar", "退出登录"),
 
     ("status_welcome", "Welcome", "Selamat Datang", "欢迎"),
+    ("welcome_detail", "Ready to sign in to campus Wi-Fi.", "Sedia untuk log masuk ke Wi-Fi kampus.", "随时可以登录校园 Wi-Fi。"),
+    ("welcome_swipe", "Swipe up to start", "Leret ke atas untuk mula", "向上轻扫开始"),
     ("status_welcome_detail", "Add your student ID and password to get started.",
      "Tambah ID pelajar dan kata laluan anda untuk bermula.", "添加你的学号和密码即可开始使用。"),
     ("status_ready", "Ready", "Sedia", "准备就绪"),

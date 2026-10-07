@@ -1877,6 +1877,34 @@
         }
       }
     },
+    "Ready to sign in to campus Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sedia untuk log masuk ke Wi-Fi kampus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "随时可以登录校园 Wi-Fi。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパス Wi-Fi にサインインする準備ができました。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi-இல் உள்நுழையத் தயார்."
+          }
+        }
+      }
+    },
     "Recent": {
       "localizations": {
         "ms": {
@@ -2825,6 +2853,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "மாணவர் எண்"
+          }
+        }
+      }
+    },
+    "Swipe up to start": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leret ke atas untuk mula"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "向上轻扫开始"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上にスワイプして開始"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தொடங்க மேலே ஸ்வைப் செய்யவும்"
           }
         }
       }

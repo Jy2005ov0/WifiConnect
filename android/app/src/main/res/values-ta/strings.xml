@@ -28,6 +28,8 @@
     <string name="hint_tap_try_again">மீண்டும் முயலத் தட்டவும்</string>
     <string name="sign_out">வெளியேறு</string>
     <string name="status_welcome">வரவேற்கிறோம்</string>
+    <string name="welcome_detail">வளாக Wi-Fi-இல் உள்நுழையத் தயார்.</string>
+    <string name="welcome_swipe">தொடங்க மேலே ஸ்வைப் செய்யவும்</string>
     <string name="status_welcome_detail">தொடங்க உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் சேர்க்கவும்.</string>
     <string name="status_ready">தயார்</string>
     <string name="status_ready_detail">உங்கள் பள்ளி Wi-Fi-இல் சேர்ந்து, பிறகு வட்டத்தைத் தட்டவும்.</string>

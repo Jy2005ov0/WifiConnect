@@ -30,6 +30,7 @@ shoot() {
   xcrun simctl io "$UDID" screenshot "$OUT/ios-$name.png"
 }
 
+shoot 0-welcome   -demoState idle -demoScreen welcome
 shoot 1-ready     -demoState idle
 shoot 2-connected -demoState connected -demoSpeed "18 ms · 92 Mbps"
 shoot 3-settings  -demoState idle -demoScreen settings

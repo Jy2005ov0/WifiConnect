@@ -28,6 +28,8 @@
     <string name="hint_tap_try_again">点按以重试</string>
     <string name="sign_out">退出登录</string>
     <string name="status_welcome">欢迎</string>
+    <string name="welcome_detail">随时可以登录校园 Wi-Fi。</string>
+    <string name="welcome_swipe">向上轻扫开始</string>
     <string name="status_welcome_detail">添加你的学号和密码即可开始使用。</string>
     <string name="status_ready">准备就绪</string>
     <string name="status_ready_detail">连接学校的 Wi-Fi，然后点按圆圈。</string>

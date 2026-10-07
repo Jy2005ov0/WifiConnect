@@ -34,6 +34,7 @@ shoot() {
   adb exec-out screencap -p > "$OUT/android-$name.png"
 }
 
+shoot 0-welcome   --es demoState idle --es demoScreen welcome
 shoot 1-ready     --es demoState idle
 shoot 2-connected --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
 shoot 3-settings  --es demoState idle --es demoScreen settings
