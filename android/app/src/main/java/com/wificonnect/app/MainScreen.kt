@@ -45,6 +45,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Speed
 import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material.icons.rounded.WifiOff
 import androidx.compose.material3.Button
@@ -65,6 +66,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -90,6 +93,9 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
     val view = LocalView.current
+    val scope = rememberCoroutineScope()
+    var speed by remember { mutableStateOf<String?>(null) }
+    var testingSpeed by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         val feedback = when {
@@ -180,6 +186,28 @@ fun MainScreen(
                         Icons.Rounded.Bolt, Green, "Auto Sign-In",
                         if (settings.autoLogin) "On" else "Off",
                         onClick = onOpenSettings,
+                    )
+                    RowDivider()
+                    DetailRow(
+                        Icons.Rounded.Speed, Orange, stringResource(R.string.speed_title),
+                        when {
+                            testingSpeed -> stringResource(R.string.speed_testing)
+                            speed != null -> speed.orEmpty()
+                            else -> stringResource(R.string.speed_test)
+                        },
+                        onClick = if (testingSpeed) null else {
+                            {
+                                testingSpeed = true
+                                scope.launch {
+                                    speed = try {
+                                        SpeedTest.run(context).summary(context)
+                                    } catch (e: Exception) {
+                                        context.getString(R.string.speed_unavailable)
+                                    }
+                                    testingSpeed = false
+                                }
+                            }
+                        },
                     )
                 }
             }

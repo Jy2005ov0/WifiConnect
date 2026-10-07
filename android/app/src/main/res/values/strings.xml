@@ -39,6 +39,13 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Speed test -->
+    <string name="speed_title">Speed</string>
+    <string name="speed_test">Test</string>
+    <string name="speed_testing">Testing…</string>
+    <string name="speed_unavailable">No connection</string>
+    <string name="speed_result">%1$d ms · %2$s Mbps</string>
+
     <!-- Status -->
     <string name="status_ready">Ready</string>
     <string name="status_signing_in">Signing In…</string>

@@ -8,6 +8,8 @@ struct ContentView: View {
     @State private var showSettings = false
     @State private var showAutomationGuide = false
     @State private var showDemoHistory = false
+    @State private var speed: String?
+    @State private var testingSpeed = false
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -46,6 +48,16 @@ struct ContentView: View {
                                   value: "Set Up", showsChevron: true)
                     }
                     .buttonStyle(.plain)
+                    Divider().padding(.leading, 58)
+                    Button {
+                        Task { await testSpeed() }
+                    } label: {
+                        DetailRow(symbol: "speedometer", color: .orange, title: "Speed",
+                                  value: testingSpeed ? String(localized: "Testing…") : (speed ?? String(localized: "Test")),
+                                  showsChevron: !testingSpeed)
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(testingSpeed)
                 }
                 .padding(.horizontal, 20)
 
@@ -161,6 +173,16 @@ struct ContentView: View {
                     Task { await model.connect(automatic: true) }
                 }
             }
+        }
+    }
+
+    private func testSpeed() async {
+        testingSpeed = true
+        defer { testingSpeed = false }
+        do {
+            speed = try await SpeedTest.run().summary
+        } catch {
+            speed = String(localized: "No connection")
         }
     }
 
