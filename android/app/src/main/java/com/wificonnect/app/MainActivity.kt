@@ -223,6 +223,7 @@ private class Demo(
     companion object {
         fun from(intent: android.content.Intent, context: android.content.Context): Demo? {
             val stateName = intent.getStringExtra("demoState") ?: return null
+            demoClock = true
             intent.getStringExtra("demoStudentId")?.let {
                 Credentials.setStudentId(context, it)
                 Credentials.setPassword(context, "password")
