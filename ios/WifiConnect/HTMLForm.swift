@@ -161,7 +161,9 @@ struct HTMLForm {
                 out = out.replacingOccurrences(of: whole, with: String(Character(scalar)))
             }
         }
-        let named = ["&quot;": "\"", "&apos;": "'", "&lt;": "<", "&gt;": ">", "&nbsp;": " ", "&amp;": "&"]
+        let named: [(String, String)] = [
+            ("&quot;", "\""), ("&apos;", "'"), ("&lt;", "<"), ("&gt;", ">"), ("&nbsp;", " "), ("&amp;", "&"),
+        ]
         for (entity, char) in named {
             out = out.replacingOccurrences(of: entity, with: char)
         }

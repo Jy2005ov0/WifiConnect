@@ -5,9 +5,8 @@ name: Build iPhone app
 on:
   push:
     paths:
-      - "WifiConnect/**"
-      - "WifiConnect.xcodeproj/**"
-      - ".github/workflows/build.yml"
+      - "ios/**"
+      - ".github/workflows/ios.yml"
   workflow_dispatch:
 
 jobs:
@@ -17,6 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build app
+        working-directory: ios
         run: |
           xcodebuild build \
             -project WifiConnect.xcodeproj \
@@ -29,6 +29,7 @@ jobs:
             CODE_SIGN_IDENTITY=""
 
       - name: Package IPA
+        working-directory: ios
         run: |
           mkdir Payload
           cp -R build/Release-iphoneos/WifiConnect.app Payload/
@@ -37,4 +38,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: WifiConnect-ipa
-          path: WifiConnect.ipa
+          path: ios/WifiConnect.ipa

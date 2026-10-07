@@ -82,16 +82,52 @@ struct ContentView: View {
                 }
             }
             .onAppear {
+                #if DEBUG
+                if applyDemo() { return }
+                #endif
                 if !hasCredentials { showSettings = true }
             }
             .onChange(of: scenePhase) {
                 // Opening the app on campus signs you in straight away.
-                if scenePhase == .active, hasCredentials, model.state != .working {
+                if scenePhase == .active, hasCredentials, model.state != .working, !isDemo {
                     Task { await model.connect(automatic: true) }
                 }
             }
         }
     }
+
+    private var isDemo: Bool {
+        #if DEBUG
+        return UserDefaults.standard.string(forKey: "demoState") != nil
+        #else
+        return false
+        #endif
+    }
+
+    #if DEBUG
+    /// Launch arguments used to take the README screenshots, e.g. `-demoState connected -demoScreen settings`.
+    private func applyDemo() -> Bool {
+        let defaults = UserDefaults.standard
+        guard let demoState = defaults.string(forKey: "demoState") else { return false }
+        if let id = defaults.string(forKey: "demoStudentID") {
+            Credentials.studentID = id
+            Credentials.password = "password"
+        }
+        hasCredentials = Credentials.isConfigured
+        switch demoState {
+        case "working": model.state = .working
+        case "connected": model.state = .connected("You're signed in and ready to go.")
+        case "failed": model.state = .failed(LoginError.stillOffline.localizedDescription)
+        default: model.state = .idle
+        }
+        switch defaults.string(forKey: "demoScreen") {
+        case "settings": showSettings = true
+        case "guide": showAutomationGuide = true
+        default: break
+        }
+        return true
+    }
+    #endif
 
     private var title: String {
         switch model.state {
