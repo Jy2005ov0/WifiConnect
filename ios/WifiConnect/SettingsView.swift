@@ -65,16 +65,9 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Picker("Appearance", selection: $appearance) {
-                        ForEach(Appearance.allCases) { option in
-                            Image(systemName: option.symbol)
-                                .accessibilityLabel(option.title)
-                                .tag(option)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets())
+                    AppearancePicker(selection: $appearance)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
                 } header: {
                     Text("Appearance")
                 }

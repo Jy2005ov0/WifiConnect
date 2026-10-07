@@ -73,3 +73,43 @@ struct AppearanceMenu: View {
         .accessibilityLabel("Appearance")
     }
 }
+
+/// A fully rounded System / Light / Dark switch. The selected pill slides between options.
+struct AppearancePicker: View {
+    @Binding var selection: Appearance
+    @Namespace private var namespace
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(Appearance.allCases) { option in
+                let isSelected = selection == option
+                Button {
+                    withAnimation(.spring(response: 0.32, dampingFraction: 0.82)) {
+                        selection = option
+                    }
+                } label: {
+                    Image(systemName: option.symbol)
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(isSelected ? Color.primary : Color.secondary)
+                        .frame(maxWidth: .infinity, minHeight: 36)
+                        .background {
+                            if isSelected {
+                                Capsule()
+                                    .fill(colorScheme == .dark ? Color(.systemGray3) : .white)
+                                    .shadow(color: .black.opacity(0.12), radius: 4, y: 1)
+                                    .matchedGeometryEffect(id: "selection", in: namespace)
+                            }
+                        }
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(option.title)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
+        .padding(3)
+        .background(Color(.tertiarySystemFill), in: Capsule())
+        .sensoryFeedback(.selection, trigger: selection)
+    }
+}
