@@ -188,7 +188,7 @@ fun MainScreen(
             Spacer(Modifier.weight(1f))
 
             Surface(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(26.dp),
                 color = MaterialTheme.colorScheme.surfaceContainer,
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -231,7 +231,7 @@ private fun AppearanceMenu(appearance: Appearance, onChange: (Appearance) -> Uni
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            shape = RoundedCornerShape(14.dp),
+            shape = RoundedCornerShape(20.dp),
             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
         ) {
             Appearance.entries.forEach { option ->
@@ -361,7 +361,7 @@ private fun DetailRow(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(30.dp)
-                .clip(RoundedCornerShape(7.dp))
+                .clip(RoundedCornerShape(9.dp))
                 .background(Brush.verticalGradient(listOf(lighten(color), color))),
         ) {
             Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))

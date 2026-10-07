@@ -128,18 +128,23 @@ struct ContentView: View {
                 studentID = Credentials.studentID
             }) {
                 SettingsView()
+                    .presentationCornerRadius(36)
             }
             .sheet(isPresented: $showAutomationGuide) {
                 AutomationGuideView()
+                    .presentationCornerRadius(36)
             }
             .sheet(isPresented: $showDemoHistory) {
                 NavigationStack { HistoryView() }
+                    .presentationCornerRadius(36)
             }
             .sheet(isPresented: $showSpeedTest) {
                 NavigationStack { SpeedTestView(test: speedTest) }
+                    .presentationCornerRadius(36)
             }
             .sheet(isPresented: $showDemoShare) {
                 NavigationStack { ShareSetupView() }
+                    .presentationCornerRadius(36)
             }
             .alert(
                 "Use a classmate's setup?",
@@ -373,7 +378,7 @@ private struct DetailsCard<Content: View>: View {
             content
         }
         .background(Color(.secondarySystemGroupedBackground),
-                    in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    in: RoundedRectangle(cornerRadius: 26, style: .continuous))
     }
 }
 
@@ -390,7 +395,7 @@ private struct DetailRow: View {
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(.white)
                 .frame(width: 30, height: 30)
-                .background(color.gradient, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
+                .background(color.gradient, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
             Text(title)
             Spacer(minLength: 8)
             Text(value)

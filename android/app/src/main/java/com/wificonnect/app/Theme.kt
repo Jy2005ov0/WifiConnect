@@ -1,5 +1,8 @@
 package com.wificonnect.app
 
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -68,9 +71,18 @@ fun WifiConnectTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable
         outline = animated(target.outline),
         outlineVariant = animated(target.outlineVariant),
     )
-    MaterialTheme(colorScheme = scheme, content = content)
+    MaterialTheme(colorScheme = scheme, shapes = RoundShapes, content = content)
 }
 
 @Composable
 private fun animated(color: Color): Color =
     animateColorAsState(color, animationSpec = tween(durationMillis = 450), label = "theme").value
+
+/** Rounder corners everywhere: menus, dialogs, text fields and cards. */
+private val RoundShapes = Shapes(
+    extraSmall = RoundedCornerShape(12.dp),
+    small = RoundedCornerShape(16.dp),
+    medium = RoundedCornerShape(20.dp),
+    large = RoundedCornerShape(26.dp),
+    extraLarge = RoundedCornerShape(32.dp),
+)

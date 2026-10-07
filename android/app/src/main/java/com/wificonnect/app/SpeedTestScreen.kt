@@ -239,7 +239,7 @@ private fun ResultTile(
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(26.dp),
         color = MaterialTheme.colorScheme.surfaceContainer,
         border = if (active) BorderStroke(2.dp, color) else null,
         modifier = modifier,

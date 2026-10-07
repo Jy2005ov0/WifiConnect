@@ -101,7 +101,7 @@ struct ShareSetupView: View {
                             .scaledToFit()
                             .frame(maxWidth: 240)
                             .padding(16)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                            .background(.white, in: RoundedRectangle(cornerRadius: 28, style: .continuous))
                             .accessibilityLabel("QR code")
                     }
                     Text("Ask a classmate to scan this with their phone's camera. WiFi Connect opens with your Wi-Fi and login page settings filled in.")

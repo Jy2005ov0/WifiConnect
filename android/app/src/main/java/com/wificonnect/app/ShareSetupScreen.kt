@@ -87,7 +87,7 @@ fun ShareSetupScreen(onBack: () -> Unit, onImport: (SharedSetup) -> Unit) {
             Spacer(Modifier.height(16.dp))
             Box(
                 Modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(28.dp))
                     .background(Color.White)
                     .padding(16.dp),
             ) {
