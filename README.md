@@ -2,10 +2,16 @@
 
 A small app for **iPhone and Android** that signs you in to your school's Wi-Fi login page with your student ID and password, so you don't have to type them every time you get to campus.
 
+<img src="design/app-icon-preview.png" width="320" alt="App icon in dark and light mode">
+
+Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses too.
+
 - **One tap:** open the app and tap **Connect**. Opening the app also tries to sign in on its own.
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
+- **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
 - **Private:** your student ID and password are stored encrypted on your phone and are only sent to your school's login page.
-- **Simple design:** a clean, Apple-style layout on both phones, with Dark Mode support.
+- **Apple-style design:** a clean layout on both phones, with Light, Dark or System appearance (☀️ / 🌙 button), and an icon that follows Dark Mode.
+- **Tested:** every change is checked by signing in through both apps against a mock campus login page.
 
 | | iPhone | Android |
 | --- | --- | --- |
@@ -102,6 +108,10 @@ The app finds your school's login form the same way iOS does: it loads `captive.
 
    To find these values, follow **Find the login details on your Windows laptop** above.
 
+### Different buildings, different addresses
+
+Many campuses, including UTAR, give each block its own login page address (for example `10.1.x.x` in one block and `10.2.x.x` in another). Automatic mode handles this: the app never saves an address. It asks the network for its login page every time, like your phone does. If you use manual settings, enter just the path (for example `/login`) rather than a full address, and it will work in every building.
+
 ### What if my school Wi-Fi asks for my ID in a system popup, not a web page?
 
 That's a WPA2/WPA3-Enterprise (802.1X) network, such as eduroam. iOS saves those credentials after you enter them once, and signs in automatically from then on, so you don't need this app. If iOS keeps asking, go to **Settings › Wi-Fi**, tap **ⓘ** › **Forget This Network**, then join again, enter your ID and password, and tap **Trust** when the certificate appears.
@@ -112,5 +122,7 @@ That's a WPA2/WPA3-Enterprise (802.1X) network, such as eduroam. iOS saves those
 | --- | --- |
 | `ios/` | iPhone app (SwiftUI). `PortalLogin.swift` signs in, `HTMLForm.swift` reads the login page, and `LogInIntent.swift` adds the Shortcuts action. |
 | `android/` | Android app (Kotlin + Jetpack Compose). `PortalLogin.kt` signs in, `HtmlForm.kt` reads the login page, and `AutoLogin.kt` signs in automatically when you join a network. |
-| `.github/workflows/` | Builds the iPhone `.ipa` and Android `.apk`, and takes the screenshots. |
+| `.github/workflows/` | Builds the iPhone `.ipa` and Android `.apk`, runs the tests and takes the screenshots. |
+| `scripts/mock_portal.py` | A mock campus login page with two buildings, used by the **Test** workflow (`scripts/*-e2e.sh`). |
+| `scripts/make_app_icon.py` | Draws the app icon (light, dark and tinted) for both apps. |
 | `screenshots/` | Screenshots of both apps, taken automatically in the iOS simulator and Android emulator. |
