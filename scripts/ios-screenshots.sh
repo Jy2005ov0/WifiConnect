@@ -45,7 +45,7 @@ shoot 12-chinese  -demoState connected -demoSpeed "18 ms · 92 Mbps" -AppleLangu
 
 # The "Connected to utarwifi" notification, on the Home Screen. applesimutils allows
 # notifications without the permission prompt; the app schedules one, then goes away.
-if command -v applesimutils > /dev/null; then
+notification_shot() {
   applesimutils --byId "$UDID" --bundle "$BUNDLE_ID" --setPermissions notifications=YES || true
   sleep 3
   # The banner only shows for a few seconds, and a simulator screenshot is slow, so record
@@ -81,6 +81,9 @@ Image.open(os.path.join(folder, best)).save(out)
 print("Notification picture:", best, banner_depth(best))
 PY
   sleep 6
+}
+if command -v applesimutils > /dev/null; then
+  notification_shot || echo "Couldn't take the notification picture"
 fi
 xcrun simctl ui "$UDID" appearance dark
 shoot 5-dark      -demoState connected -demoSpeed "18 ms · 92 Mbps"
