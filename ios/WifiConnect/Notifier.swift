@@ -11,7 +11,8 @@ enum Notifier {
         _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])
     }
 
-    static func signedIn() async {
+    /// `delay` lets the README screenshots catch the banner on the Home Screen.
+    static func signedIn(delay: TimeInterval = 0) async {
         guard isEnabled else { return }
         let network = UserDefaults.standard.string(forKey: SettingsKey.wifiName) ?? SettingsKey.defaultWifiName
         let content = UNMutableNotificationContent()
@@ -19,7 +20,8 @@ enum Notifier {
         content.body = String(localized: "You're signed in and online.")
         content.threadIdentifier = "sign-in"
         // Reusing the identifier replaces the previous notification instead of stacking them.
-        let request = UNNotificationRequest(identifier: "sign-in", content: content, trigger: nil)
+        let trigger = delay > 0 ? UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false) : nil
+        let request = UNNotificationRequest(identifier: "sign-in", content: content, trigger: trigger)
         try? await UNUserNotificationCenter.current().add(request)
     }
 }

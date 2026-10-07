@@ -31,13 +31,19 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 
 | | iPhone | Android |
 | --- | --- | --- |
-| Welcome | <img src="screenshots/ios-0-welcome.png" width="220"> | <img src="screenshots/android-0-welcome.png" width="220"> |
+| Welcome (swipe up) | <img src="screenshots/ios-0-welcome.png" width="220"> | <img src="screenshots/android-0-welcome.png" width="220"> |
 | Ready | <img src="screenshots/ios-1-ready.png" width="220"> | <img src="screenshots/android-1-ready.png" width="220"> |
-| Main screen | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
+| Connected | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
+| Dark mode | <img src="screenshots/ios-5-dark.png" width="220"> | <img src="screenshots/android-5-dark.png" width="220"> |
 | Settings | <img src="screenshots/ios-3-settings.png" width="220"> | <img src="screenshots/android-3-settings.png" width="220"> |
+| Auto sign-in guide | <img src="screenshots/ios-4-guide.png" width="220"> | — |
 | Sign-in history | <img src="screenshots/ios-6-history.png" width="220"> | <img src="screenshots/android-6-history.png" width="220"> |
 | Share with friends | <img src="screenshots/ios-7-share.png" width="220"> | <img src="screenshots/android-7-share.png" width="220"> |
 | Speed test | <img src="screenshots/ios-8-speedtest.png" width="220"> | <img src="screenshots/android-8-speedtest.png" width="220"> |
+| Connected notification | <img src="screenshots/ios-13-notification.png" width="220"> | <img src="screenshots/android-13-notification.png" width="220"> |
+| Quick Settings tile | — | <img src="screenshots/android-14-quick-settings.png" width="220"> |
+| Bahasa Melayu | <img src="screenshots/ios-11-malay.png" width="220"> | <img src="screenshots/android-11-malay.png" width="220"> |
+| 简体中文 | <img src="screenshots/ios-12-chinese.png" width="220"> | <img src="screenshots/android-12-chinese.png" width="220"> |
 | 日本語 | <img src="screenshots/ios-9-japanese.png" width="220"> | <img src="screenshots/android-9-japanese.png" width="220"> |
 | தமிழ் | <img src="screenshots/ios-10-tamil.png" width="220"> | <img src="screenshots/android-10-tamil.png" width="220"> |
 

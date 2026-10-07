@@ -251,6 +251,7 @@ struct ContentView: View {
         hasCredentials = Credentials.isConfigured
         studentID = Credentials.studentID
         if defaults.string(forKey: "demoSpeed") != nil { speedTest.showDemoResult() }
+        if defaults.bool(forKey: "demoNotify") { Task { await Notifier.signedIn(delay: 4) } }
         switch demoState {
         case "working": model.state = .working
         case "connected": model.state = .connected(String(localized: "You're signed in and ready to go."))

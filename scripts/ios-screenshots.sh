@@ -40,5 +40,20 @@ shoot 7-share     -demoState idle -demoScreen share
 shoot 8-speedtest -demoState connected -demoScreen speed
 shoot 9-japanese  -demoState connected -demoSpeed "18 ms · 92 Mbps" -AppleLanguages "(ja)"
 shoot 10-tamil    -demoState connected -demoSpeed "18 ms · 92 Mbps" -AppleLanguages "(ta)"
+shoot 11-malay    -demoState connected -demoSpeed "18 ms · 92 Mbps" -AppleLanguages "(ms)"
+shoot 12-chinese  -demoState connected -demoSpeed "18 ms · 92 Mbps" -AppleLanguages "(zh-Hans)"
+
+# The "Connected to utarwifi" notification, on the Home Screen. applesimutils allows
+# notifications without the permission prompt; the app schedules one, then goes away.
+if command -v applesimutils > /dev/null; then
+  applesimutils --byId "$UDID" --bundle "$BUNDLE_ID" --setPermissions notifications=YES || true
+  sleep 3
+  xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoStudentID A0123456X -demoState connected -demoNotify YES
+  sleep 2
+  xcrun simctl terminate "$UDID" "$BUNDLE_ID"
+  sleep 4
+  xcrun simctl io "$UDID" screenshot "$OUT/ios-13-notification.png"
+  sleep 8
+fi
 xcrun simctl ui "$UDID" appearance dark
 shoot 5-dark      -demoState connected -demoSpeed "18 ms · 92 Mbps"

@@ -25,6 +25,10 @@ jobs:
             SYMROOT="$PWD/build" \
             CODE_SIGNING_ALLOWED=NO
 
+      - name: Install applesimutils (allows notifications in the simulator)
+        continue-on-error: true
+        run: brew tap wix/brew && brew install applesimutils
+
       - name: Take screenshots
         run: bash scripts/ios-screenshots.sh ios/build/Debug-iphonesimulator/WifiConnect.app
 

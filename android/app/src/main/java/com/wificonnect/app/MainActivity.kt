@@ -235,6 +235,7 @@ private class Demo(
             }
             val screen = intent.getStringExtra("demoScreen")
             if (screen == "history") History.seedDemo(context)
+            if (intent.getBooleanExtra("demoNotify", false)) AutoLogin.notifySignedIn(context)
             return Demo(
                 state,
                 showSettings = screen in setOf("settings", "history", "share"),

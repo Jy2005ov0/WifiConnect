@@ -45,7 +45,30 @@ adb shell cmd locale set-app-locales "$PACKAGE" --locales ja
 shoot 9-japanese  --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
 adb shell cmd locale set-app-locales "$PACKAGE" --locales ta
 shoot 10-tamil    --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
+adb shell cmd locale set-app-locales "$PACKAGE" --locales ms
+shoot 11-malay    --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
+adb shell cmd locale set-app-locales "$PACKAGE" --locales zh
+shoot 12-chinese  --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
 adb shell cmd locale set-app-locales "$PACKAGE" --locales ""
+
+# The "Connected to utarwifi" notification, and the Quick Settings tile.
+demo notifications -e visible true
+adb shell pm grant "$PACKAGE" android.permission.POST_NOTIFICATIONS || true
+adb shell am force-stop "$PACKAGE"
+adb shell am start -W -n "$PACKAGE/.MainActivity" --es demoStudentId A0123456X --es demoState connected --ez demoNotify true
+sleep 3
+adb shell cmd statusbar expand-notifications
+sleep 3
+adb exec-out screencap -p > "$OUT/android-13-notification.png"
+adb shell cmd statusbar collapse
+sleep 1
+adb shell cmd statusbar add-tile "$PACKAGE/.WifiTileService" || true
+sleep 2
+adb shell cmd statusbar expand-settings
+sleep 3
+adb exec-out screencap -p > "$OUT/android-14-quick-settings.png"
+adb shell cmd statusbar collapse
+sleep 1
 adb shell cmd uimode night yes
 sleep 2
 shoot 5-dark      --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
