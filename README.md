@@ -20,45 +20,19 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 
 Requires iOS 17 or later, or Android 9 or later.
 
-## Install it on Android
+## Install
 
-1. On GitHub, open this repository's **Actions** tab and click the newest **Build Android app** run with a green tick ✅.
-2. Under **Artifacts**, download **WifiConnect-apk** and unzip it to get `WifiConnect.apk`. Copy it to your phone, or download it on the phone directly.
-3. Open `WifiConnect.apk` on your phone. If Android asks, allow your browser or file manager to **install unknown apps**, then tap **Install**.
-4. Open **WiFi Connect**, enter your student ID and password, and allow notifications so it can tell you when it has signed you in.
+**📖 Full step-by-step guide, with troubleshooting: [docs/INSTALL.md](docs/INSTALL.md)**
 
-That's it. **Sign In Automatically** is on by default, so the next time your phone joins the school Wi-Fi, it signs in by itself, even if the app is closed.
+The short version:
 
-> Each new build is signed with a different key. To update the app, uninstall the old version first.
-
-## Install it on iPhone (no Mac needed)
-
-GitHub builds the app for you on one of its Macs, and you install it from a Windows PC with **Sideloadly**.
-
-### 1. Download the app file
-
-1. On GitHub, open this repository and click the **Actions** tab.
-2. Click the newest **Build iPhone app** run with a green tick ✅.
-3. At the bottom of the page, under **Artifacts**, click **WifiConnect-ipa**.
-4. Unzip the download. You'll get `WifiConnect.ipa`.
-
-To build again, open **Actions** › **Build iPhone app** › **Run workflow**.
-
-### 2. Install it with Sideloadly (Windows)
-
-1. Install **iTunes** and **iCloud** from apple.com (use the website versions, not the Microsoft Store ones). Sideloadly needs them to talk to your iPhone.
-2. Download and install **Sideloadly** from [sideloadly.io](https://sideloadly.io).
-3. Connect your iPhone with a USB cable. Unlock it and tap **Trust** when it asks about the computer.
-4. Open Sideloadly, drag `WifiConnect.ipa` onto it, type your Apple ID email and click **Start**. Then enter your Apple ID password and any verification code. A free Apple ID works.
-5. On your iPhone:
-   - Go to **Settings › General › VPN & Device Management**, tap your Apple ID and tap **Trust**.
-   - Go to **Settings › Privacy & Security › Developer Mode**, turn it on and restart when asked.
-
-> With a free Apple ID the app stops opening after **7 days**. Repeat step 4 to renew it, which keeps your settings. Sideloadly can also renew it automatically over Wi-Fi while your PC is on. A paid Apple Developer account lasts a year.
-
-### Have a Mac instead?
-
-Open `ios/WifiConnect.xcodeproj` in Xcode 16 or later. Under **Signing & Capabilities**, pick your Apple ID as the **Team** and change the **Bundle Identifier** to something unique. Then select your iPhone and press **Run**.
+| | Android | iPhone |
+| --- | --- | --- |
+| **Get the file** | **Actions › Build Android app ›** newest ✅ run **› WifiConnect-apk** | **Actions › Build iPhone app ›** newest ✅ run **› WifiConnect-ipa** |
+| **Install** | Open `WifiConnect.apk` on the phone and allow **Install unknown apps** | Use [Sideloadly](https://sideloadly.io) on Windows (or Xcode on a Mac) with your Apple ID |
+| **First time** | Set battery to **Unrestricted** so auto sign-in keeps working | Turn on **Developer Mode** and trust your Apple ID under **VPN & Device Management** |
+| **Keep it working** | Nothing to do | Renew every 7 days with a free Apple ID |
+| **Auto sign-in** | Built in, on by default | A Shortcuts automation for `utarwifi` |
 
 ## iPhone alternative with nothing to install: a Shortcuts automation
 
