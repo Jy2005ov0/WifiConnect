@@ -19,6 +19,7 @@
     <string name="row_auto_sign_in">Log Masuk Automatik</string>
     <string name="button_connect">Sambung</string>
     <string name="button_try_again">Cuba Lagi</string>
+    <string name="button_disconnect">Putuskan Sambungan</string>
     <string name="button_add_student_id">Tambah ID Pelajar</string>
     <string name="sign_out">Log Keluar</string>
     <string name="status_welcome">Selamat Datang</string>

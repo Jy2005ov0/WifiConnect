@@ -36,6 +36,7 @@ TABLE = [
 
     ("button_connect", "Connect", "Sambung", "连接"),
     ("button_try_again", "Try Again", "Cuba Lagi", "重试"),
+    ("button_disconnect", "Disconnect", "Putuskan Sambungan", "断开连接"),
     ("button_add_student_id", "Add Student ID", "Tambah ID Pelajar", "添加学号"),
     ("sign_out", "Sign Out", "Log Keluar", "退出登录"),
 

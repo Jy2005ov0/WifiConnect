@@ -49,6 +49,7 @@ import androidx.compose.material.icons.rounded.Speed
 import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material.icons.rounded.WifiOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -212,18 +213,25 @@ fun MainScreen(
                 }
             }
 
+            // Connect signs in now; once connected it becomes Disconnect (sign out).
+            val connected = hasCredentials && state is ConnectionState.Connected
             Button(
-                onClick = onConnect,
+                onClick = if (connected) onSignOut else onConnect,
                 enabled = state != ConnectionState.Working,
                 shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (connected) Color(0xFFFF3B30) else MaterialTheme.colorScheme.primary,
+                    contentColor = Color.White,
+                ),
                 modifier = Modifier
-                    .padding(top = 20.dp, bottom = if (state is ConnectionState.Connected) 0.dp else 16.dp)
+                    .padding(top = 20.dp, bottom = 16.dp)
                     .fillMaxWidth()
                     .height(54.dp),
             ) {
                 Text(
                     text = when {
                         !hasCredentials -> stringResource(R.string.button_add_student_id)
+                        connected -> stringResource(R.string.button_disconnect)
                         state is ConnectionState.Failed -> stringResource(R.string.button_try_again)
                         else -> stringResource(R.string.button_connect)
                     },
@@ -232,10 +240,6 @@ fun MainScreen(
                 )
             }
 
-            if (state is ConnectionState.Connected) {
-                TextButton(onClick = onSignOut, modifier = Modifier.padding(bottom = 4.dp)) {
-                    Text(stringResource(R.string.sign_out), color = Color(0xFFFF3B30), fontWeight = FontWeight.Medium)
-                }
             }
         }
     }

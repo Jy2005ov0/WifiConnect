@@ -20,6 +20,7 @@
     <string name="row_auto_sign_in">Auto Sign-In</string>
     <string name="button_connect">Connect</string>
     <string name="button_try_again">Try Again</string>
+    <string name="button_disconnect">Disconnect</string>
     <string name="button_add_student_id">Add Student ID</string>
     <string name="sign_out">Sign Out</string>
     <string name="status_welcome">Welcome</string>

@@ -417,6 +417,22 @@
         }
       }
     },
+    "Disconnect": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Putuskan Sambungan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "断开连接"
+          }
+        }
+      }
+    },
     "Done": {
       "localizations": {
         "ms": {
@@ -1277,22 +1293,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "登录校园 Wi-Fi"
-          }
-        }
-      }
-    },
-    "Sign Out": {
-      "localizations": {
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Log Keluar"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "退出登录"
           }
         }
       }

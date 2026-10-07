@@ -63,35 +63,30 @@ struct ContentView: View {
                 }
                 .padding(.horizontal, 20)
 
+                // Connect signs in now; once connected it becomes Disconnect (sign out).
                 Button {
-                    if hasCredentials {
-                        Task { await model.connect() }
-                    } else {
+                    if !hasCredentials {
                         showSettings = true
+                    } else if isConnected {
+                        Task { await model.signOut() }
+                    } else {
+                        Task { await model.connect() }
                     }
                 } label: {
                     Text(buttonTitle)
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
+                        .contentTransition(.opacity)
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
                 .controlSize(.large)
+                .tint(isConnected ? .red : .blue)
                 .disabled(model.state == .working)
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
-                .padding(.bottom, isConnected ? 4 : 12)
-
-                if isConnected {
-                    Button("Sign Out") {
-                        Task { await model.signOut() }
-                    }
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.red)
-                    .padding(.bottom, 8)
-                    .transition(.opacity)
-                }
+                .padding(.bottom, 12)
             }
             .animation(.default, value: isConnected)
             .background {
@@ -299,6 +294,7 @@ struct ContentView: View {
     private var buttonTitle: String {
         if !hasCredentials { return String(localized: "Add Student ID") }
         if case .failed = model.state { return String(localized: "Try Again") }
+        if isConnected { return String(localized: "Disconnect") }
         return String(localized: "Connect")
     }
 }

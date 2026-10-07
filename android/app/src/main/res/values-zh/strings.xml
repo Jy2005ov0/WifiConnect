@@ -19,6 +19,7 @@
     <string name="row_auto_sign_in">自动登录</string>
     <string name="button_connect">连接</string>
     <string name="button_try_again">重试</string>
+    <string name="button_disconnect">断开连接</string>
     <string name="button_add_student_id">添加学号</string>
     <string name="sign_out">退出登录</string>
     <string name="status_welcome">欢迎</string>
