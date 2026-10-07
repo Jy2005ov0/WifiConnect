@@ -43,9 +43,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import kotlin.math.sin
-import kotlin.math.cos
-import kotlin.math.PI
 import java.util.Locale
 import java.util.Date
 import java.util.Calendar
@@ -53,16 +50,12 @@ import java.text.SimpleDateFormat
 import kotlinx.coroutines.delay
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import android.text.format.DateFormat
 
-/** The first page when the app opens: the time over a soft ripple pattern. Swipe it up, like a lock screen. */
+/** The first page when the app opens: the time and a welcome. Swipe it up, like a lock screen. */
 @Composable
 fun WelcomeScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
@@ -84,7 +77,6 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                     alpha = 1f - (-offset.value / height).coerceIn(0f, 1f) * 0.6f
                 }
                 .background(MaterialTheme.colorScheme.background)
-                .ripplePattern(MaterialTheme.colorScheme.primary)
                 .pointerInput(height) {
                     val velocity = VelocityTracker()
                     detectVerticalDragGestures(
@@ -110,12 +102,13 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                 .safeDrawingPadding()
                 .padding(horizontal = 32.dp),
         ) {
-            Clock(Modifier.align(Alignment.TopCenter).padding(top = 48.dp))
-
+            // Design A, with the time where the logo was.
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.align(Alignment.Center),
             ) {
+                Clock()
+                Spacer(Modifier.height(20.dp))
                 Text(
                     stringResource(R.string.status_welcome),
                     style = MaterialTheme.typography.displaySmall,
@@ -185,8 +178,8 @@ private fun Clock(modifier: Modifier = Modifier) {
         )
         Text(
             time,
-            fontSize = 96.sp,
-            lineHeight = 104.sp,
+            fontSize = 88.sp,
+            lineHeight = 96.sp,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -204,24 +197,3 @@ private fun clockTime(): Date {
 
 /** Set by the screenshot demo so the clock reads 9:41. */
 internal var demoClock = false
-
-/** Rings spreading out from behind the clock, like a Wi-Fi signal, fading as they grow. */
-private fun Modifier.ripplePattern(color: Color) = drawBehind {
-    val center = Offset(size.width / 2, size.height * 0.2f)
-    val step = 34.dp.toPx()
-    val count = (maxOf(size.width, size.height) / step).toInt() + 2
-    for (ring in 1..count) {
-        val radius = ring * step
-        val fade = (1f - ring.toFloat() / count).coerceAtLeast(0f)
-        drawCircle(color.copy(alpha = 0.16f * fade), radius, center, style = Stroke(1.2.dp.toPx()))
-        // A few dots on each ring, turning a little from ring to ring.
-        for (dot in 0 until 6) {
-            val angle = dot / 6.0 * 2 * PI + ring * 0.35
-            drawCircle(
-                color.copy(alpha = 0.28f * fade),
-                2.dp.toPx(),
-                Offset(center.x + radius * cos(angle).toFloat(), center.y + radius * sin(angle).toFloat()),
-            )
-        }
-    }
-}
