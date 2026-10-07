@@ -1,0 +1,1862 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%lld ms · %@ Mbps": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ms · %@ Mbps"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 毫秒 · %@ Mbps"
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akaun"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "账户"
+          }
+        }
+      }
+    },
+    "Add Student ID": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tambah ID Pelajar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加学号"
+          }
+        }
+      }
+    },
+    "Add your student ID and password in Settings first.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tambah ID pelajar dan kata laluan anda dalam Tetapan dahulu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先在“设置”中添加学号和密码。"
+          }
+        }
+      }
+    },
+    "Add your student ID and password to get started.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tambah ID pelajar dan kata laluan anda untuk bermula."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加你的学号和密码即可开始使用。"
+          }
+        }
+      }
+    },
+    "Already Online": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudah Dalam Talian"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已在线"
+          }
+        }
+      }
+    },
+    "Appearance": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Penampilan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外观"
+          }
+        }
+      }
+    },
+    "Asks for %@ before showing Settings, where your password is saved.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meminta %@ sebelum menunjukkan Tetapan, tempat kata laluan anda disimpan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在显示保存密码的“设置”之前要求验证%@。"
+          }
+        }
+      }
+    },
+    "Auto Sign-In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk Automatik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动登录"
+          }
+        }
+      }
+    },
+    "Automatic Sign-In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk Automatik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动登录"
+          }
+        }
+      }
+    },
+    "Campus Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi Kampus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "校园 Wi-Fi"
+          }
+        }
+      }
+    },
+    "Choose **Wi-Fi**, tap **Network** and pick %@.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilih **Wi-Fi**, ketik **Rangkaian** dan pilih %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择**无线局域网**，点按**网络**，然后选取 %@。"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosongkan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除"
+          }
+        }
+      }
+    },
+    "Clear History": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosongkan Sejarah"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除记录"
+          }
+        }
+      }
+    },
+    "Clear sign-in history?": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosongkan sejarah log masuk?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除登录记录？"
+          }
+        }
+      }
+    },
+    "Confirm it's you to change the app lock.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sahkan ini anda untuk menukar kunci aplikasi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请确认是你本人以更改应用锁。"
+          }
+        }
+      }
+    },
+    "Connect": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sambung"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接"
+          }
+        }
+      }
+    },
+    "Connected": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bersambung"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已连接"
+          }
+        }
+      }
+    },
+    "Connected to %@": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bersambung ke %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已连接到 %@"
+          }
+        }
+      }
+    },
+    "Couldn't Sign In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak Dapat Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法登录"
+          }
+        }
+      }
+    },
+    "Couldn't find a login form on your school's page. Set the login page manually in Settings.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak menemui borang log masuk pada halaman universiti anda. Tetapkan halaman log masuk secara manual dalam Tetapan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在学校的页面上找不到登录表单。请在“设置”中手动设置登录页面。"
+          }
+        }
+      }
+    },
+    "Couldn't reach the Wi-Fi. Make sure you're connected to your school's network.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dapat mencapai Wi-Fi. Pastikan anda bersambung ke rangkaian universiti anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法连接 Wi-Fi。请确认你已连接到学校的网络。"
+          }
+        }
+      }
+    },
+    "Dark": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelap"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "深色"
+          }
+        }
+      }
+    },
+    "Detect Login Page": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kesan Halaman Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "检测登录页面"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selesai"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
+          }
+        }
+      }
+    },
+    "Extra fields, one name=value per line": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medan tambahan, satu nama=nilai setiap baris"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "额外字段，每行一个“名称=值”"
+          }
+        }
+      }
+    },
+    "Found the login page at %@. Automatic sign-in works here and in other buildings, so there's nothing to set up.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk ditemui di %@. Log masuk automatik berfungsi di sini dan di bangunan lain, jadi tiada apa-apa untuk ditetapkan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已在 %@ 找到登录页面。自动登录在这里和其他楼都能使用，无需额外设置。"
+          }
+        }
+      }
+    },
+    "Found the login page at %@. The details above have been updated.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk ditemui di %@. Butiran di atas telah dikemas kini."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已在 %@ 找到登录页面。上面的信息已更新。"
+          }
+        }
+      }
+    },
+    "From the app": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daripada aplikasi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在应用中"
+          }
+        }
+      }
+    },
+    "GET": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GET"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GET"
+          }
+        }
+      }
+    },
+    "Help": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bantuan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "帮助"
+          }
+        }
+      }
+    },
+    "ID Field": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medan ID"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学号字段"
+          }
+        }
+      }
+    },
+    "If signing in doesn't work, copy this report and send it to whoever helps you with the app. It includes the login page details but never your password.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jika log masuk tidak berjaya, salin laporan ini dan hantar kepada sesiapa yang membantu anda dengan aplikasi ini. Ia mengandungi butiran halaman log masuk tetapi tidak sekali-kali kata laluan anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果无法登录，请复制这份报告并发送给帮助你使用此应用的人。报告包含登录页面信息，但绝不包含你的密码。"
+          }
+        }
+      }
+    },
+    "In the Shortcuts app": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dalam aplikasi Pintasan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在“快捷指令”App 中"
+          }
+        }
+      }
+    },
+    "Join campus Wi-Fi first.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sertai Wi-Fi kampus dahulu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先连接校园 Wi-Fi。"
+          }
+        }
+      }
+    },
+    "Join your school's Wi-Fi, then tap Connect.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sertai Wi-Fi universiti anda, kemudian ketik Sambung."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接学校的 Wi-Fi，然后点按“连接”。"
+          }
+        }
+      }
+    },
+    "Let your iPhone sign in for you every time you arrive on campus.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biarkan iPhone anda log masuk untuk anda setiap kali anda tiba di kampus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每次到达校园时，让 iPhone 自动为你登录。"
+          }
+        }
+      }
+    },
+    "Light": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerah"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浅色"
+          }
+        }
+      }
+    },
+    "Log In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录"
+          }
+        }
+      }
+    },
+    "Log In to Campus Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk ke Wi-Fi Kampus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录校园 Wi-Fi"
+          }
+        }
+      }
+    },
+    "Logged in to campus Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telah log masuk ke Wi-Fi kampus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已登录校园 Wi-Fi。"
+          }
+        }
+      }
+    },
+    "Login Page": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录页面"
+          }
+        }
+      }
+    },
+    "Method": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaedah"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "方法"
+          }
+        }
+      }
+    },
+    "Network": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rangkaian"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网络"
+          }
+        }
+      }
+    },
+    "Network Name": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nama Rangkaian"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网络名称"
+          }
+        }
+      }
+    },
+    "No Sign-Ins Yet": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belum Ada Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "还没有登录记录"
+          }
+        }
+      }
+    },
+    "No Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiada Wi-Fi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未连接 Wi-Fi"
+          }
+        }
+      }
+    },
+    "No connection": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiada sambungan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无连接"
+          }
+        }
+      }
+    },
+    "Not Set": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belum Ditetapkan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未设置"
+          }
+        }
+      }
+    },
+    "Notify When Connected": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beritahu Apabila Bersambung"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接后通知"
+          }
+        }
+      }
+    },
+    "Open Shortcuts": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka Pintasan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开快捷指令"
+          }
+        }
+      }
+    },
+    "Opens WiFi Connect and signs in to the campus Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membuka WiFi Connect dan log masuk ke Wi-Fi kampus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 WiFi Connect 并登录校园 Wi-Fi。"
+          }
+        }
+      }
+    },
+    "Opens WiFi Connect and signs in.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membuka WiFi Connect dan log masuk."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 WiFi Connect 并登录。"
+          }
+        }
+      }
+    },
+    "POST": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "POST"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "POST"
+          }
+        }
+      }
+    },
+    "Passcode": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kod Laluan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密码"
+          }
+        }
+      }
+    },
+    "Password": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kata Laluan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密码"
+          }
+        }
+      }
+    },
+    "Password Field": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medan Kata Laluan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密码字段"
+          }
+        }
+      }
+    },
+    "Ready": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sedia"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "准备就绪"
+          }
+        }
+      }
+    },
+    "Recent": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terkini"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近"
+          }
+        }
+      }
+    },
+    "Require %@": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perlukan %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要%@"
+          }
+        }
+      }
+    },
+    "Saved in your iPhone's Keychain and only sent to your school's login page.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disimpan dalam Rantai Kunci iPhone anda dan hanya dihantar ke halaman log masuk universiti anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存在 iPhone 的钥匙串中，只会发送到学校的登录页面。"
+          }
+        }
+      }
+    },
+    "School Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi Universiti"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校 Wi-Fi"
+          }
+        }
+      }
+    },
+    "Security": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keselamatan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安全"
+          }
+        }
+      }
+    },
+    "See if you're signed in, and sign in with one tap.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat sama ada anda telah log masuk, dan log masuk dengan satu ketikan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看是否已登录，一键登录。"
+          }
+        }
+      }
+    },
+    "Select **Run Immediately**, then tap **Next**.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilih **Jalankan Serta-merta**, kemudian ketik **Seterusnya**."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择**立即运行**，然后点按**下一步**。"
+          }
+        }
+      }
+    },
+    "Set Login Page Manually": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tetapkan Halaman Log Masuk Secara Manual"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手动设置登录页面"
+          }
+        }
+      }
+    },
+    "Set Up": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sediakan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tetapan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置"
+          }
+        }
+      }
+    },
+    "Shortcuts automation": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automasi Pintasan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快捷指令自动化"
+          }
+        }
+      }
+    },
+    "Sign In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录"
+          }
+        }
+      }
+    },
+    "Sign In Automatically": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk Secara Automatik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动登录"
+          }
+        }
+      }
+    },
+    "Sign In Needed": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perlu Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要登录"
+          }
+        }
+      }
+    },
+    "Sign In to Campus Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk ke Wi-Fi Kampus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录校园 Wi-Fi"
+          }
+        }
+      }
+    },
+    "Sign Out": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Keluar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出登录"
+          }
+        }
+      }
+    },
+    "Sign-In History": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sejarah Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录记录"
+          }
+        }
+      }
+    },
+    "Sign-Out URL": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL Log Keluar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出网址"
+          }
+        }
+      }
+    },
+    "Sign-ins will appear here, including automatic ones.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log masuk akan dipaparkan di sini, termasuk yang automatik."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录记录（包括自动登录）会显示在这里。"
+          }
+        }
+      }
+    },
+    "Signed In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已登录"
+          }
+        }
+      }
+    },
+    "Signed Out": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telah Log Keluar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已退出登录"
+          }
+        }
+      }
+    },
+    "Signed in, but there's still no internet. Check your student ID and password.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudah log masuk, tetapi masih tiada internet. Semak ID pelajar dan kata laluan anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已登录，但仍无法上网。请检查你的学号和密码。"
+          }
+        }
+      }
+    },
+    "Signing In…": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sedang Log Masuk…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在登录…"
+          }
+        }
+      }
+    },
+    "Signs in to your school's Wi-Fi login page with your saved student ID and password.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log masuk ke halaman log masuk Wi-Fi universiti anda dengan ID pelajar dan kata laluan yang disimpan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用已保存的学号和密码登录学校的 Wi-Fi 登录页面。"
+          }
+        }
+      }
+    },
+    "Speed": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kelajuan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "速度"
+          }
+        }
+      }
+    },
+    "Stay Signed In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kekal Log Masuk"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保持登录"
+          }
+        }
+      }
+    },
+    "Stay Signed In checks in the background and signs you back in if the campus Wi-Fi logs you out. iOS decides exactly when it runs. Notifications appear when the app signs you in on its own.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kekal Log Masuk menyemak di latar belakang dan melog masuk semula jika Wi-Fi kampus melog keluar anda. iOS menentukan bila ia dijalankan. Pemberitahuan dipaparkan apabila aplikasi melog masuk anda secara sendiri."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“保持登录”会在后台检查，如果校园 Wi-Fi 让你退出登录，会自动重新登录。具体运行时间由 iOS 决定。应用自动为你登录时会显示通知。"
+          }
+        }
+      }
+    },
+    "Student ID": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID Pelajar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学号"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟随系统"
+          }
+        }
+      }
+    },
+    "Talking to your school's login page.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sedang berhubung dengan halaman log masuk universiti anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在与学校的登录页面通信。"
+          }
+        }
+      }
+    },
+    "Tap **Automation**, then tap **+** (or **New Automation**).": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik **Automasi**, kemudian ketik **+** (atau **Automasi Baharu**)."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按**自动化**，然后点按**+**（或**新建自动化**）。"
+          }
+        }
+      }
+    },
+    "Tap **Done**. That's it!": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik **Selesai**. Itu sahaja!"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按**完成**。大功告成！"
+          }
+        }
+      }
+    },
+    "Tap **New Blank Automation**, search for **WiFi Connect** and add **Log In to Campus Wi-Fi**.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik **Automasi Kosong Baharu**, cari **WiFi Connect** dan tambah **Log Masuk ke Wi-Fi Kampus**."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按**新建空白自动化**，搜索 **WiFi Connect** 并添加**登录校园 Wi-Fi**。"
+          }
+        }
+      }
+    },
+    "Tap to sign in to campus Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik untuk log masuk ke Wi-Fi kampus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按以登录校园 Wi-Fi。"
+          }
+        }
+      }
+    },
+    "Test": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uji"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "测试"
+          }
+        }
+      }
+    },
+    "Testing…": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menguji…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在测试…"
+          }
+        }
+      }
+    },
+    "The Wi-Fi name you join on campus. Used in the auto-connect guide.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nama Wi-Fi yang anda sertai di kampus. Digunakan dalam panduan sambung automatik."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你在校园里连接的 Wi-Fi 名称，用于自动连接指南。"
+          }
+        }
+      }
+    },
+    "The custom login URL in Settings isn't valid.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL log masuk tersuai dalam Tetapan tidak sah."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“设置”中的自定义登录网址无效。"
+          }
+        }
+      }
+    },
+    "The login page didn't respond: %@": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk tidak memberi respons: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录页面没有响应：%@"
+          }
+        }
+      }
+    },
+    "The login page is found automatically, even when each building uses a different address. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually. Enter just the path, like /login, so it works in every building.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk ditemui secara automatik, walaupun setiap bangunan menggunakan alamat berbeza. Jika tidak berjaya, sertai Wi-Fi universiti dan ketik Kesan Halaman Log Masuk, atau isi secara manual. Masukkan laluan sahaja, seperti /login, supaya ia berfungsi di setiap bangunan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "即使每栋楼的地址不同，也会自动找到登录页面。如果无法找到，请连接学校 Wi-Fi 后点按“检测登录页面”，或手动填写。只需输入路径（例如 /login），这样在每栋楼都能使用。"
+          }
+        }
+      }
+    },
+    "The sign-out link didn't sign you out.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pautan log keluar tidak melog keluar anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出链接未能让你退出登录。"
+          }
+        }
+      }
+    },
+    "Tip": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Petua"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "提示"
+          }
+        }
+      }
+    },
+    "To stop the login page from popping up, open **Settings › Wi-Fi**, tap **ⓘ** next to %@ and turn off **Auto-Login**.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk menghentikan halaman log masuk daripada muncul, buka **Tetapan › Wi-Fi**, ketik **ⓘ** di sebelah %@ dan matikan **Log Masuk Auto**."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要阻止登录页面弹出，请打开**设置 › 无线局域网**，点按 %@ 旁边的 **ⓘ**，然后关闭**自动登录**。"
+          }
+        }
+      }
+    },
+    "Try Again": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuba Lagi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重试"
+          }
+        }
+      }
+    },
+    "URL or Path": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL atau Laluan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网址或路径"
+          }
+        }
+      }
+    },
+    "Unlock to see your student ID and password.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka kunci untuk melihat ID pelajar dan kata laluan anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁以查看学号和密码。"
+          }
+        }
+      }
+    },
+    "Welcome": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selamat Datang"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "欢迎"
+          }
+        }
+      }
+    },
+    "When you opened the app": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semasa anda membuka aplikasi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开应用时"
+          }
+        }
+      }
+    },
+    "Widget or Control Center": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widget atau Pusat Kawalan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小组件或控制中心"
+          }
+        }
+      }
+    },
+    "You're already online, so there's no login page to detect. Try again right after joining the school Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda sudah dalam talian, jadi tiada halaman log masuk untuk dikesan. Cuba lagi sebaik sahaja menyertai Wi-Fi universiti."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已经在线，所以没有可检测的登录页面。请在刚连接学校 Wi-Fi 后再试。"
+          }
+        }
+      }
+    },
+    "You're already online.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda sudah pun dalam talian."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已经在线。"
+          }
+        }
+      }
+    },
+    "You're online.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda dalam talian."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已在线。"
+          }
+        }
+      }
+    },
+    "You're signed in and online.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda telah log masuk dan dalam talian."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已登录并在线。"
+          }
+        }
+      }
+    },
+    "You're signed in and ready to go.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda telah log masuk dan sedia untuk digunakan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已登录，可以上网了。"
+          }
+        }
+      }
+    },
+    "You've signed out of the campus Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anda telah log keluar daripada Wi-Fi kampus."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你已退出校园 Wi-Fi。"
+          }
+        }
+      }
+    },
+    "Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk universiti anda tidak menunjukkan pautan log keluar. Anda boleh menambahnya dalam Tetapan › Halaman Log Masuk."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校的登录页面没有提供退出链接。你可以在“设置 › 登录页面”中添加。"
+          }
+        }
+      }
+    },
+    "your school": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "universiti anda"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的学校"
+          }
+        }
+      }
+    },
+    "your school Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi universiti anda"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校的 Wi-Fi"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

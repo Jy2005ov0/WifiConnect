@@ -27,7 +27,7 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
                 PortalLogin.signOut(getApplication())
                 ConnectionState.SignedOut
             } catch (e: LoginError) {
-                ConnectionState.Failed(e.message.orEmpty())
+                ConnectionState.Failed(e.describe(getApplication()))
             }
             if (BuildConfig.DEBUG) android.util.Log.i("WifiConnect", "Result: $state")
         }
@@ -40,13 +40,13 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             state = try {
                 when (PortalLogin.logIn(getApplication(), trigger = if (automatic) SignInTrigger.AUTOMATIC else SignInTrigger.APP)) {
-                    LoginOutcome.ALREADY_ONLINE -> ConnectionState.Connected("You're already online.")
-                    LoginOutcome.LOGGED_IN -> ConnectionState.Connected("You're signed in and ready to go.")
+                    LoginOutcome.ALREADY_ONLINE -> ConnectionState.Connected(getApplication<Application>().getString(R.string.result_already_online))
+                    LoginOutcome.LOGGED_IN -> ConnectionState.Connected(getApplication<Application>().getString(R.string.result_signed_in))
                 }
             } catch (e: LoginError.NotOnWiFi) {
-                if (automatic) ConnectionState.Idle else ConnectionState.Failed(e.message.orEmpty())
+                if (automatic) ConnectionState.Idle else ConnectionState.Failed(e.describe(getApplication()))
             } catch (e: LoginError) {
-                ConnectionState.Failed(e.message.orEmpty())
+                ConnectionState.Failed(e.describe(getApplication()))
             }
             // The end-to-end test reads this from logcat.
             if (BuildConfig.DEBUG) android.util.Log.i("WifiConnect", "Result: $state")

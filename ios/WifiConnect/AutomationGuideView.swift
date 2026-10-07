@@ -7,7 +7,7 @@ struct AutomationGuideView: View {
     @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
 
     private var networkName: String {
-        wifiName.isEmpty ? "your school Wi-Fi" : "“\(wifiName)”"
+        wifiName.isEmpty ? String(localized: "your school Wi-Fi") : "“\(wifiName)”"
     }
 
     var body: some View {

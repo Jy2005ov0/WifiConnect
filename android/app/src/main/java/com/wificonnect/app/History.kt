@@ -100,7 +100,7 @@ object History {
                 HistoryEntry(now - 7_400_000, SignInTrigger.TILE, HistoryEntry.Result.ALREADY_ONLINE, durationMs = 400),
                 HistoryEntry(
                     now - 90_000_000, SignInTrigger.AUTOMATIC, HistoryEntry.Result.FAILED,
-                    message = LoginError.StillOffline.message, portal = "http://10.1.0.1/login.html", durationMs = 6900,
+                    message = LoginError.StillOffline.describe(context), portal = "http://10.1.0.1/login.html", durationMs = 6900,
                 ),
             ),
         )

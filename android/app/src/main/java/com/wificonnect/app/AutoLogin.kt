@@ -57,7 +57,7 @@ object AutoLogin {
             val outcome = PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), trigger)
             if (outcome == LoginOutcome.LOGGED_IN) notifySignedIn(context)
         } catch (e: LoginError) {
-            notify(context, context.getString(R.string.notify_failed_title), e.message.orEmpty())
+            notify(context, context.getString(R.string.notify_failed_title), e.describe(context))
         }
     }
 

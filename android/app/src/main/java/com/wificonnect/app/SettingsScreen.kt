@@ -96,15 +96,15 @@ fun SettingsScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Settings", fontWeight = FontWeight.SemiBold) },
+                title = { Text(stringResource(R.string.settings_title), fontWeight = FontWeight.SemiBold) },
                 navigationIcon = {
                     IconButton(onClick = ::saveAndClose) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {
                     TextButton(onClick = ::saveAndClose) {
-                        Text("Done", fontWeight = FontWeight.SemiBold)
+                        Text(stringResource(R.string.done), fontWeight = FontWeight.SemiBold)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background),
@@ -120,22 +120,22 @@ fun SettingsScreen(
                 .padding(horizontal = 16.dp),
         ) {
             Section(
-                header = "Account",
-                footer = "Encrypted on this phone and only sent to your school's login page.",
+                header = stringResource(R.string.settings_account),
+                footer = stringResource(R.string.settings_account_footer),
             ) {
-                PlainField(studentId, { studentId = it }, "Student ID")
+                PlainField(studentId, { studentId = it }, stringResource(R.string.row_student_id))
                 Divider()
                 PlainField(
                     value = password,
                     onValueChange = { password = it },
-                    placeholder = "Password",
+                    placeholder = stringResource(R.string.password),
                     keyboardType = KeyboardType.Password,
                     visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     trailing = {
                         IconButton(onClick = { showPassword = !showPassword }) {
                             Icon(
                                 if (showPassword) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
-                                contentDescription = if (showPassword) "Hide password" else "Show password",
+                                contentDescription = stringResource(if (showPassword) R.string.hide_password else R.string.show_password),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -144,18 +144,18 @@ fun SettingsScreen(
             }
 
             Section(
-                header = "School Wi-Fi",
-                footer = "The Wi-Fi name you join on campus.",
+                header = stringResource(R.string.settings_school_wifi),
+                footer = stringResource(R.string.settings_school_wifi_footer),
             ) {
-                PlainField(settings.wifiName, { settings = settings.copy(wifiName = it) }, "Network Name")
+                PlainField(settings.wifiName, { settings = settings.copy(wifiName = it) }, stringResource(R.string.network_name))
             }
 
             Section(
-                header = "Automatic Sign-In",
-                footer = "Signs in by itself whenever your phone joins a Wi-Fi network with a login page, even when the app is closed. " +
+                header = stringResource(R.string.settings_automatic),
+                footer = stringResource(R.string.settings_automatic_footer) + " " +
                     stringResource(R.string.setting_stay_signed_in_footer),
             ) {
-                SwitchRow("Sign In Automatically", settings.autoLogin) { settings = settings.copy(autoLogin = it) }
+                SwitchRow(stringResource(R.string.setting_auto_login), settings.autoLogin) { settings = settings.copy(autoLogin = it) }
                 Divider()
                 SwitchRow(stringResource(R.string.setting_stay_signed_in), settings.staySignedIn) {
                     settings = settings.copy(staySignedIn = it)
@@ -201,7 +201,7 @@ fun SettingsScreen(
                 }
             }
 
-            Section(header = "Appearance", footer = null, card = false) {
+            Section(header = stringResource(R.string.appearance), footer = null, card = false) {
                 SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
                     Appearance.entries.forEachIndexed { index, option ->
                         SegmentedButton(
@@ -209,22 +209,22 @@ fun SettingsScreen(
                             onClick = { onAppearanceChange(option) },
                             shape = SegmentedButtonDefaults.itemShape(index, Appearance.entries.size),
                             icon = {},
-                        ) { Icon(option.icon, contentDescription = option.title, modifier = Modifier.size(20.dp)) }
+                        ) { Icon(option.icon, contentDescription = stringResource(option.title), modifier = Modifier.size(20.dp)) }
                     }
                 }
             }
 
             Section(
-                header = "Login Page",
+                header = stringResource(R.string.settings_login_page),
                 footer = detectMessage
-                    ?: "The login page is found automatically, even when each building uses a different address. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually. Enter just the path, like /login, so it works in every building.",
+                    ?: stringResource(R.string.settings_login_page_footer),
             ) {
-                SwitchRow("Set Login Page Manually", settings.useCustomPortal) {
+                SwitchRow(stringResource(R.string.setting_manual_login_page), settings.useCustomPortal) {
                     settings = settings.copy(useCustomPortal = it)
                 }
                 if (settings.useCustomPortal) {
                     Divider()
-                    LabeledField("URL or Path", settings.loginUrl, "/login", KeyboardType.Uri) {
+                    LabeledField(stringResource(R.string.field_url), settings.loginUrl, "/login", KeyboardType.Uri) {
                         settings = settings.copy(loginUrl = it)
                     }
                     Divider()
@@ -232,7 +232,7 @@ fun SettingsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     ) {
-                        Text("Method", modifier = Modifier.weight(1f))
+                        Text(stringResource(R.string.field_method), modifier = Modifier.weight(1f))
                         SingleChoiceSegmentedButtonRow {
                             listOf("POST", "GET").forEachIndexed { index, method ->
                                 SegmentedButton(
@@ -245,22 +245,22 @@ fun SettingsScreen(
                         }
                     }
                     Divider()
-                    LabeledField("ID Field", settings.usernameField, "username") {
+                    LabeledField(stringResource(R.string.field_id), settings.usernameField, "username") {
                         settings = settings.copy(usernameField = it)
                     }
                     Divider()
-                    LabeledField("Password Field", settings.passwordField, "password") {
+                    LabeledField(stringResource(R.string.field_password), settings.passwordField, "password") {
                         settings = settings.copy(passwordField = it)
                     }
                     Divider()
-                    LabeledField("Sign-Out URL", settings.signOutUrl, "/logout", KeyboardType.Uri) {
+                    LabeledField(stringResource(R.string.field_sign_out), settings.signOutUrl, "/logout", KeyboardType.Uri) {
                         settings = settings.copy(signOutUrl = it)
                     }
                     Divider()
                     PlainField(
                         value = settings.extraFields,
                         onValueChange = { settings = settings.copy(extraFields = it) },
-                        placeholder = "Extra fields, one name=value per line",
+                        placeholder = stringResource(R.string.field_extra),
                         singleLine = false,
                         monospace = true,
                     )
@@ -279,7 +279,7 @@ fun SettingsScreen(
                                     val wifi = PortalLogin.wifiNetwork(context) ?: throw LoginError.NotOnWiFi
                                     val form = PortalLogin(wifi).detectForm()
                                     if (form == null) {
-                                        "You're already online, so there's no login page to detect. Try again right after joining the school Wi-Fi."
+                                        context.getString(R.string.detect_already_online)
                                     } else {
                                         // Save a path rather than this building's address, so it also works in other blocks.
                                         val url = form.action
@@ -295,19 +295,19 @@ fun SettingsScreen(
                                             passwordField = form.passwordField ?: settings.passwordField,
                                         )
                                         if (settings.useCustomPortal) {
-                                            "Found the login page at ${url.host}. The details above have been updated."
+                                            context.getString(R.string.detect_found_updated, url.host)
                                         } else {
-                                            "Found the login page at ${url.host}. Automatic sign-in works here and in other buildings, so there's nothing to set up."
+                                            context.getString(R.string.detect_found, url.host)
                                         }
                                     }
                                 } catch (e: LoginError) {
-                                    e.message
+                                    e.describe(context)
                                 }
                                 detecting = false
                             }
                         },
                         modifier = Modifier.padding(horizontal = 4.dp),
-                    ) { Text("Detect Login Page") }
+                    ) { Text(stringResource(R.string.detect_login_page)) }
                     Spacer(Modifier.weight(1f))
                     if (detecting) {
                         CircularProgressIndicator(

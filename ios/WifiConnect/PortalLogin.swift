@@ -18,21 +18,21 @@ enum LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingCredentials:
-            return "Add your student ID and password in Settings first."
+            return String(localized: "Add your student ID and password in Settings first.")
         case .notOnWiFi:
-            return "Couldn't reach the Wi-Fi. Make sure you're connected to your school's network."
+            return String(localized: "Couldn't reach the Wi-Fi. Make sure you're connected to your school's network.")
         case .formNotFound:
-            return "Couldn't find a login form on your school's page. Set the login page manually in Settings."
+            return String(localized: "Couldn't find a login form on your school's page. Set the login page manually in Settings.")
         case .invalidURL:
-            return "The custom login URL in Settings isn't valid."
+            return String(localized: "The custom login URL in Settings isn't valid.")
         case .network(let message):
-            return "The login page didn't respond: \(message)"
+            return String(localized: "The login page didn't respond: \(message)")
         case .stillOffline:
-            return "Signed in, but there's still no internet. Check your student ID and password."
+            return String(localized: "Signed in, but there's still no internet. Check your student ID and password.")
         case .noSignOutLink:
-            return "Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page."
+            return String(localized: "Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page.")
         case .stillSignedIn:
-            return "The sign-out link didn't sign you out."
+            return String(localized: "The sign-out link didn't sign you out.")
         }
     }
 }

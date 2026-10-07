@@ -1,6 +1,7 @@
 package com.wificonnect.app
 
 import android.content.Context
+import androidx.annotation.StringRes
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -22,17 +23,19 @@ enum class LoginOutcome { ALREADY_ONLINE, LOGGED_IN }
 /** What started a sign-in, for the history. */
 enum class SignInTrigger { APP, AUTOMATIC, TILE, WIDGET, BACKGROUND }
 
-sealed class LoginError(message: String) : Exception(message) {
-    object MissingCredentials : LoginError("Add your student ID and password in Settings first.")
-    object NotOnWiFi : LoginError("Couldn't reach the Wi-Fi. Make sure you're connected to your school's network.")
-    object FormNotFound :
-        LoginError("Couldn't find a login form on your school's page. Set the login page manually in Settings.")
-    object InvalidUrl : LoginError("The custom login URL in Settings isn't valid.")
-    class Network(detail: String) : LoginError("The login page didn't respond: $detail")
-    object StillOffline : LoginError("Signed in, but there's still no internet. Check your student ID and password.")
-    object NoSignOutLink :
-        LoginError("Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page.")
-    object StillSignedIn : LoginError("The sign-out link didn't sign you out.")
+sealed class LoginError(@StringRes private val messageRes: Int, private val detail: String? = null) : Exception() {
+    object MissingCredentials : LoginError(R.string.error_missing_credentials)
+    object NotOnWiFi : LoginError(R.string.error_not_on_wifi)
+    object FormNotFound : LoginError(R.string.error_form_not_found)
+    object InvalidUrl : LoginError(R.string.error_invalid_url)
+    class Network(detail: String) : LoginError(R.string.error_network, detail)
+    object StillOffline : LoginError(R.string.error_still_offline)
+    object NoSignOutLink : LoginError(R.string.error_no_sign_out_link)
+    object StillSignedIn : LoginError(R.string.error_still_signed_in)
+
+    /** The message in the phone's language. */
+    fun describe(context: Context): String =
+        if (detail != null) context.getString(messageRes, detail) else context.getString(messageRes)
 }
 
 /**
@@ -332,8 +335,8 @@ class PortalLogin(private val network: Network) {
                 )
                 return outcome
             } catch (e: LoginError) {
-                record(HistoryEntry.Result.FAILED, e.message)
-                SignInStatus.save(context, SignInStatus.Kind.FAILED, e.message.orEmpty())
+                record(HistoryEntry.Result.FAILED, e.describe(context))
+                SignInStatus.save(context, SignInStatus.Kind.FAILED, e.describe(context))
                 throw e
             }
         }
@@ -370,7 +373,7 @@ class PortalLogin(private val network: Network) {
             } catch (e: LoginError) {
                 History.add(
                     context,
-                    HistoryEntry(started, SignInTrigger.APP, HistoryEntry.Result.FAILED, message = e.message,
+                    HistoryEntry(started, SignInTrigger.APP, HistoryEntry.Result.FAILED, message = e.describe(context),
                         durationMs = System.currentTimeMillis() - started),
                 )
                 throw e

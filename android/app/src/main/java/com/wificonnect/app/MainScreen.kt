@@ -126,11 +126,11 @@ fun MainScreen(
         },
         topBar = {
             LargeTopAppBar(
-                title = { Text("Campus Wi-Fi", fontWeight = FontWeight.Bold) },
+                title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.Bold) },
                 actions = {
                     AppearanceMenu(appearance, onAppearanceChange)
                     IconButton(onClick = onOpenSettings) {
-                        Icon(Icons.Rounded.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Rounded.Settings, contentDescription = stringResource(R.string.settings_title), tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
@@ -175,16 +175,16 @@ fun MainScreen(
             ) {
                 Column {
                     val settings = PortalSettings.load(context)
-                    DetailRow(Icons.Rounded.Wifi, Blue, "Network", settings.wifiName.ifEmpty { "Not Set" })
+                    DetailRow(Icons.Rounded.Wifi, Blue, stringResource(R.string.row_network), settings.wifiName.ifEmpty { stringResource(R.string.not_set) })
                     RowDivider()
                     DetailRow(
-                        Icons.Rounded.Badge, Indigo, "Student ID",
-                        Credentials.studentId(context).ifEmpty { "Not Set" },
+                        Icons.Rounded.Badge, Indigo, stringResource(R.string.row_student_id),
+                        Credentials.studentId(context).ifEmpty { stringResource(R.string.not_set) },
                     )
                     RowDivider()
                     DetailRow(
-                        Icons.Rounded.Bolt, Green, "Auto Sign-In",
-                        if (settings.autoLogin) "On" else "Off",
+                        Icons.Rounded.Bolt, Green, stringResource(R.string.row_auto_sign_in),
+                        stringResource(if (settings.autoLogin) R.string.on else R.string.off),
                         onClick = onOpenSettings,
                     )
                     RowDivider()
@@ -223,9 +223,9 @@ fun MainScreen(
             ) {
                 Text(
                     text = when {
-                        !hasCredentials -> "Add Student ID"
-                        state is ConnectionState.Failed -> "Try Again"
-                        else -> "Connect"
+                        !hasCredentials -> stringResource(R.string.button_add_student_id)
+                        state is ConnectionState.Failed -> stringResource(R.string.button_try_again)
+                        else -> stringResource(R.string.button_connect)
                     },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
@@ -247,7 +247,7 @@ private fun AppearanceMenu(appearance: Appearance, onChange: (Appearance) -> Uni
     var expanded by remember { mutableStateOf(false) }
     Box {
         IconButton(onClick = { expanded = true }) {
-            Icon(appearance.icon, contentDescription = "Appearance", tint = MaterialTheme.colorScheme.primary)
+            Icon(appearance.icon, contentDescription = stringResource(R.string.appearance), tint = MaterialTheme.colorScheme.primary)
         }
         DropdownMenu(
             expanded = expanded,
@@ -257,9 +257,9 @@ private fun AppearanceMenu(appearance: Appearance, onChange: (Appearance) -> Uni
         ) {
             Appearance.entries.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option.title) },
+                    text = { Text(stringResource(option.title)) },
                     leadingIcon = {
-                        if (option == appearance) Icon(Icons.Rounded.Check, contentDescription = "Selected")
+                        if (option == appearance) Icon(Icons.Rounded.Check, contentDescription = stringResource(R.string.selected))
                         else Spacer(Modifier.size(24.dp))
                     },
                     trailingIcon = { Icon(option.icon, contentDescription = null) },
@@ -399,20 +399,22 @@ private fun ConnectionState.tint(primary: Color) = when (this) {
 }
 
 
-private fun title(state: ConnectionState, hasCredentials: Boolean) = when (state) {
-    ConnectionState.Idle -> if (hasCredentials) "Ready" else "Welcome"
-    ConnectionState.Working -> "Signing In…"
-    is ConnectionState.Connected -> "Connected"
-    is ConnectionState.Failed -> "Couldn't Sign In"
-    ConnectionState.SignedOut -> "Signed Out"
-}
+@Composable
+private fun title(state: ConnectionState, hasCredentials: Boolean) = stringResource(
+    when (state) {
+        ConnectionState.Idle -> if (hasCredentials) R.string.status_ready else R.string.status_welcome
+        ConnectionState.Working -> R.string.status_signing_in
+        is ConnectionState.Connected -> R.string.status_connected
+        is ConnectionState.Failed -> R.string.status_failed
+        ConnectionState.SignedOut -> R.string.status_signed_out
+    }
+)
 
+@Composable
 private fun subtitle(state: ConnectionState, hasCredentials: Boolean) = when (state) {
-    ConnectionState.Idle ->
-        if (hasCredentials) "Join your school's Wi-Fi, then tap Connect."
-        else "Add your student ID and password to get started."
-    ConnectionState.Working -> "Talking to your school's login page."
+    ConnectionState.Idle -> stringResource(if (hasCredentials) R.string.status_ready_detail else R.string.status_welcome_detail)
+    ConnectionState.Working -> stringResource(R.string.status_signing_in_detail)
     is ConnectionState.Connected -> state.message
     is ConnectionState.Failed -> state.message
-    ConnectionState.SignedOut -> "You've signed out of the campus Wi-Fi."
+    ConnectionState.SignedOut -> stringResource(R.string.status_signed_out_detail)
 }

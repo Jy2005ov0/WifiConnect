@@ -150,8 +150,8 @@ private class Demo(val state: ConnectionState?, val showSettings: Boolean, val s
             }
             val state = when (stateName) {
                 "working" -> ConnectionState.Working
-                "connected" -> ConnectionState.Connected("You're signed in and ready to go.")
-                "failed" -> ConnectionState.Failed(LoginError.StillOffline.message.orEmpty())
+                "connected" -> ConnectionState.Connected(context.getString(R.string.result_signed_in))
+                "failed" -> ConnectionState.Failed(LoginError.StillOffline.describe(context))
                 else -> ConnectionState.Idle
             }
             val screen = intent.getStringExtra("demoScreen")

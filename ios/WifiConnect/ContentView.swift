@@ -36,16 +36,16 @@ struct ContentView: View {
 
                 DetailsCard {
                     DetailRow(symbol: "wifi", color: .blue, title: "Network",
-                              value: wifiName.isEmpty ? "Not Set" : wifiName)
+                              value: wifiName.isEmpty ? String(localized: "Not Set") : wifiName)
                     Divider().padding(.leading, 58)
                     DetailRow(symbol: "person.text.rectangle.fill", color: .indigo, title: "Student ID",
-                              value: studentID.isEmpty ? "Not Set" : studentID)
+                              value: studentID.isEmpty ? String(localized: "Not Set") : studentID)
                     Divider().padding(.leading, 58)
                     Button {
                         showAutomationGuide = true
                     } label: {
                         DetailRow(symbol: "bolt.fill", color: .green, title: "Auto Sign-In",
-                                  value: "Set Up", showsChevron: true)
+                                  value: String(localized: "Set Up"), showsChevron: true)
                     }
                     .buttonStyle(.plain)
                     Divider().padding(.leading, 58)
@@ -246,11 +246,11 @@ struct ContentView: View {
 
     private var title: String {
         switch model.state {
-        case .idle: return hasCredentials ? "Ready" : "Welcome"
-        case .working: return "Signing In…"
-        case .connected: return "Connected"
-        case .failed: return "Couldn't Sign In"
-        case .signedOut: return "Signed Out"
+        case .idle: return hasCredentials ? String(localized: "Ready") : String(localized: "Welcome")
+        case .working: return String(localized: "Signing In…")
+        case .connected: return String(localized: "Connected")
+        case .failed: return String(localized: "Couldn't Sign In")
+        case .signedOut: return String(localized: "Signed Out")
         }
     }
 
@@ -263,18 +263,17 @@ struct ContentView: View {
         switch model.state {
         case .idle:
             return hasCredentials
-                ? "Join your school's Wi-Fi, then tap Connect."
-                : "Add your student ID and password to get started."
-        case .working: return "Talking to your school's login page."
+                ? String(localized: "Join your school's Wi-Fi, then tap Connect.") : String(localized: "Add your student ID and password to get started.")
+        case .working: return String(localized: "Talking to your school's login page.")
         case .connected(let message), .failed(let message): return message
-        case .signedOut: return "You've signed out of the campus Wi-Fi."
+        case .signedOut: return String(localized: "You've signed out of the campus Wi-Fi.")
         }
     }
 
     private var buttonTitle: String {
-        if !hasCredentials { return "Add Student ID" }
-        if case .failed = model.state { return "Try Again" }
-        return "Connect"
+        if !hasCredentials { return String(localized: "Add Student ID") }
+        if case .failed = model.state { return String(localized: "Try Again") }
+        return String(localized: "Connect")
     }
 }
 
@@ -333,7 +332,7 @@ private struct DetailsCard<Content: View>: View {
 private struct DetailRow: View {
     let symbol: String
     let color: Color
-    let title: String
+    let title: LocalizedStringKey
     let value: String
     var showsChevron = false
 

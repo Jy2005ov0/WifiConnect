@@ -149,7 +149,11 @@ struct SettingsView: View {
                 } header: {
                     Text("Login Page")
                 } footer: {
-                    Text(detectMessage ?? "The login page is found automatically, even when each building uses a different address. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually. Enter just the path, like /login, so it works in every building.")
+                    if let detectMessage {
+                        Text(verbatim: detectMessage)
+                    } else {
+                        Text("The login page is found automatically, even when each building uses a different address. If that doesn't work, join the school Wi-Fi and tap Detect Login Page, or fill it in manually. Enter just the path, like /login, so it works in every building.")
+                    }
                 }
             }
             .navigationTitle("Settings")
@@ -174,7 +178,7 @@ struct SettingsView: View {
         defer { detecting = false }
         do {
             guard let form = try await PortalLogin().detectForm() else {
-                detectMessage = "You're already online, so there's no login page to detect. Try again right after joining the school Wi-Fi."
+                detectMessage = String(localized: "You're already online, so there's no login page to detect. Try again right after joining the school Wi-Fi.")
                 return
             }
             // Save a path rather than this building's address, so it also works in other blocks.
@@ -188,10 +192,10 @@ struct SettingsView: View {
             method = form.method
             usernameField = form.usernameField ?? usernameField
             passwordField = form.passwordField ?? passwordField
-            let host = form.action.host ?? "your school"
+            let host = form.action.host ?? String(localized: "your school")
             detectMessage = useCustomPortal
-                ? "Found the login page at \(host). The details above have been updated."
-                : "Found the login page at \(host). Automatic sign-in works here and in other buildings, so there's nothing to set up."
+                ? String(localized: "Found the login page at \(host). The details above have been updated.")
+                : String(localized: "Found the login page at \(host). Automatic sign-in works here and in other buildings, so there's nothing to set up.")
         } catch {
             detectMessage = error.localizedDescription
         }
@@ -199,11 +203,11 @@ struct SettingsView: View {
 }
 
 private struct LabeledField: View {
-    let label: String
+    let label: LocalizedStringKey
     @Binding var text: String
     let placeholder: String
 
-    init(_ label: String, text: Binding<String>, placeholder: String) {
+    init(_ label: LocalizedStringKey, text: Binding<String>, placeholder: String) {
         self.label = label
         self._text = text
         self.placeholder = placeholder

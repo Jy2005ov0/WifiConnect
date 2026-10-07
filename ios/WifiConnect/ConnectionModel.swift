@@ -37,8 +37,8 @@ final class ConnectionModel {
         do {
             let outcome = try await SignIn.run(automatic ? .automatic : .app)
             switch outcome {
-            case .alreadyOnline: state = .connected("You're already online.")
-            case .loggedIn: state = .connected("You're signed in and ready to go.")
+            case .alreadyOnline: state = .connected(String(localized: "You're already online."))
+            case .loggedIn: state = .connected(String(localized: "You're signed in and ready to go."))
             }
         } catch LoginError.notOnWiFi where automatic {
             state = .idle
