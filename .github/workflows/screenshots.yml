@@ -89,4 +89,5 @@ jobs:
           git add screenshots
           git diff --cached --quiet && exit 0
           git commit -m "Update screenshots"
-          git push
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
