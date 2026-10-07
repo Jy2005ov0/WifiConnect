@@ -9,19 +9,53 @@ A small iPhone app that signs you in to your school's Wi-Fi login page with your
 
 Requires iOS 17 or later.
 
-## Install it on your iPhone
+## Install it on your iPhone (no Mac needed)
 
-Apple only lets you install apps from outside the App Store with Xcode, so you'll need a Mac once.
+GitHub builds the app for you on one of its Macs, and you install it from a Windows PC with **Sideloadly**.
 
-1. Install **Xcode 16** or later from the Mac App Store.
-2. Download this repository and open `WifiConnect.xcodeproj`.
-3. Select the **WifiConnect** project, then the **WifiConnect** target, then **Signing & Capabilities**:
-   - **Team:** add your Apple ID and pick it. A free Apple ID works.
-   - **Bundle Identifier:** change `com.yourname.WifiConnect` to something unique, like `com.janedoe.WifiConnect`.
-4. Plug in your iPhone, select it at the top of Xcode and press **Run** (▶).
-5. The first time, go to **Settings › General › VPN & Device Management** on your iPhone and trust your developer certificate. Also turn on **Settings › Privacy & Security › Developer Mode** if iOS asks you to.
+### 1. Download the app file
 
-> With a free Apple ID the app stops opening after 7 days. Press **Run** in Xcode again to renew it. A paid Apple Developer account lasts a year.
+1. On GitHub, open this repository and click the **Actions** tab.
+2. Click the newest **Build iPhone app** run with a green tick ✅.
+3. At the bottom of the page, under **Artifacts**, click **WifiConnect-ipa**.
+4. Unzip the download. You'll get `WifiConnect.ipa`.
+
+To build again, open **Actions** › **Build iPhone app** › **Run workflow**.
+
+### 2. Install it with Sideloadly (Windows)
+
+1. Install **iTunes** and **iCloud** from apple.com (use the website versions, not the Microsoft Store ones). Sideloadly needs them to talk to your iPhone.
+2. Download and install **Sideloadly** from [sideloadly.io](https://sideloadly.io).
+3. Connect your iPhone with a USB cable. Unlock it and tap **Trust** when it asks about the computer.
+4. Open Sideloadly, drag `WifiConnect.ipa` onto it, type your Apple ID email and click **Start**. Then enter your Apple ID password and any verification code. A free Apple ID works.
+5. On your iPhone:
+   - Go to **Settings › General › VPN & Device Management**, tap your Apple ID and tap **Trust**.
+   - Go to **Settings › Privacy & Security › Developer Mode**, turn it on and restart when asked.
+
+> With a free Apple ID the app stops opening after **7 days**. Repeat step 4 to renew it, which keeps your settings. Sideloadly can also renew it automatically over Wi-Fi while your PC is on. A paid Apple Developer account lasts a year.
+
+### Have a Mac instead?
+
+Open `WifiConnect.xcodeproj` in Xcode 16 or later. Under **Signing & Capabilities**, pick your Apple ID as the **Team** and change the **Bundle Identifier** to something unique. Then select your iPhone and press **Run**.
+
+## No-install alternative: a Shortcuts automation only
+
+If you'd rather not install anything, the Shortcuts app can send the login form by itself. This works for most simple login pages, but not ones that add a new security token each time. It also stores your password in the shortcut as plain text.
+
+**Find the login details on your Windows laptop (once, on campus):**
+
+1. Join the school Wi-Fi on your laptop. The login page should open in Chrome or Edge. If it doesn't, go to `http://neverssl.com`.
+2. Press **F12**, open the **Network** tab and tick **Preserve log**.
+3. Log in as usual. In the list, click the first request whose **Method** is `POST`, usually named something like `login`.
+4. Write down the **Request URL** from **Headers**. Then open **Payload** and write down every field name and value, such as `username`, `password` or `submit`.
+
+**Create the automation on your iPhone:**
+
+1. Open **Shortcuts** › **Automation** › **+** › **Wi-Fi**, pick the school network and select **Run Immediately**. Tap **Next**, then **New Blank Automation**.
+2. Add the action **Get Contents of URL** and paste the Request URL.
+3. Tap **▸** (Show More) to expand it. Set **Method** to **POST** and **Request Body** to **Form**.
+4. Add one field for each entry you wrote down. Use your student ID and password for those two fields.
+5. Tap **Done**. Next time you join the school Wi-Fi, your iPhone logs in by itself.
 
 ## Set it up
 
@@ -50,7 +84,7 @@ The app finds your school's login form the same way iOS does: it loads `captive.
    - **ID Field / Password Field:** the `name` attributes of the student ID and password boxes.
    - **Extra fields:** any other `name=value` pairs the portal needs, one per line.
 
-   To find these values, open the login page in Safari on a Mac (**Develop › Show Web Inspector**) and look at the `<form>` and its `<input>` elements, or at the request sent when you sign in from the **Network** tab.
+   To find these values, follow **Find the login details on your Windows laptop** above.
 
 ### What if my school Wi-Fi asks for my ID in a system popup, not a web page?
 
