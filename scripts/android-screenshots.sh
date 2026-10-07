@@ -65,7 +65,12 @@ adb exec-out screencap -p > "$OUT/android-13-notification.png"
 adb shell cmd statusbar collapse
 sleep 1
 adb shell cmd statusbar expand-settings
-sleep 3
+sleep 2
+# Quick Settings remembers its last page; swipe back to the first, where the tile is.
+adb shell input swipe 150 900 950 900 300
+sleep 1
+adb shell input swipe 150 900 950 900 300
+sleep 2
 adb exec-out screencap -p > "$OUT/android-14-quick-settings.png"
 adb shell cmd statusbar collapse
 sleep 1

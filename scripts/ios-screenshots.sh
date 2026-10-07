@@ -51,9 +51,27 @@ if command -v applesimutils > /dev/null; then
   xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoStudentID A0123456X -demoState connected -demoNotify YES
   sleep 2
   xcrun simctl terminate "$UDID" "$BUNDLE_ID"
-  sleep 4
-  xcrun simctl io "$UDID" screenshot "$OUT/ios-13-notification.png"
-  sleep 8
+  sleep 1
+  # The banner shows for a few seconds; take a picture every second and keep the one
+  # that differs most from the plain Home Screen.
+  shots=$(mktemp -d)
+  xcrun simctl io "$UDID" screenshot "$shots/home.png"
+  for i in 1 2 3 4 5 6 7 8 9 10; do
+    xcrun simctl io "$UDID" screenshot "$shots/shot-$i.png"
+    sleep 1
+  done
+  python3 - "$shots" "$OUT/ios-13-notification.png" <<'PY'
+import os, shutil, sys
+folder, out = sys.argv[1], sys.argv[2]
+home = open(os.path.join(folder, "home.png"), "rb").read()
+def difference(name):
+    data = open(os.path.join(folder, name), "rb").read()
+    return abs(len(data) - len(home)) + sum(a != b for a, b in zip(data[:200000], home[:200000]))
+best = max((f for f in os.listdir(folder) if f.startswith("shot-")), key=difference)
+shutil.copy(os.path.join(folder, best), out)
+print("Notification picture:", best)
+PY
+  sleep 6
 fi
 xcrun simctl ui "$UDID" appearance dark
 shoot 5-dark      -demoState connected -demoSpeed "18 ms · 92 Mbps"
