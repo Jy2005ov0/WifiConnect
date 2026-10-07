@@ -16,6 +16,8 @@
     <string name="network_name">Nama Rangkaian</string>
     <string name="row_network">Rangkaian</string>
     <string name="row_student_id">ID Pelajar</string>
+    <string name="language">Bahasa</string>
+    <string name="language_system">Sama seperti Telefon</string>
     <string name="row_auto_sign_in">Log Masuk Automatik</string>
     <string name="button_connect">Sambung</string>
     <string name="button_try_again">Cuba Lagi</string>

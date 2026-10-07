@@ -17,6 +17,8 @@
     <string name="network_name">Network Name</string>
     <string name="row_network">Network</string>
     <string name="row_student_id">Student ID</string>
+    <string name="language">Language</string>
+    <string name="language_system">Same as Phone</string>
     <string name="row_auto_sign_in">Auto Sign-In</string>
     <string name="button_connect">Connect</string>
     <string name="button_try_again">Try Again</string>

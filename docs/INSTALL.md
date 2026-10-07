@@ -231,7 +231,7 @@ These steps are the same on both phones.
 - **Quick Settings tile (Android):** swipe down twice, tap the pencil (✏️) icon, and drag **Campus Wi-Fi** into your tiles.
 - **Face ID or fingerprint lock:** in Settings, turn on **Require Face ID** or **Require Fingerprint or Screen Lock**.
 - **Share with a classmate:** **Settings › Share Setup with Friends** shows a QR code. They scan it with their camera and their app fills in the same Wi-Fi and login page settings. Your student ID and password are never shared.
-- **Language:** the app follows your phone's language (English, Bahasa Melayu or 中文).
+- **Language:** English (default), Bahasa Melayu, 简体中文, 日本語 or தமிழ். Change it in **Settings › Language**, or pick **Same as Phone**. On iPhone, close and reopen the app after changing it. On Android 13 or later you can also set it in the phone's **Settings › Apps › WiFi Connect › Language**.
 
 **Optional (iPhone):** to stop iOS's own login page from popping up as well, go to **Settings › Wi-Fi**, tap **ⓘ** next to `utarwifi` and turn off **Auto-Login**.
 

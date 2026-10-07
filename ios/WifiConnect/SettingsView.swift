@@ -8,6 +8,8 @@ struct SettingsView: View {
     @State private var showPassword = false
     @State private var detecting = false
     @State private var detectMessage: String?
+    @State private var language = AppLanguage.current
+    @State private var showLanguageNotice = false
 
     @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
@@ -119,6 +121,22 @@ struct SettingsView: View {
                         .listRowInsets(EdgeInsets())
                 } header: {
                     Text("Appearance")
+                }
+
+                Section {
+                    Picker("Language", selection: $language) {
+                        Text("Same as Phone").tag(AppLanguage.system)
+                        ForEach(AppLanguage.allCases.filter { $0 != .system }) { option in
+                            Text(verbatim: option.nativeName).tag(option)
+                        }
+                    }
+                    .onChange(of: language) {
+                        language.apply()
+                        showLanguageNotice = true
+                    }
+                }
+                .alert("Close and reopen WiFi Connect to use the new language.", isPresented: $showLanguageNotice) {
+                    Button("OK") {}
                 }
 
                 Section {

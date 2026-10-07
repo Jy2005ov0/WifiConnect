@@ -3,6 +3,7 @@ package com.wificonnect.app
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.compose.material3.AlertDialog
@@ -36,6 +37,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 class MainActivity : FragmentActivity() {
     /** A classmate's setup from a wificonnect://setup link, waiting for confirmation. */
     private val incomingSetup = mutableStateOf<SharedSetup?>(null)
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -151,6 +156,7 @@ class MainActivity : FragmentActivity() {
                         SettingsScreen(
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
+                            onLanguageChange = { AppLanguage.set(this@MainActivity, it) },
                             onOpenHistory = { showHistory = true },
                             onOpenShare = { showShare = true },
                             onDone = {

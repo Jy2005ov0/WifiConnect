@@ -12,7 +12,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 - **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
 - **Private:** your student ID and password are stored encrypted on your phone and are only sent to your school's login page.
 - **Apple-style design:** a clean layout on both phones, with Light, Dark or System appearance (☀️ / 🌙 button), and an icon that follows Dark Mode.
-- **Your language:** English, Bahasa Melayu and 中文 (Simplified Chinese), following your phone's language.
+- **Your language:** English, Bahasa Melayu, 简体中文 (Simplified Chinese), 日本語 (Japanese) and தமிழ் (Tamil), chosen in Settings › Language.
 - **Tested:** every change is checked by signing in through both apps and the Windows tool against a mock campus login page.
 
 ### Features
@@ -26,7 +26,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | **App lock** | Face ID / Touch ID before showing Settings | Fingerprint, face or screen lock |
 | **Sign out** | Sign Out button when connected | Same |
 | **Speed test** | A full test page: live gauge, ping, jitter, download and upload over the Wi-Fi | Same |
-| **Languages** | English, Bahasa Melayu, 中文 | Same |
+| **Languages** | English, Bahasa Melayu, 简体中文, 日本語 and தமிழ், changed in Settings › Language (or follows the phone) | Same |
 | **Share with classmates** | Settings › Share Setup: a QR code they scan with their camera (no password included) | Same, plus pasting a shared link |
 
 | | iPhone | Android |
@@ -36,6 +36,8 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | Sign-in history | <img src="screenshots/ios-6-history.png" width="220"> | <img src="screenshots/android-6-history.png" width="220"> |
 | Share with friends | <img src="screenshots/ios-7-share.png" width="220"> | <img src="screenshots/android-7-share.png" width="220"> |
 | Speed test | <img src="screenshots/ios-8-speedtest.png" width="220"> | <img src="screenshots/android-8-speedtest.png" width="220"> |
+| 日本語 | <img src="screenshots/ios-9-japanese.png" width="220"> | <img src="screenshots/android-9-japanese.png" width="220"> |
+| தமிழ் | <img src="screenshots/ios-10-tamil.png" width="220"> | <img src="screenshots/android-10-tamil.png" width="220"> |
 
 Requires iOS 17 or later, or Android 9 or later.
 
@@ -120,6 +122,6 @@ That's a WPA2/WPA3-Enterprise (802.1X) network, such as eduroam. iOS saves those
 | `windows/` | Auto sign-in for a Windows laptop (PowerShell): `Install.cmd`, `Uninstall.cmd` and `WifiConnect.ps1`. |
 | `.github/workflows/` | Builds the iPhone `.ipa` and Android `.apk`, runs the tests and takes the screenshots. |
 | `scripts/mock_portal.py` | A mock campus login page with two buildings, used by the **Test** workflow (`scripts/*-e2e.sh`). |
-| `scripts/i18n.py` | All translations (English, Malay, Chinese) for both apps. Edit the table, then run it to regenerate the string files. |
+| `scripts/i18n.py` | All translations (English, Malay, Chinese; Japanese and Tamil in `i18n_more.py`) for both apps. Edit the tables, then run it to regenerate the string files. |
 | `scripts/make_app_icon.py` | Draws the app icon (light, dark and tinted) for both apps. |
 | `screenshots/` | Screenshots of both apps, taken automatically in the iOS simulator and Android emulator. |

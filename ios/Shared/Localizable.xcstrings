@@ -14,6 +14,18 @@
             "state": "translated",
             "value": "账户"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アカウント"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கணக்கு"
+          }
         }
       }
     },
@@ -29,6 +41,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "添加学号"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学籍番号を追加"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மாணவர் எண்ணைச் சேர்"
           }
         }
       }
@@ -46,6 +70,18 @@
             "state": "translated",
             "value": "请先在“设置”中添加学号和密码。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先に設定で学籍番号とパスワードを追加してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "முதலில் அமைப்புகளில் உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் சேர்க்கவும்."
+          }
         }
       }
     },
@@ -61,6 +97,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "添加你的学号和密码即可开始使用。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学籍番号とパスワードを追加して始めましょう。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தொடங்க உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் சேர்க்கவும்."
           }
         }
       }
@@ -78,6 +126,18 @@
             "state": "translated",
             "value": "已在线"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すでにオンライン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஏற்கனவே இணையத்தில்"
+          }
         }
       }
     },
@@ -93,6 +153,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "外观"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外観"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தோற்றம்"
           }
         }
       }
@@ -110,6 +182,18 @@
             "state": "translated",
             "value": "请同学用手机相机扫描此二维码。WiFi Connect 会打开并自动填好你的 Wi-Fi 和登录页面设置。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クラスメートにスマートフォンのカメラでこれをスキャンしてもらいましょう。WiFi Connect が開き、Wi-Fi とログインページの設定が入力されます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் வகுப்புத் தோழரைத் தொலைபேசி கேமராவால் இதை ஸ்கேன் செய்யச் சொல்லுங்கள். உங்கள் Wi-Fi மற்றும் உள்நுழைவுப் பக்க அமைப்புகளுடன் WiFi Connect திறக்கும்."
+          }
         }
       }
     },
@@ -125,6 +209,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "在显示保存密码的“设置”之前要求验证%@。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスワードが保存されている設定を表示する前に %@ を求めます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் கடவுச்சொல் சேமிக்கப்பட்டுள்ள அமைப்புகளைக் காட்டும் முன் %@ கேட்கும்."
           }
         }
       }
@@ -142,6 +238,18 @@
             "state": "translated",
             "value": "自动登录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動サインイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானியங்கு உள்நுழைவு"
+          }
         }
       }
     },
@@ -157,6 +265,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動サインイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானியங்கு உள்நுழைவு"
           }
         }
       }
@@ -174,6 +294,18 @@
             "state": "translated",
             "value": "校园 Wi-Fi"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパス Wi-Fi"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi"
+          }
         }
       }
     },
@@ -189,6 +321,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "取消"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ரத்துசெய்"
           }
         }
       }
@@ -206,6 +350,18 @@
             "state": "translated",
             "value": "选择**无线局域网**，点按**网络**，然后选取 %@。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Wi-Fi** を選び、**ネットワーク** をタップして %@ を選択します。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Wi-Fi** என்பதைத் தேர்ந்து, **நெட்வொர்க்** என்பதைத் தட்டி %@ ஐத் தேர்ந்தெடுக்கவும்."
+          }
         }
       }
     },
@@ -221,6 +377,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "清除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "消去"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அழி"
           }
         }
       }
@@ -238,6 +406,18 @@
             "state": "translated",
             "value": "清除记录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴を消去"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வரலாற்றை அழி"
+          }
         }
       }
     },
@@ -253,6 +433,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "清除登录记录？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン履歴を消去しますか？"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவு வரலாற்றை அழிக்கவா?"
+          }
+        }
+      }
+    },
+    "Close and reopen WiFi Connect to use the new language.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutup dan buka semula WiFi Connect untuk menggunakan bahasa baharu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭并重新打开 WiFi Connect 即可使用新语言。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しい言語を使うには WiFi Connect を閉じて開き直してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "புதிய மொழியைப் பயன்படுத்த WiFi Connect-ஐ மூடி மீண்டும் திறக்கவும்."
           }
         }
       }
@@ -270,6 +490,18 @@
             "state": "translated",
             "value": "请确认是你本人以更改应用锁。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリロックを変更するには本人確認が必要です。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "செயலிப் பூட்டை மாற்ற இது நீங்கள்தான் என உறுதிசெய்யவும்."
+          }
         }
       }
     },
@@ -285,6 +517,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "连接"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இணை"
           }
         }
       }
@@ -302,6 +546,18 @@
             "state": "translated",
             "value": "已连接"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続済み"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இணைக்கப்பட்டது"
+          }
         }
       }
     },
@@ -317,6 +573,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已连接到 %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ に接続しました"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ உடன் இணைந்தது"
           }
         }
       }
@@ -334,6 +602,18 @@
             "state": "translated",
             "value": "无法登录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインできませんでした"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைய முடியவில்லை"
+          }
         }
       }
     },
@@ -349,6 +629,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法测试"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "測定できませんでした"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சோதிக்க முடியவில்லை"
           }
         }
       }
@@ -366,6 +658,18 @@
             "state": "translated",
             "value": "在学校的页面上找不到登录表单。请在“设置”中手动设置登录页面。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校のページにログインフォームが見つかりませんでした。設定でログインページを手動で設定してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பள்ளிப் பக்கத்தில் உள்நுழைவுப் படிவம் கிடைக்கவில்லை. அமைப்புகளில் உள்நுழைவுப் பக்கத்தைக் கைமுறையாக அமைக்கவும்."
+          }
         }
       }
     },
@@ -381,6 +685,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法连接 Wi-Fi。请确认你已连接到学校的网络。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi に接続できませんでした。学校のネットワークに接続しているか確認してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi-ஐ அடைய முடியவில்லை. உங்கள் பள்ளி நெட்வொர்க்குடன் இணைந்துள்ளீர்களா எனச் சரிபார்க்கவும்."
           }
         }
       }
@@ -398,6 +714,18 @@
             "state": "translated",
             "value": "无法连接测试服务器。请确认你已连接 Wi-Fi 并且可以上网。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テストサーバーに接続できませんでした。Wi-Fi に接続してオンラインになっているか確認してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சோதனைச் சேவையகத்தை அடைய முடியவில்லை. Wi-Fi-உடன் இணைந்து இணையத்தில் உள்ளீர்களா எனச் சரிபார்க்கவும்."
+          }
         }
       }
     },
@@ -413,6 +741,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "深色"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダーク"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இருள்"
           }
         }
       }
@@ -430,6 +770,18 @@
             "state": "translated",
             "value": "检测登录页面"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページを検出"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கத்தைக் கண்டறி"
+          }
         }
       }
     },
@@ -445,6 +797,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "断开连接"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "切断"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "துண்டி"
           }
         }
       }
@@ -462,6 +826,18 @@
             "state": "translated",
             "value": "完成"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "முடிந்தது"
+          }
         }
       }
     },
@@ -477,6 +853,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "下载"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பதிவிறக்கம்"
           }
         }
       }
@@ -494,6 +882,18 @@
             "state": "translated",
             "value": "额外字段，每行一个“名称=值”"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追加フィールド（1 行に 1 つ name=value）"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கூடுதல் புலங்கள், ஒரு வரிக்கு ஒரு name=value"
+          }
         }
       }
     },
@@ -509,6 +909,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已在 %@ 找到登录页面。自动登录在这里和其他楼都能使用，无需额外设置。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページが %@ に見つかりました。ここでも他の建物でも自動サインインが使えるので、設定は不要です。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கம் %@ இல் கண்டறியப்பட்டது. இங்கும் பிற கட்டடங்களிலும் தானியங்கு உள்நுழைவு வேலை செய்யும், அமைக்க எதுவும் இல்லை."
           }
         }
       }
@@ -526,6 +938,18 @@
             "state": "translated",
             "value": "已在 %@ 找到登录页面。上面的信息已更新。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページが %@ に見つかりました。上の詳細を更新しました。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கம் %@ இல் கண்டறியப்பட்டது. மேலே உள்ள விவரங்கள் புதுப்பிக்கப்பட்டன."
+          }
         }
       }
     },
@@ -542,6 +966,18 @@
             "state": "translated",
             "value": "在应用中"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリから"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "செயலியிலிருந்து"
+          }
         }
       }
     },
@@ -554,6 +990,18 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GET"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GET"
+          }
+        },
+        "ta": {
           "stringUnit": {
             "state": "translated",
             "value": "GET"
@@ -574,6 +1022,18 @@
             "state": "translated",
             "value": "帮助"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヘルプ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உதவி"
+          }
         }
       }
     },
@@ -589,6 +1049,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "学号字段"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID フィールド"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID புலம்"
           }
         }
       }
@@ -606,6 +1078,18 @@
             "state": "translated",
             "value": "如果无法登录，请复制这份报告并发送给帮助你使用此应用的人。报告包含登录页面信息，但绝不包含你的密码。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインできない場合は、このレポートをコピーしてアプリについて手伝ってくれる人に送ってください。ログインページの情報は含まれますが、パスワードは含まれません。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவு வேலை செய்யவில்லை என்றால், இந்த அறிக்கையை நகலெடுத்து செயலிக்கு உதவுபவருக்கு அனுப்பவும். இதில் உள்நுழைவுப் பக்க விவரங்கள் இருக்கும், உங்கள் கடவுச்சொல் ஒருபோதும் இருக்காது."
+          }
         }
       }
     },
@@ -621,6 +1105,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "在“快捷指令”App 中"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ショートカット App で"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shortcuts செயலியில்"
           }
         }
       }
@@ -638,6 +1134,18 @@
             "state": "translated",
             "value": "抖动"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ジッター"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஜிட்டர்"
+          }
         }
       }
     },
@@ -653,6 +1161,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "请先连接校园 Wi-Fi。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先にキャンパス Wi-Fi に接続してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "முதலில் வளாக Wi-Fi-இல் சேரவும்."
           }
         }
       }
@@ -670,6 +1190,46 @@
             "state": "translated",
             "value": "连接学校的 Wi-Fi，然后点按“连接”。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校の Wi-Fi に接続してから「接続」をタップしてください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் பள்ளி Wi-Fi-இல் சேர்ந்து, பிறகு இணை என்பதைத் தட்டவும்."
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bahasa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语言"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மொழி"
+          }
         }
       }
     },
@@ -685,6 +1245,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "每次到达校园时，让 iPhone 自动为你登录。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパスに着くたびに iPhone が代わりにサインインします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஒவ்வொரு முறை வளாகத்துக்கு வரும்போதும் உங்கள் iPhone உங்களுக்காக உள்நுழையும்."
           }
         }
       }
@@ -702,6 +1274,18 @@
             "state": "translated",
             "value": "浅色"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライト"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வெளிர்"
+          }
         }
       }
     },
@@ -717,6 +1301,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழை"
           }
         }
       }
@@ -734,6 +1330,18 @@
             "state": "translated",
             "value": "登录校园 Wi-Fi"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパス Wi-Fi にログイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi-இல் உள்நுழை"
+          }
         }
       }
     },
@@ -749,6 +1357,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已登录校园 Wi-Fi。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパス Wi-Fi にログインしました。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi-இல் உள்நுழைந்தது."
           }
         }
       }
@@ -766,6 +1386,18 @@
             "state": "translated",
             "value": "登录页面"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கம்"
+          }
         }
       }
     },
@@ -781,6 +1413,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "方法"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メソッド"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "முறை"
           }
         }
       }
@@ -798,6 +1442,18 @@
             "state": "translated",
             "value": "网络"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ネットワーク"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நெட்வொர்க்"
+          }
         }
       }
     },
@@ -813,6 +1469,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "网络名称"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ネットワーク名"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நெட்வொர்க் பெயர்"
           }
         }
       }
@@ -830,6 +1498,18 @@
             "state": "translated",
             "value": "还没有登录记录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインはまだありません"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இன்னும் உள்நுழைவுகள் இல்லை"
+          }
         }
       }
     },
@@ -845,6 +1525,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "未连接 Wi-Fi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi なし"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi இல்லை"
           }
         }
       }
@@ -862,6 +1554,18 @@
             "state": "translated",
             "value": "未设置"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未設定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைக்கப்படவில்லை"
+          }
         }
       }
     },
@@ -877,6 +1581,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "连接后通知"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続時に通知"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இணைந்ததும் அறிவி"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சரி"
           }
         }
       }
@@ -894,6 +1638,18 @@
             "state": "translated",
             "value": "只会分享 Wi-Fi 名称和登录页面设置，绝不会分享你的学号或密码。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有されるのは Wi-Fi 名とログインページの設定だけです。学籍番号やパスワードは共有されません。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi பெயரும் உள்நுழைவுப் பக்க அமைப்புகளும் மட்டுமே பகிரப்படும். உங்கள் மாணவர் எண்ணோ கடவுச்சொல்லோ ஒருபோதும் பகிரப்படாது."
+          }
         }
       }
     },
@@ -909,6 +1665,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开快捷指令"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ショートカットを開く"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shortcuts-ஐத் திற"
           }
         }
       }
@@ -926,6 +1694,18 @@
             "state": "translated",
             "value": "打开 WiFi Connect 并登录校园 Wi-Fi。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi Connect を開いてキャンパス Wi-Fi にサインインします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi Connect-ஐத் திறந்து வளாக Wi-Fi-இல் உள்நுழையும்."
+          }
         }
       }
     },
@@ -942,6 +1722,18 @@
             "state": "translated",
             "value": "打开 WiFi Connect 并登录。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi Connect を開いてサインインします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi Connect-ஐத் திறந்து உள்நுழையும்."
+          }
         }
       }
     },
@@ -954,6 +1746,18 @@
           }
         },
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "POST"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "POST"
+          }
+        },
+        "ta": {
           "stringUnit": {
             "state": "translated",
             "value": "POST"
@@ -974,6 +1778,18 @@
             "state": "translated",
             "value": "密码"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコード"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கடவுக்குறியீடு"
+          }
         }
       }
     },
@@ -989,6 +1805,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "密码"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスワード"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கடவுச்சொல்"
           }
         }
       }
@@ -1006,6 +1834,18 @@
             "state": "translated",
             "value": "密码字段"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスワードフィールド"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கடவுச்சொல் புலம்"
+          }
         }
       }
     },
@@ -1021,6 +1861,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "延迟"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பிங்"
           }
         }
       }
@@ -1038,6 +1890,18 @@
             "state": "translated",
             "value": "二维码"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QR コード"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QR குறியீடு"
+          }
         }
       }
     },
@@ -1053,6 +1917,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "准备就绪"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "準備完了"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தயார்"
           }
         }
       }
@@ -1070,6 +1946,18 @@
             "state": "translated",
             "value": "最近"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சமீபத்தியவை"
+          }
         }
       }
     },
@@ -1085,6 +1973,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "需要%@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を要求"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ தேவை"
+          }
+        }
+      }
+    },
+    "Same as Phone": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sama seperti Telefon"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟随手机"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "端末と同じ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தொலைபேசியைப் போலவே"
           }
         }
       }
@@ -1102,6 +2030,18 @@
             "state": "translated",
             "value": "保存在 iPhone 的钥匙串中，只会发送到学校的登录页面。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone のキーチェーンに保存され、学校のログインページにのみ送信されます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் iPhone Keychain-இல் சேமிக்கப்பட்டு, உங்கள் பள்ளியின் உள்நுழைவுப் பக்கத்துக்கு மட்டுமே அனுப்பப்படும்."
+          }
         }
       }
     },
@@ -1117,6 +2057,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "学校 Wi-Fi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校の Wi-Fi"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பள்ளி Wi-Fi"
           }
         }
       }
@@ -1134,6 +2086,18 @@
             "state": "translated",
             "value": "安全"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "セキュリティ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பாதுகாப்பு"
+          }
         }
       }
     },
@@ -1149,6 +2113,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "查看是否已登录，一键登录。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン状態を確認し、ワンタップでサインインできます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் உள்நுழைந்துள்ளீர்களா எனப் பார்த்து, ஒரே தட்டலில் உள்நுழையலாம்."
           }
         }
       }
@@ -1166,6 +2142,18 @@
             "state": "translated",
             "value": "选择**立即运行**，然后点按**下一步**。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**すぐに実行** を選んで **次へ** をタップします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**உடனடியாக இயக்கு** என்பதைத் தேர்ந்து, **அடுத்து** என்பதைத் தட்டவும்."
+          }
         }
       }
     },
@@ -1181,6 +2169,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "手动设置登录页面"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページを手動で設定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கத்தைக் கைமுறையாக அமை"
           }
         }
       }
@@ -1198,6 +2198,18 @@
             "state": "translated",
             "value": "设置"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定する"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமை"
+          }
         }
       }
     },
@@ -1213,6 +2225,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "设置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்புகள்"
           }
         }
       }
@@ -1230,6 +2254,18 @@
             "state": "translated",
             "value": "分享设置"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を共有"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்பைப் பகிர்"
+          }
         }
       }
     },
@@ -1245,6 +2281,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "分享设置链接"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定リンクを共有"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்பு இணைப்பைப் பகிர்"
           }
         }
       }
@@ -1262,6 +2310,18 @@
             "state": "translated",
             "value": "与朋友分享设置"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "友だちと設定を共有"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நண்பர்களுடன் அமைப்பைப் பகிர்"
+          }
         }
       }
     },
@@ -1277,6 +2337,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "快捷指令自动化"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ショートカットのオートメーション"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shortcuts தன்னியக்கம்"
           }
         }
       }
@@ -1294,6 +2366,18 @@
             "state": "translated",
             "value": "登录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழை"
+          }
         }
       }
     },
@@ -1309,6 +2393,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動でサインイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானாக உள்நுழை"
           }
         }
       }
@@ -1326,6 +2422,18 @@
             "state": "translated",
             "value": "需要登录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインが必要です"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவு தேவை"
+          }
         }
       }
     },
@@ -1341,6 +2449,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "登录校园 Wi-Fi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパス Wi-Fi にサインイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi-இல் உள்நுழை"
           }
         }
       }
@@ -1358,6 +2478,18 @@
             "state": "translated",
             "value": "登录记录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン履歴"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவு வரலாறு"
+          }
         }
       }
     },
@@ -1373,6 +2505,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "退出网址"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインアウト URL"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வெளியேறும் URL"
           }
         }
       }
@@ -1390,6 +2534,18 @@
             "state": "translated",
             "value": "登录记录（包括自动登录）会显示在这里。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動サインインも含め、サインインはここに表示されます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானியங்கு உள்நுழைவுகள் உட்பட உள்நுழைவுகள் இங்கே தோன்றும்."
+          }
         }
       }
     },
@@ -1405,6 +2561,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン済み"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைந்தது"
           }
         }
       }
@@ -1422,6 +2590,18 @@
             "state": "translated",
             "value": "已退出登录"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインアウトしました"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வெளியேறிவிட்டீர்கள்"
+          }
         }
       }
     },
@@ -1437,6 +2617,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已登录，但仍无法上网。请检查你的学号和密码。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインしましたが、まだインターネットに接続できません。学籍番号とパスワードを確認してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைந்தது, ஆனால் இன்னும் இணையம் இல்லை. உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் சரிபார்க்கவும்."
           }
         }
       }
@@ -1454,6 +2646,18 @@
             "state": "translated",
             "value": "正在登录…"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインイン中…"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைகிறது…"
+          }
         }
       }
     },
@@ -1469,6 +2673,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用已保存的学号和密码登录学校的 Wi-Fi 登录页面。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存した学籍番号とパスワードで学校の Wi-Fi ログインページにサインインします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சேமித்த மாணவர் எண் மற்றும் கடவுச்சொல்லுடன் பள்ளியின் Wi-Fi உள்நுழைவுப் பக்கத்தில் உள்நுழையும்."
           }
         }
       }
@@ -1486,6 +2702,18 @@
             "state": "translated",
             "value": "速度"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "速度"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வேகம்"
+          }
         }
       }
     },
@@ -1501,6 +2729,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "网速测试"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "速度テスト"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வேகச் சோதனை"
           }
         }
       }
@@ -1518,6 +2758,18 @@
             "state": "translated",
             "value": "开始"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தொடங்கு"
+          }
         }
       }
     },
@@ -1533,6 +2785,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "保持登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインを維持"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைந்தே இரு"
           }
         }
       }
@@ -1550,6 +2814,18 @@
             "state": "translated",
             "value": "“保持登录”会在后台检查，如果校园 Wi-Fi 让你退出登录，会自动重新登录。具体运行时间由 iOS 决定。应用自动为你登录时会显示通知。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「サインインを維持」はバックグラウンドで確認し、キャンパス Wi-Fi からログアウトされた場合は再度サインインします。実行のタイミングは iOS が決めます。アプリが自動でサインインすると通知が表示されます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“உள்நுழைந்தே இரு” பின்னணியில் சரிபார்த்து, வளாக Wi-Fi உங்களை வெளியேற்றினால் மீண்டும் உள்நுழைக்கும். அது எப்போது இயங்கும் என்பதை iOS தீர்மானிக்கும். செயலி தானாக உள்நுழைக்கும்போது அறிவிப்புகள் தோன்றும்."
+          }
         }
       }
     },
@@ -1565,6 +2841,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "停止"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நிறுத்து"
           }
         }
       }
@@ -1582,6 +2870,18 @@
             "state": "translated",
             "value": "学号"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学籍番号"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மாணவர் எண்"
+          }
         }
       }
     },
@@ -1597,6 +2897,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "跟随系统"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சிஸ்டம்"
           }
         }
       }
@@ -1614,6 +2926,18 @@
             "state": "translated",
             "value": "正在与学校的登录页面通信。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校のログインページと通信しています。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் பள்ளியின் உள்நுழைவுப் பக்கத்துடன் தொடர்புகொள்கிறது."
+          }
         }
       }
     },
@@ -1629,6 +2953,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "点按**自动化**，然后点按**+**（或**新建自动化**）。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**オートメーション** をタップし、**+**（または **新規オートメーション**）をタップします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**தன்னியக்கம்** என்பதைத் தட்டி, பிறகு **+** (அல்லது **புதிய தன்னியக்கம்**) என்பதைத் தட்டவும்."
           }
         }
       }
@@ -1646,6 +2982,18 @@
             "state": "translated",
             "value": "点按**完成**。大功告成！"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**完了** をタップ。これで完了です！"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**முடிந்தது** என்பதைத் தட்டவும். அவ்வளவுதான்!"
+          }
         }
       }
     },
@@ -1661,6 +3009,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "点按**新建空白自动化**，搜索 **WiFi Connect** 并添加**登录校园 Wi-Fi**。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**新規の空のオートメーション** をタップし、**WiFi Connect** を検索して **キャンパス Wi-Fi にログイン** を追加します。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**புதிய வெற்றுத் தன்னியக்கம்** என்பதைத் தட்டி, **WiFi Connect** எனத் தேடி **வளாக Wi-Fi-இல் உள்நுழை** என்பதைச் சேர்க்கவும்."
           }
         }
       }
@@ -1678,6 +3038,18 @@
             "state": "translated",
             "value": "点按以登录校园 Wi-Fi。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップしてキャンパス Wi-Fi にサインイン。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi-இல் உள்நுழையத் தட்டவும்."
+          }
         }
       }
     },
@@ -1693,6 +3065,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "测试"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "測定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சோதி"
           }
         }
       }
@@ -1710,6 +3094,18 @@
             "state": "translated",
             "value": "重新测试"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "もう一度測定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மீண்டும் சோதி"
+          }
         }
       }
     },
@@ -1725,6 +3121,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "仅通过 Wi-Fi 测试，使用 Cloudflare 的测速服务器。在高速 Wi-Fi 上，一次测试可能消耗超过 100 MB 流量。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cloudflare の速度テストサーバーを使い、Wi-Fi のみで測定します。高速な Wi-Fi では 1 回で 100 MB 以上のデータを使うことがあります。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cloudflare வேகச் சோதனைச் சேவையகங்களைப் பயன்படுத்தி Wi-Fi-இல் மட்டுமே சோதிக்கப்படுகிறது. வேகமான Wi-Fi-இல் ஒரு சோதனை 100 MB-க்கு மேல் தரவைப் பயன்படுத்தலாம்."
           }
         }
       }
@@ -1742,6 +3150,18 @@
             "state": "translated",
             "value": "你在校园里连接的 Wi-Fi 名称，用于自动连接指南。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパスで接続する Wi-Fi の名前です。自動接続ガイドで使われます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாகத்தில் நீங்கள் சேரும் Wi-Fi-இன் பெயர். தானியங்கு இணைப்பு வழிகாட்டியில் பயன்படுத்தப்படும்."
+          }
         }
       }
     },
@@ -1757,6 +3177,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "“设置”中的自定义登录网址无效。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定のカスタムログイン URL が正しくありません。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்புகளில் உள்ள தனிப்பயன் உள்நுழைவு URL சரியானதல்ல."
           }
         }
       }
@@ -1774,6 +3206,18 @@
             "state": "translated",
             "value": "登录页面没有响应：%@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページが応答しませんでした: %@"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கம் பதிலளிக்கவில்லை: %@"
+          }
         }
       }
     },
@@ -1789,6 +3233,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "即使每栋楼的地址不同，也会自动找到登录页面。如果无法找到，请连接学校 Wi-Fi 后点按“检测登录页面”，或手动填写。只需输入路径（例如 /login），这样在每栋楼都能使用。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建物ごとにアドレスが違っても、ログインページは自動で見つかります。うまくいかない場合は、学校の Wi-Fi に接続して「ログインページを検出」をタップするか、手動で入力してください。どの建物でも使えるよう、/login のようにパスだけを入力します。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஒவ்வொரு கட்டடமும் வேறு முகவரியைப் பயன்படுத்தினாலும் உள்நுழைவுப் பக்கம் தானாகக் கண்டறியப்படும். அது வேலை செய்யவில்லை என்றால், பள்ளி Wi-Fi-இல் சேர்ந்து உள்நுழைவுப் பக்கத்தைக் கண்டறி என்பதைத் தட்டவும், அல்லது கைமுறையாக நிரப்பவும். எல்லாக் கட்டடங்களிலும் வேலை செய்ய /login போன்ற பாதையை மட்டும் உள்ளிடவும்."
           }
         }
       }
@@ -1806,6 +3262,18 @@
             "state": "translated",
             "value": "退出链接未能让你退出登录。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインアウトのリンクでサインアウトできませんでした。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வெளியேறும் இணைப்பு உங்களை வெளியேற்றவில்லை."
+          }
         }
       }
     },
@@ -1821,6 +3289,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "提示"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヒント"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "குறிப்பு"
           }
         }
       }
@@ -1838,6 +3318,18 @@
             "state": "translated",
             "value": "要阻止登录页面弹出，请打开**设置 › 无线局域网**，点按 %@ 旁边的 **ⓘ**，然后关闭**自动登录**。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページが表示されないようにするには、**設定 › Wi-Fi** を開き、%@ の横の **ⓘ** をタップして **自動ログイン** をオフにします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கம் தோன்றுவதை நிறுத்த, **Settings › Wi-Fi** ஐத் திறந்து, %@ அருகிலுள்ள **ⓘ** ஐத் தட்டி **Auto-Login** ஐ முடக்கவும்."
+          }
         }
       }
     },
@@ -1853,6 +3345,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "重试"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再試行"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மீண்டும் முயல்"
           }
         }
       }
@@ -1870,6 +3374,18 @@
             "state": "translated",
             "value": "网址或路径"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL またはパス"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL அல்லது பாதை"
+          }
         }
       }
     },
@@ -1885,6 +3401,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "解锁以查看学号和密码。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ロックを解除して学籍番号とパスワードを表示します。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மாணவர் எண்ணையும் கடவுச்சொல்லையும் பார்க்கத் திறக்கவும்."
           }
         }
       }
@@ -1902,6 +3430,18 @@
             "state": "translated",
             "value": "上传"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アップロード"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பதிவேற்றம்"
+          }
         }
       }
     },
@@ -1917,6 +3457,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用设置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この設定を使う"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்பைப் பயன்படுத்து"
+          }
+        }
+      }
+    },
+    "Use a classmate's setup?": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guna tetapan rakan sekelas?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用同学的设置？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クラスメートの設定を使いますか？"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வகுப்புத் தோழரின் அமைப்பைப் பயன்படுத்தவா?"
           }
         }
       }
@@ -1934,6 +3514,18 @@
             "state": "translated",
             "value": "欢迎"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ようこそ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வரவேற்கிறோம்"
+          }
         }
       }
     },
@@ -1949,6 +3541,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开应用时"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリを開いたとき"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் செயலியைத் திறந்தபோது"
           }
         }
       }
@@ -1966,6 +3570,18 @@
             "state": "translated",
             "value": "Wi-Fi：%@。登录页面：%@。你自己的学号和密码保持不变。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi: %@。ログインページ: %@。あなたの学籍番号とパスワードは変わりません。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi: %@. உள்நுழைவுப் பக்கம்: %@. உங்கள் மாணவர் எண்ணும் கடவுச்சொல்லும் மாறாது."
+          }
         }
       }
     },
@@ -1981,6 +3597,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "小组件或控制中心"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ウィジェットまたはコントロールセンター"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "விட்ஜெட் அல்லது கட்டுப்பாட்டு மையம்"
           }
         }
       }
@@ -1998,6 +3626,18 @@
             "state": "translated",
             "value": "你已经在线，所以没有可检测的登录页面。请在刚连接学校 Wi-Fi 后再试。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すでにオンラインのため、検出するログインページがありません。学校の Wi-Fi に接続した直後にもう一度お試しください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் ஏற்கனவே இணையத்தில் உள்ளதால் கண்டறிய உள்நுழைவுப் பக்கம் இல்லை. பள்ளி Wi-Fi-இல் சேர்ந்தவுடன் மீண்டும் முயலவும்."
+          }
         }
       }
     },
@@ -2013,6 +3653,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已经在线。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すでにオンラインです。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் ஏற்கனவே இணையத்தில் உள்ளீர்கள்."
           }
         }
       }
@@ -2030,6 +3682,18 @@
             "state": "translated",
             "value": "你已在线。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オンラインです。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் இணையத்தில் உள்ளீர்கள்."
+          }
         }
       }
     },
@@ -2045,6 +3709,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已登录并在线。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインしてオンラインです。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் உள்நுழைந்து இணையத்தில் உள்ளீர்கள்."
           }
         }
       }
@@ -2062,6 +3738,18 @@
             "state": "translated",
             "value": "你已登录，可以上网了。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインインしました。インターネットを使えます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீங்கள் உள்நுழைந்துவிட்டீர்கள், பயன்படுத்தத் தயார்."
+          }
         }
       }
     },
@@ -2077,6 +3765,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "你已退出校园 Wi-Fi。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパス Wi-Fi からサインアウトしました。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi-இலிருந்து வெளியேறிவிட்டீர்கள்."
           }
         }
       }
@@ -2094,6 +3794,18 @@
             "state": "translated",
             "value": "学校的登录页面没有提供退出链接。你可以在“设置 › 登录页面”中添加。"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校のログインページにサインアウトのリンクがありませんでした。設定 › ログインページで追加できます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பள்ளியின் உள்நுழைவுப் பக்கத்தில் வெளியேறும் இணைப்பு இல்லை. அமைப்புகள் › உள்நுழைவுப் பக்கம் என்பதில் சேர்க்கலாம்."
+          }
         }
       }
     },
@@ -2109,6 +3821,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானியங்கு"
           }
         }
       }
@@ -2126,6 +3850,18 @@
             "state": "translated",
             "value": "手动设置"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手動設定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கைமுறையாக அமைக்கப்பட்டது"
+          }
         }
       }
     },
@@ -2142,6 +3878,18 @@
             "state": "translated",
             "value": "你的学校"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் பள்ளி"
+          }
         }
       }
     },
@@ -2157,6 +3905,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "学校的 Wi-Fi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学校の Wi-Fi"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் பள்ளி Wi-Fi"
           }
         }
       }

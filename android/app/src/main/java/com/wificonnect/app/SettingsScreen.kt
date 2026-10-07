@@ -2,6 +2,7 @@ package com.wificonnect.app
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -20,9 +21,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.UnfoldMore
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -65,6 +70,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     appearance: Appearance,
     onAppearanceChange: (Appearance) -> Unit,
+    onLanguageChange: (AppLanguage) -> Unit,
     onOpenHistory: () -> Unit,
     onOpenShare: () -> Unit,
     onDone: () -> Unit,
@@ -233,6 +239,53 @@ fun SettingsScreen(
                 }
             }
 
+            Section(header = stringResource(R.string.language), footer = null) {
+                val language = remember { AppLanguage.current(context) }
+                var choosing by remember { mutableStateOf(false) }
+                Box {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { choosing = true }
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                    ) {
+                        Text(stringResource(R.string.language), modifier = Modifier.weight(1f))
+                        Text(language.label(), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Icon(
+                            Icons.Rounded.UnfoldMore,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.outline,
+                            modifier = Modifier.padding(start = 4.dp).size(18.dp),
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = choosing,
+                        onDismissRequest = { choosing = false },
+                    ) {
+                        AppLanguage.entries.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option.label()) },
+                                trailingIcon = {
+                                    if (option == language) Icon(
+                                        Icons.Rounded.Check,
+                                        contentDescription = stringResource(R.string.selected),
+                                        tint = MaterialTheme.colorScheme.primary,
+                                    )
+                                },
+                                onClick = {
+                                    choosing = false
+                                    if (option != language) {
+                                        save() // Keep anything typed: the screen reloads in the new language.
+                                        onLanguageChange(option)
+                                    }
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+
             Section(
                 header = stringResource(R.string.settings_login_page),
                 footer = detectMessage
@@ -342,6 +395,10 @@ fun SettingsScreen(
         }
     }
 }
+
+@Composable
+private fun AppLanguage.label() =
+    if (this == AppLanguage.SYSTEM) stringResource(R.string.language_system) else nativeName
 
 /** A grouped, rounded section like iOS Settings. */
 @Composable

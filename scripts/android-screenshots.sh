@@ -40,6 +40,11 @@ shoot 3-settings  --es demoState idle --es demoScreen settings
 shoot 6-history   --es demoState idle --es demoScreen history
 shoot 7-share     --es demoState idle --es demoScreen share
 shoot 8-speedtest --es demoState connected --es demoScreen speed
+adb shell cmd locale set-app-locales "$PACKAGE" --locales ja
+shoot 9-japanese  --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
+adb shell cmd locale set-app-locales "$PACKAGE" --locales ta
+shoot 10-tamil    --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
+adb shell cmd locale set-app-locales "$PACKAGE" --locales ""
 adb shell cmd uimode night yes
 sleep 2
 shoot 5-dark      --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
