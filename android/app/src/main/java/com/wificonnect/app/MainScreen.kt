@@ -48,6 +48,8 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material.icons.rounded.WifiOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,6 +61,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -77,6 +82,8 @@ fun MainScreen(
     hasCredentials: Boolean,
     onConnect: () -> Unit,
     onOpenSettings: () -> Unit,
+    appearance: Appearance,
+    onAppearanceChange: (Appearance) -> Unit,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -110,6 +117,7 @@ fun MainScreen(
             LargeTopAppBar(
                 title = { Text("Campus Wi-Fi", fontWeight = FontWeight.Bold) },
                 actions = {
+                    AppearanceMenu(appearance, onAppearanceChange)
                     IconButton(onClick = onOpenSettings) {
                         Icon(Icons.Rounded.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.primary)
                     }
@@ -191,6 +199,38 @@ fun MainScreen(
                     },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
+    }
+}
+
+/** A toolbar button that switches between System, Light and Dark. */
+@Composable
+private fun AppearanceMenu(appearance: Appearance, onChange: (Appearance) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(appearance.icon, contentDescription = "Appearance", tint = MaterialTheme.colorScheme.primary)
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            shape = RoundedCornerShape(14.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        ) {
+            Appearance.entries.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option.title) },
+                    leadingIcon = {
+                        if (option == appearance) Icon(Icons.Rounded.Check, contentDescription = "Selected")
+                        else Spacer(Modifier.size(24.dp))
+                    },
+                    trailingIcon = { Icon(option.icon, contentDescription = null) },
+                    onClick = {
+                        onChange(option)
+                        expanded = false
+                    },
                 )
             }
         }

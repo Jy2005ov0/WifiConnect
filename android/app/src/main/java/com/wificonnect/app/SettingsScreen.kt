@@ -58,7 +58,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onDone: () -> Unit) {
+fun SettingsScreen(
+    appearance: Appearance,
+    onAppearanceChange: (Appearance) -> Unit,
+    onDone: () -> Unit,
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -135,6 +139,19 @@ fun SettingsScreen(onDone: () -> Unit) {
                 footer = "Signs in by itself whenever your phone joins a Wi-Fi network with a login page, even when the app is closed.",
             ) {
                 SwitchRow("Sign In Automatically", settings.autoLogin) { settings = settings.copy(autoLogin = it) }
+            }
+
+            Section(header = "Appearance", footer = null, card = false) {
+                SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+                    Appearance.entries.forEachIndexed { index, option ->
+                        SegmentedButton(
+                            selected = appearance == option,
+                            onClick = { onAppearanceChange(option) },
+                            shape = SegmentedButtonDefaults.itemShape(index, Appearance.entries.size),
+                            icon = {},
+                        ) { Text(option.title) }
+                    }
+                }
             }
 
             Section(
@@ -240,7 +257,12 @@ fun SettingsScreen(onDone: () -> Unit) {
 
 /** A grouped, rounded section like iOS Settings. */
 @Composable
-private fun Section(header: String, footer: String?, content: @Composable ColumnScope.() -> Unit) {
+private fun Section(
+    header: String,
+    footer: String?,
+    card: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit,
+) {
     Column(Modifier.padding(top = 20.dp)) {
         Text(
             header.uppercase(),
@@ -248,12 +270,16 @@ private fun Section(header: String, footer: String?, content: @Composable Column
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 16.dp, bottom = 6.dp),
         )
-        Surface(
-            shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.surfaceContainer,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Column(verticalArrangement = Arrangement.Center, content = content)
+        if (card) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column(verticalArrangement = Arrangement.Center, content = content)
+            }
+        } else {
+            Column(content = content)
         }
         if (footer != null) {
             Text(

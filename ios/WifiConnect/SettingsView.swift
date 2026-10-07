@@ -10,6 +10,7 @@ struct SettingsView: View {
     @State private var detectMessage: String?
 
     @AppStorage(SettingsKey.wifiName) private var wifiName = ""
+    @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
     @AppStorage(SettingsKey.useCustomPortal) private var useCustomPortal = false
     @AppStorage(SettingsKey.loginURL) private var loginURL = ""
     @AppStorage(SettingsKey.method) private var method = "POST"
@@ -61,6 +62,19 @@ struct SettingsView: View {
                     Text("School Wi-Fi")
                 } footer: {
                     Text("The Wi-Fi name you join on campus. Used in the auto-connect guide.")
+                }
+
+                Section {
+                    Picker("Appearance", selection: $appearance) {
+                        ForEach(Appearance.allCases) { option in
+                            Text(option.title).tag(option)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets())
+                } header: {
+                    Text("Appearance")
                 }
 
                 Section {

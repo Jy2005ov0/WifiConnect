@@ -85,6 +85,9 @@ struct ContentView: View {
             .navigationTitle("Campus Wi-Fi")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
+                    AppearanceMenu()
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showSettings = true
                     } label: {

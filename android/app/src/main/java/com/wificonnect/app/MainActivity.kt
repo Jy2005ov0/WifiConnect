@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
@@ -13,6 +14,8 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,8 +36,23 @@ class MainActivity : ComponentActivity() {
         val demo = if (BuildConfig.DEBUG) Demo.from(intent, this) else null
 
         setContent {
-            WifiConnectTheme {
-                val context = LocalContext.current
+            val context = LocalContext.current
+            var appearance by remember { mutableStateOf(Appearance.load(context)) }
+            val dark = appearance.isDark(isSystemInDarkTheme())
+
+            // Match the status and navigation bar icons to the chosen appearance.
+            DisposableEffect(dark) {
+                val style = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT) { dark }
+                enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+                onDispose { }
+            }
+
+            val changeAppearance: (Appearance) -> Unit = {
+                appearance = it
+                it.save(context)
+            }
+
+            WifiConnectTheme(dark = dark) {
                 val model: ConnectionViewModel = viewModel()
                 var hasCredentials by remember { mutableStateOf(Credentials.isConfigured(context)) }
                 var showSettings by rememberSaveable { mutableStateOf(demo?.showSettings ?: !hasCredentials) }
@@ -64,7 +82,7 @@ class MainActivity : ComponentActivity() {
                     label = "screen",
                 ) { settings ->
                     if (settings) {
-                        SettingsScreen(onDone = {
+                        SettingsScreen(appearance = appearance, onAppearanceChange = changeAppearance, onDone = {
                             hasCredentials = Credentials.isConfigured(context)
                             showSettings = false
                             if (PortalSettings.load(context).autoLogin) askForNotifications()
@@ -75,6 +93,8 @@ class MainActivity : ComponentActivity() {
                             hasCredentials = hasCredentials,
                             onConnect = { if (hasCredentials) model.connect() else showSettings = true },
                             onOpenSettings = { showSettings = true },
+                            appearance = appearance,
+                            onAppearanceChange = changeAppearance,
                         )
                     }
                 }
