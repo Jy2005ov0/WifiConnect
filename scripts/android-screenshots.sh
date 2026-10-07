@@ -4,7 +4,7 @@ set -euo pipefail
 
 APK="$1"
 PACKAGE=com.wificonnect.app
-OUT=screenshots
+OUT=new-screenshots
 mkdir -p "$OUT"
 
 adb install -r "$APK"

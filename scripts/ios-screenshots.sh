@@ -4,7 +4,7 @@ set -euo pipefail
 
 APP="$1"
 BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$APP/Info.plist")
-OUT=screenshots
+OUT=new-screenshots
 mkdir -p "$OUT"
 
 # Prefer an iPhone 16 Pro, otherwise the first available iPhone.
@@ -25,7 +25,7 @@ xcrun simctl install "$UDID" "$APP"
 shoot() {
   local name=$1; shift
   xcrun simctl terminate "$UDID" "$BUNDLE_ID" 2>/dev/null || true
-  xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoStudentID A0123456X -wifiName UniWiFi "$@"
+  xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoStudentID A0123456X "$@"
   sleep 5
   xcrun simctl io "$UDID" screenshot "$OUT/ios-$name.png"
 }
