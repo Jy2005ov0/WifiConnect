@@ -46,6 +46,9 @@ class PortalLogin(private val network: Network) {
         data class Portal(val page: Page) : ProbeResult
     }
 
+    /** What happened during the last sign-in, for the history. */
+    val trace = LoginTrace()
+
     /** Cookies by domain, so the portal's session survives from the login page to the form submission. */
     private val cookies = mutableMapOf<String, MutableMap<String, String>>()
 
@@ -59,6 +62,7 @@ class PortalLogin(private val network: Network) {
                 throw LoginError.NotOnWiFi
             }
             val page = (result as? ProbeResult.Portal)?.page ?: return@withContext LoginOutcome.ALREADY_ONLINE
+            trace.portalUrl = page.url
 
             val submission = if (settings.useCustomPortal) {
                 // A path like "/login" is resolved against this building's login page, so one
@@ -80,6 +84,10 @@ class PortalLogin(private val network: Network) {
                 HtmlForm.loginForm(page.html, page.url)?.submission(studentId, password)
                     ?: throw LoginError.FormNotFound
             }
+
+            trace.formAction = submission.url
+            trace.method = submission.method
+            trace.fieldNames = submission.fields.map { it.name }
 
             try {
                 submit(submission, referer = page.url)
@@ -263,9 +271,30 @@ class PortalLogin(private val network: Network) {
             network: Network? = wifiNetwork(context),
             trigger: SignInTrigger = SignInTrigger.APP,
         ): LoginOutcome {
+            val started = System.currentTimeMillis()
+            var login: PortalLogin? = null
+
+            fun record(result: HistoryEntry.Result, message: String?) {
+                val trace = login?.trace
+                History.add(
+                    context,
+                    HistoryEntry(
+                        time = started,
+                        trigger = trigger,
+                        result = result,
+                        message = message,
+                        portal = History.describe(trace?.portalUrl),
+                        formAction = History.describe(trace?.formAction),
+                        method = trace?.method,
+                        fields = trace?.fieldNames.orEmpty(),
+                        durationMs = System.currentTimeMillis() - started,
+                    ),
+                )
+            }
+
             try {
                 val wifi = network ?: throw LoginError.NotOnWiFi
-                val outcome = PortalLogin(wifi).logIn(
+                val outcome = PortalLogin(wifi).also { login = it }.logIn(
                     Credentials.studentId(context),
                     Credentials.password(context),
                     PortalSettings.load(context),
@@ -273,6 +302,10 @@ class PortalLogin(private val network: Network) {
                 if (outcome == LoginOutcome.LOGGED_IN) {
                     context.getSystemService(ConnectivityManager::class.java).reportNetworkConnectivity(wifi, true)
                 }
+                record(
+                    if (outcome == LoginOutcome.LOGGED_IN) HistoryEntry.Result.SIGNED_IN else HistoryEntry.Result.ALREADY_ONLINE,
+                    null,
+                )
                 SignInStatus.save(
                     context,
                     if (outcome == LoginOutcome.LOGGED_IN) SignInStatus.Kind.SIGNED_IN else SignInStatus.Kind.ALREADY_ONLINE,
@@ -280,6 +313,7 @@ class PortalLogin(private val network: Network) {
                 )
                 return outcome
             } catch (e: LoginError) {
+                record(HistoryEntry.Result.FAILED, e.message)
                 SignInStatus.save(context, SignInStatus.Kind.FAILED, e.message.orEmpty())
                 throw e
             }

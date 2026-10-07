@@ -24,7 +24,7 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
         state = ConnectionState.Working
         viewModelScope.launch {
             state = try {
-                when (PortalLogin.logIn(getApplication())) {
+                when (PortalLogin.logIn(getApplication(), trigger = if (automatic) SignInTrigger.AUTOMATIC else SignInTrigger.APP)) {
                     LoginOutcome.ALREADY_ONLINE -> ConnectionState.Connected("You're already online.")
                     LoginOutcome.LOGGED_IN -> ConnectionState.Connected("You're signed in and ready to go.")
                 }

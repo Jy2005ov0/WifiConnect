@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
                 val model: ConnectionViewModel = viewModel()
                 var hasCredentials by remember { mutableStateOf(Credentials.isConfigured(context)) }
                 var showSettings by rememberSaveable { mutableStateOf(demo?.showSettings ?: !hasCredentials) }
+                var showHistory by rememberSaveable { mutableStateOf(demo?.showHistory ?: false) }
 
                 // Lets automatic sign-in tell you when it has signed you in.
                 val notificationPermission = rememberLauncherForActivityResult(RequestPermission()) { }
@@ -78,16 +79,27 @@ class MainActivity : ComponentActivity() {
                 }
 
                 AnimatedContent(
-                    targetState = showSettings,
+                    targetState = when {
+                        showSettings && showHistory -> 2
+                        showSettings -> 1
+                        else -> 0
+                    },
                     transitionSpec = { fadeIn() togetherWith fadeOut() },
                     label = "screen",
-                ) { settings ->
-                    if (settings) {
-                        SettingsScreen(appearance = appearance, onAppearanceChange = changeAppearance, onDone = {
-                            hasCredentials = Credentials.isConfigured(context)
-                            showSettings = false
-                            if (PortalSettings.load(context).autoLogin) askForNotifications()
-                        })
+                ) { screen ->
+                    if (screen == 2) {
+                        HistoryScreen(onBack = { showHistory = false })
+                    } else if (screen == 1) {
+                        SettingsScreen(
+                            appearance = appearance,
+                            onAppearanceChange = changeAppearance,
+                            onOpenHistory = { showHistory = true },
+                            onDone = {
+                                hasCredentials = Credentials.isConfigured(context)
+                                showSettings = false
+                                if (PortalSettings.load(context).autoLogin) askForNotifications()
+                            },
+                        )
                     } else {
                         MainScreen(
                             state = model.state,
@@ -112,7 +124,7 @@ private fun ComponentActivity.applyTestExtras() {
 }
 
 /** Debug-only launch extras used to take the README screenshots. */
-private class Demo(val state: ConnectionState?, val showSettings: Boolean) {
+private class Demo(val state: ConnectionState?, val showSettings: Boolean, val showHistory: Boolean) {
     companion object {
         fun from(intent: android.content.Intent, context: android.content.Context): Demo? {
             val stateName = intent.getStringExtra("demoState") ?: return null
@@ -126,7 +138,9 @@ private class Demo(val state: ConnectionState?, val showSettings: Boolean) {
                 "failed" -> ConnectionState.Failed(LoginError.StillOffline.message.orEmpty())
                 else -> ConnectionState.Idle
             }
-            return Demo(state, intent.getStringExtra("demoScreen") == "settings")
+            val screen = intent.getStringExtra("demoScreen")
+            if (screen == "history") History.seedDemo(context)
+            return Demo(state, screen == "settings" || screen == "history", screen == "history")
         }
     }
 }

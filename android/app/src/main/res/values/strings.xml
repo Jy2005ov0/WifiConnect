@@ -12,6 +12,26 @@
     <string name="setting_notify">Notify When Connected</string>
     <string name="setting_stay_signed_in_footer">Stay Signed In checks every 15 minutes and signs you back in if the Wi-Fi logs you out.</string>
 
+    <!-- History -->
+    <string name="history_title">Sign-In History</string>
+    <string name="history_help">Help</string>
+    <string name="history_recent">Recent</string>
+    <string name="history_copy">Copy Diagnostics</string>
+    <string name="history_copied">Copied</string>
+    <string name="history_copy_footer">If signing in doesn\'t work, copy this report and send it to whoever helps you with the app. It includes the login page details but never your password.</string>
+    <string name="history_empty">No sign-ins yet. They\'ll appear here, including automatic ones.</string>
+    <string name="history_clear">Clear</string>
+    <string name="history_clear_confirm">Clear sign-in history?</string>
+    <string name="history_signed_in">Signed In</string>
+    <string name="history_already_online">Already Online</string>
+    <string name="trigger_app">From the app</string>
+    <string name="trigger_automatic">Automatic</string>
+    <string name="trigger_tile">Quick Settings tile</string>
+    <string name="trigger_widget">Widget</string>
+    <string name="trigger_background">Stay Signed In</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+
     <!-- Status -->
     <string name="status_ready">Ready</string>
     <string name="status_signing_in">Signing In…</string>

@@ -69,7 +69,12 @@ struct PortalLogin {
         session = URLSession(configuration: config, delegate: PortalTrust(), delegateQueue: nil)
     }
 
-    func logIn(studentID: String, password: String, settings: PortalSettings) async throws -> LoginOutcome {
+    func logIn(
+        studentID: String,
+        password: String,
+        settings: PortalSettings,
+        trace: LoginTrace? = nil
+    ) async throws -> LoginOutcome {
         guard !studentID.isEmpty, !password.isEmpty else { throw LoginError.missingCredentials }
 
         let result: ProbeResult
@@ -79,6 +84,7 @@ struct PortalLogin {
             throw LoginError.notOnWiFi
         }
         guard case .portal(let page) = result else { return .alreadyOnline }
+        trace?.portalURL = page.url
 
         let submission: FormSubmission
         if settings.useCustomPortal {
@@ -107,6 +113,10 @@ struct PortalLogin {
             }
             submission = filled
         }
+
+        trace?.formAction = submission.url
+        trace?.method = submission.method
+        trace?.fieldNames = submission.fields.map(\.name)
 
         try await submit(submission, referer: page.url)
 

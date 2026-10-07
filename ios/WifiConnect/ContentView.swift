@@ -7,6 +7,7 @@ struct ContentView: View {
     @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @State private var showSettings = false
     @State private var showAutomationGuide = false
+    @State private var showDemoHistory = false
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -105,6 +106,9 @@ struct ContentView: View {
             .sheet(isPresented: $showAutomationGuide) {
                 AutomationGuideView()
             }
+            .sheet(isPresented: $showDemoHistory) {
+                NavigationStack { HistoryView() }
+            }
             .sensoryFeedback(trigger: model.state) { _, new in
                 switch new {
                 case .connected: return .success
@@ -181,6 +185,9 @@ struct ContentView: View {
         switch defaults.string(forKey: "demoScreen") {
         case "settings": showSettings = true
         case "guide": showAutomationGuide = true
+        case "history":
+            History.seedDemo()
+            showDemoHistory = true
         default: break
         }
         return true

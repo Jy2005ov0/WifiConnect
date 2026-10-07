@@ -77,6 +77,16 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink {
+                        HistoryView()
+                    } label: {
+                        Label("Sign-In History", systemImage: "clock.arrow.circlepath")
+                    }
+                } header: {
+                    Text("Help")
+                }
+
+                Section {
                     AppearancePicker(selection: $appearance)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets())

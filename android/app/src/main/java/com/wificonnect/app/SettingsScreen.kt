@@ -1,6 +1,7 @@
 package com.wificonnect.app
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -18,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.CircularProgressIndicator
@@ -62,6 +64,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(
     appearance: Appearance,
     onAppearanceChange: (Appearance) -> Unit,
+    onOpenHistory: () -> Unit,
     onDone: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -74,11 +77,15 @@ fun SettingsScreen(
     var detecting by remember { mutableStateOf(false) }
     var detectMessage by remember { mutableStateOf<String?>(null) }
 
-    fun saveAndClose() {
+    fun save() {
         Credentials.setStudentId(context, studentId.trim())
         Credentials.setPassword(context, password)
         settings.save(context)
         AutoLogin.sync(context)
+    }
+
+    fun saveAndClose() {
+        save()
         onDone()
     }
 
@@ -155,6 +162,26 @@ fun SettingsScreen(
                 Divider()
                 SwitchRow(stringResource(R.string.setting_notify), settings.notifyOnConnect) {
                     settings = settings.copy(notifyOnConnect = it)
+                }
+            }
+
+            Section(header = stringResource(R.string.history_help), footer = null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            save()
+                            onOpenHistory()
+                        }
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                ) {
+                    Text(stringResource(R.string.history_title), modifier = Modifier.weight(1f))
+                    Icon(
+                        Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.outline,
+                    )
                 }
             }
 
@@ -279,7 +306,7 @@ fun SettingsScreen(
 
 /** A grouped, rounded section like iOS Settings. */
 @Composable
-private fun Section(
+internal fun Section(
     header: String,
     footer: String?,
     card: Boolean = true,
@@ -315,7 +342,7 @@ private fun Section(
 }
 
 @Composable
-private fun Divider() {
+internal fun Divider() {
     HorizontalDivider(Modifier.padding(start = 16.dp), color = MaterialTheme.colorScheme.outlineVariant)
 }
 
