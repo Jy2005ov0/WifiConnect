@@ -27,10 +27,16 @@ jobs:
 
       - name: Install applesimutils (allows notifications in the simulator)
         continue-on-error: true
-        run: brew tap wix/brew && brew install applesimutils
+        run: |
+          export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
+          { brew tap wix/brew && brew install wix/brew/applesimutils; } > /tmp/applesimutils.log 2>&1 \
+            || { echo "applesimutils install failed"; tail -30 /tmp/applesimutils.log; exit 1; }
 
       - name: Take screenshots
-        run: bash scripts/ios-screenshots.sh ios/build/Debug-iphonesimulator/WifiConnect.app
+        run: |
+          bash scripts/ios-screenshots.sh ios/build/Debug-iphonesimulator/WifiConnect.app
+          echo "applesimutils: $(command -v applesimutils || echo missing)"
+          tail -15 /tmp/applesimutils.log 2>/dev/null || true
 
       - uses: actions/upload-artifact@v4
         with:
