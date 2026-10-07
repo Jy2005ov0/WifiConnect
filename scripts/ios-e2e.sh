@@ -17,7 +17,12 @@ print(next((d for d in phones if d["name"] == "iPhone 16 Pro"), phones[-1])["udi
 ')
 xcrun simctl boot "$UDID"
 xcrun simctl bootstatus "$UDID" -b
-xcrun simctl install "$UDID" "$APP"
+# The simulator occasionally isn't ready right after booting; retry the install.
+for attempt in 1 2 3; do
+  xcrun simctl install "$UDID" "$APP" && break
+  echo "Install attempt $attempt failed; retrying."
+  sleep 15
+done
 PREFS="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Library/Preferences/$BUNDLE_ID.plist"
 
 failures=0

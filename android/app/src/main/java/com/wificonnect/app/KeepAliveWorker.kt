@@ -16,6 +16,8 @@ class KeepAliveWorker(context: Context, params: WorkerParameters) : CoroutineWor
     override suspend fun doWork(): Result {
         val context = applicationContext
         if (!Credentials.isConfigured(context)) return Result.success()
+        // You signed out on purpose: wait until you sign in again or rejoin the Wi-Fi.
+        if (SignInStatus.load(context)?.kind == SignInStatus.Kind.SIGNED_OUT) return Result.success()
         val wifi = PortalLogin.wifiNetwork(context) ?: return Result.success()
         if (PortalLogin(wifi).needsSignIn()) {
             AutoLogin.run(context, wifi, SignInTrigger.BACKGROUND)

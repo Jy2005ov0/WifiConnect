@@ -21,6 +21,8 @@ enum KeepAlive {
     static func run() async {
         schedule()
         guard isEnabled, Credentials.isConfigured else { return }
+        // You signed out on purpose: wait until you sign in again.
+        guard !UserDefaults.standard.bool(forKey: SettingsKey.signedOutByUser) else { return }
         guard await WifiStatus.check() == .loginNeeded else { return }
         if (try? await SignIn.run(.background)) == .loggedIn {
             await Notifier.signedIn()

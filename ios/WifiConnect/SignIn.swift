@@ -32,6 +32,7 @@ enum SignIn {
                 trace: trace
             )
             record(outcome == .loggedIn ? .signedIn : .alreadyOnline, nil)
+            UserDefaults.standard.set(false, forKey: SettingsKey.signedOutByUser)
             return outcome
         } catch {
             record(.failed, error.localizedDescription)
@@ -43,6 +44,7 @@ enum SignIn {
         let started = Date()
         do {
             try await PortalLogin().signOut()
+            UserDefaults.standard.set(true, forKey: SettingsKey.signedOutByUser)
             History.add(HistoryEntry(date: started, trigger: .app, result: .signedOut,
                                      duration: Date().timeIntervalSince(started)))
         } catch {

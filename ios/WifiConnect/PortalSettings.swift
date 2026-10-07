@@ -15,6 +15,8 @@ enum SettingsKey {
     /// Learned while signing in: the sign-out link and the login page it came from.
     static let detectedSignOutURL = "detectedSignOutURL"
     static let lastPortalURL = "lastPortalURL"
+    /// Set when you sign out yourself, so Stay Signed In doesn't sign you straight back in.
+    static let signedOutByUser = "signedOutByUser"
 
     /// UTAR's campus Wi-Fi.
     static let defaultWifiName = "utarwifi"
