@@ -52,24 +52,27 @@ if command -v applesimutils > /dev/null; then
   sleep 2
   xcrun simctl terminate "$UDID" "$BUNDLE_ID"
   sleep 1
-  # The banner shows for a few seconds; take a picture every second and keep the one
-  # that differs most from the plain Home Screen.
+  # The banner slides in and stays a few seconds. Take pictures quickly and keep the one
+  # where the banner reaches furthest down (the most changed rows at the top of the screen).
   shots=$(mktemp -d)
   xcrun simctl io "$UDID" screenshot "$shots/home.png"
-  for i in 1 2 3 4 5 6 7 8 9 10; do
-    xcrun simctl io "$UDID" screenshot "$shots/shot-$i.png"
-    sleep 1
+  for i in $(seq 1 24); do
+    xcrun simctl io "$UDID" screenshot "$shots/shot-$i.png" > /dev/null 2>&1
   done
+  python3 -m pip install --quiet pillow > /dev/null 2>&1 || true
   python3 - "$shots" "$OUT/ios-13-notification.png" <<'PY'
 import os, shutil, sys
+from PIL import Image, ImageChops
 folder, out = sys.argv[1], sys.argv[2]
-home = open(os.path.join(folder, "home.png"), "rb").read()
-def difference(name):
-    data = open(os.path.join(folder, name), "rb").read()
-    return abs(len(data) - len(home)) + sum(a != b for a, b in zip(data[:200000], home[:200000]))
-best = max((f for f in os.listdir(folder) if f.startswith("shot-")), key=difference)
+home = Image.open(os.path.join(folder, "home.png")).convert("RGB")
+top = (0, 0, home.width, home.height // 4)
+def banner_depth(name):
+    diff = ImageChops.difference(Image.open(os.path.join(folder, name)).convert("RGB"), home).crop(top)
+    box = diff.point(lambda v: 255 if v > 40 else 0).getbbox()
+    return box[3] if box else 0
+best = max((f for f in os.listdir(folder) if f.startswith("shot-")), key=banner_depth)
 shutil.copy(os.path.join(folder, best), out)
-print("Notification picture:", best)
+print("Notification picture:", best, banner_depth(best))
 PY
   sleep 6
 fi
