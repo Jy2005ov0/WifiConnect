@@ -67,8 +67,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -91,12 +89,11 @@ fun MainScreen(
     appearance: Appearance,
     onAppearanceChange: (Appearance) -> Unit,
     onSignOut: () -> Unit = {},
+    speedSummary: String? = null,
+    onOpenSpeedTest: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val scope = rememberCoroutineScope()
-    var speed by remember { mutableStateOf(SpeedTest.demoResult) }
-    var testingSpeed by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
         val feedback = when {
@@ -191,24 +188,8 @@ fun MainScreen(
                     RowDivider()
                     DetailRow(
                         Icons.Rounded.Speed, Orange, stringResource(R.string.speed_title),
-                        when {
-                            testingSpeed -> stringResource(R.string.speed_testing)
-                            speed != null -> speed.orEmpty()
-                            else -> stringResource(R.string.speed_test)
-                        },
-                        onClick = if (testingSpeed) null else {
-                            {
-                                testingSpeed = true
-                                scope.launch {
-                                    speed = try {
-                                        SpeedTest.run(context).summary(context)
-                                    } catch (e: Exception) {
-                                        context.getString(R.string.speed_unavailable)
-                                    }
-                                    testingSpeed = false
-                                }
-                            }
-                        },
+                        speedSummary ?: stringResource(R.string.speed_test),
+                        onClick = onOpenSpeedTest,
                     )
                 }
             }

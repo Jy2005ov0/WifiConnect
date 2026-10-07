@@ -10,8 +10,8 @@ struct ContentView: View {
     @State private var showDemoHistory = false
     @State private var showDemoShare = false
     @State private var pendingSetup: SharedSetup?
-    @State private var speed: String?
-    @State private var testingSpeed = false
+    @State private var speedTest = SpeedTest()
+    @State private var showSpeedTest = false
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
@@ -52,14 +52,13 @@ struct ContentView: View {
                     .buttonStyle(.plain)
                     Divider().padding(.leading, 58)
                     Button {
-                        Task { await testSpeed() }
+                        showSpeedTest = true
                     } label: {
                         DetailRow(symbol: "speedometer", color: .orange, title: "Speed",
-                                  value: testingSpeed ? String(localized: "Testing…") : (speed ?? String(localized: "Test")),
-                                  showsChevron: !testingSpeed)
+                                  value: speedTest.summary ?? String(localized: "Test"),
+                                  showsChevron: true)
                     }
                     .buttonStyle(.plain)
-                    .disabled(testingSpeed)
                 }
                 .padding(.horizontal, 20)
 
@@ -129,6 +128,9 @@ struct ContentView: View {
             .sheet(isPresented: $showDemoHistory) {
                 NavigationStack { HistoryView() }
             }
+            .sheet(isPresented: $showSpeedTest) {
+                NavigationStack { SpeedTestView(test: speedTest) }
+            }
             .sheet(isPresented: $showDemoShare) {
                 NavigationStack { ShareSetupView() }
             }
@@ -194,16 +196,6 @@ struct ContentView: View {
         }
     }
 
-    private func testSpeed() async {
-        testingSpeed = true
-        defer { testingSpeed = false }
-        do {
-            speed = try await SpeedTest.run().summary
-        } catch {
-            speed = String(localized: "No connection")
-        }
-    }
-
     /// Opens Settings, asking for Face ID first when the app lock is on.
     private func openSettings() {
         guard AppLock.isEnabled, hasCredentials else {
@@ -244,7 +236,7 @@ struct ContentView: View {
         }
         hasCredentials = Credentials.isConfigured
         studentID = Credentials.studentID
-        speed = defaults.string(forKey: "demoSpeed")
+        if defaults.string(forKey: "demoSpeed") != nil { speedTest.showDemoResult() }
         switch demoState {
         case "working": model.state = .working
         case "connected": model.state = .connected("You're signed in and ready to go.")
@@ -259,6 +251,9 @@ struct ContentView: View {
             showDemoHistory = true
         case "share":
             showDemoShare = true
+        case "speed":
+            speedTest.showDemoResult()
+            showSpeedTest = true
         default: break
         }
         return true

@@ -25,7 +25,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | **Sign-in history** | Settings › Sign-In History, with **Copy Diagnostics** to send if something goes wrong | Same |
 | **App lock** | Face ID / Touch ID before showing Settings | Fingerprint, face or screen lock |
 | **Sign out** | Sign Out button when connected | Same |
-| **Speed check** | Ping and download speed over the Wi-Fi | Same |
+| **Speed test** | A full test page: live gauge, ping, jitter, download and upload over the Wi-Fi | Same |
 | **Languages** | English, Bahasa Melayu, 中文 | Same |
 | **Share with classmates** | Settings › Share Setup: a QR code they scan with their camera (no password included) | Same, plus pasting a shared link |
 
@@ -35,6 +35,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | Settings | <img src="screenshots/ios-3-settings.png" width="220"> | <img src="screenshots/android-3-settings.png" width="220"> |
 | Sign-in history | <img src="screenshots/ios-6-history.png" width="220"> | <img src="screenshots/android-6-history.png" width="220"> |
 | Share with friends | <img src="screenshots/ios-7-share.png" width="220"> | <img src="screenshots/android-7-share.png" width="220"> |
+| Speed test | <img src="screenshots/ios-8-speedtest.png" width="220"> | <img src="screenshots/android-8-speedtest.png" width="220"> |
 
 Requires iOS 17 or later, or Android 9 or later.
 

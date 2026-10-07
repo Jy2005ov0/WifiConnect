@@ -100,6 +100,17 @@
     <string name="speed_testing">Testing…</string>
     <string name="speed_unavailable">No connection</string>
     <string name="speed_result">%1$d ms · %2$s Mbps</string>
+    <string name="speedtest_title">Speed Test</string>
+    <string name="speedtest_start">Start</string>
+    <string name="speedtest_stop">Stop</string>
+    <string name="speedtest_again">Test Again</string>
+    <string name="speedtest_download">Download</string>
+    <string name="speedtest_upload">Upload</string>
+    <string name="speedtest_ping">Ping</string>
+    <string name="speedtest_jitter">Jitter</string>
+    <string name="speedtest_failed_title">Couldn\'t Test</string>
+    <string name="speedtest_failed">Couldn\'t reach the test server. Make sure you\'re connected to the Wi-Fi and online.</string>
+    <string name="speedtest_footer">Tested over the Wi-Fi only, using Cloudflare\'s speed test servers. On fast Wi-Fi a test can use over 100 MB of data.</string>
     <string name="tile_label">Campus Wi-Fi</string>
     <string name="tile_signing_in">Signing in…</string>
     <string name="tile_tap_to_sign_in">Tap to sign in</string>

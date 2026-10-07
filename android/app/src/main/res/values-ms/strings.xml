@@ -99,6 +99,17 @@
     <string name="speed_testing">Menguji…</string>
     <string name="speed_unavailable">Tiada sambungan</string>
     <string name="speed_result">%1$d ms · %2$s Mbps</string>
+    <string name="speedtest_title">Ujian Kelajuan</string>
+    <string name="speedtest_start">Mula</string>
+    <string name="speedtest_stop">Henti</string>
+    <string name="speedtest_again">Uji Semula</string>
+    <string name="speedtest_download">Muat Turun</string>
+    <string name="speedtest_upload">Muat Naik</string>
+    <string name="speedtest_ping">Ping</string>
+    <string name="speedtest_jitter">Ketar</string>
+    <string name="speedtest_failed_title">Tidak Dapat Menguji</string>
+    <string name="speedtest_failed">Tidak dapat mencapai pelayan ujian. Pastikan anda bersambung ke Wi-Fi dan dalam talian.</string>
+    <string name="speedtest_footer">Diuji melalui Wi-Fi sahaja, menggunakan pelayan ujian kelajuan Cloudflare. Pada Wi-Fi yang laju, satu ujian boleh menggunakan lebih 100 MB data.</string>
     <string name="tile_label">Wi-Fi Kampus</string>
     <string name="tile_signing_in">Sedang log masuk…</string>
     <string name="tile_tap_to_sign_in">Ketik untuk log masuk</string>

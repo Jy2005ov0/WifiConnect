@@ -1,22 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "%lld ms · %@ Mbps": {
-      "localizations": {
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld ms · %@ Mbps"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld 毫秒 · %@ Mbps"
-          }
-        }
-      }
-    },
     "Account": {
       "localizations": {
         "ms": {
@@ -353,6 +337,22 @@
         }
       }
     },
+    "Couldn't Test": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak Dapat Menguji"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法测试"
+          }
+        }
+      }
+    },
     "Couldn't find a login form on your school's page. Set the login page manually in Settings.": {
       "localizations": {
         "ms": {
@@ -381,6 +381,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法连接 Wi-Fi。请确认你已连接到学校的网络。"
+          }
+        }
+      }
+    },
+    "Couldn't reach the test server. Make sure you're connected to the Wi-Fi and online.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dapat mencapai pelayan ujian. Pastikan anda bersambung ke Wi-Fi dan dalam talian."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法连接测试服务器。请确认你已连接 Wi-Fi 并且可以上网。"
           }
         }
       }
@@ -445,6 +461,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "完成"
+          }
+        }
+      }
+    },
+    "Download": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muat Turun"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载"
           }
         }
       }
@@ -589,6 +621,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "在“快捷指令”App 中"
+          }
+        }
+      }
+    },
+    "Jitter": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抖动"
           }
         }
       }
@@ -801,22 +849,6 @@
         }
       }
     },
-    "No connection": {
-      "localizations": {
-        "ms": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tiada sambungan"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "无连接"
-          }
-        }
-      }
-    },
     "Not Set": {
       "localizations": {
         "ms": {
@@ -973,6 +1005,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "密码字段"
+          }
+        }
+      }
+    },
+    "Ping": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "延迟"
           }
         }
       }
@@ -1441,6 +1489,38 @@
         }
       }
     },
+    "Speed Test": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ujian Kelajuan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网速测试"
+          }
+        }
+      }
+    },
+    "Start": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mula"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始"
+          }
+        }
+      }
+    },
     "Stay Signed In": {
       "localizations": {
         "ms": {
@@ -1469,6 +1549,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "“保持登录”会在后台检查，如果校园 Wi-Fi 让你退出登录，会自动重新登录。具体运行时间由 iOS 决定。应用自动为你登录时会显示通知。"
+          }
+        }
+      }
+    },
+    "Stop": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henti"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止"
           }
         }
       }
@@ -1601,18 +1697,34 @@
         }
       }
     },
-    "Testing…": {
+    "Test Again": {
       "localizations": {
         "ms": {
           "stringUnit": {
             "state": "translated",
-            "value": "Menguji…"
+            "value": "Uji Semula"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "正在测试…"
+            "value": "重新测试"
+          }
+        }
+      }
+    },
+    "Tested over the Wi-Fi only, using Cloudflare's speed test servers. On fast Wi-Fi a test can use over 100 MB of data.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diuji melalui Wi-Fi sahaja, menggunakan pelayan ujian kelajuan Cloudflare. Pada Wi-Fi yang laju, satu ujian boleh menggunakan lebih 100 MB data."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅通过 Wi-Fi 测试，使用 Cloudflare 的测速服务器。在高速 Wi-Fi 上，一次测试可能消耗超过 100 MB 流量。"
           }
         }
       }
@@ -1773,6 +1885,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "解锁以查看学号和密码。"
+          }
+        }
+      }
+    },
+    "Upload": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muat Naik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上传"
           }
         }
       }

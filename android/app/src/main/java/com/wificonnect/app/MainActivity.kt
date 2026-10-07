@@ -71,10 +71,13 @@ class MainActivity : FragmentActivity() {
 
             WifiConnectTheme(dark = dark) {
                 val model: ConnectionViewModel = viewModel()
+                val speedTest: SpeedTestViewModel = viewModel()
                 var hasCredentials by remember { mutableStateOf(Credentials.isConfigured(context)) }
                 var showSettings by rememberSaveable { mutableStateOf(demo?.showSettings ?: !hasCredentials) }
                 var showHistory by rememberSaveable { mutableStateOf(demo?.showHistory ?: false) }
                 var showShare by rememberSaveable { mutableStateOf(demo?.showShare ?: false) }
+                var showSpeed by rememberSaveable { mutableStateOf(demo?.showSpeed ?: false) }
+                LaunchedEffect(Unit) { if (demo?.speedResult == true) speedTest.showDemoResult() }
 
                 // Lets automatic sign-in tell you when it has signed you in.
                 val notificationPermission = rememberLauncherForActivityResult(RequestPermission()) { }
@@ -126,6 +129,7 @@ class MainActivity : FragmentActivity() {
 
                 AnimatedContent(
                     targetState = when {
+                        showSpeed -> 4
                         showSettings && showShare -> 3
                         showSettings && showHistory -> 2
                         showSettings -> 1
@@ -134,7 +138,9 @@ class MainActivity : FragmentActivity() {
                     transitionSpec = { fadeIn() togetherWith fadeOut() },
                     label = "screen",
                 ) { screen ->
-                    if (screen == 3) {
+                    if (screen == 4) {
+                        SpeedTestScreen(speedTest, onBack = { showSpeed = false })
+                    } else if (screen == 3) {
                         ShareSetupScreen(
                             onBack = { showShare = false },
                             onImport = { incomingSetup.value = it },
@@ -171,6 +177,8 @@ class MainActivity : FragmentActivity() {
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
                             onSignOut = { model.signOut() },
+                            speedSummary = speedTest.summary,
+                            onOpenSpeedTest = { showSpeed = true },
                         )
                     }
                 }
@@ -192,11 +200,12 @@ private class Demo(
     val showSettings: Boolean,
     val showHistory: Boolean,
     val showShare: Boolean,
+    val showSpeed: Boolean,
+    val speedResult: Boolean,
 ) {
     companion object {
         fun from(intent: android.content.Intent, context: android.content.Context): Demo? {
             val stateName = intent.getStringExtra("demoState") ?: return null
-            SpeedTest.demoResult = intent.getStringExtra("demoSpeed")
             intent.getStringExtra("demoStudentId")?.let {
                 Credentials.setStudentId(context, it)
                 Credentials.setPassword(context, "password")
@@ -214,6 +223,8 @@ private class Demo(
                 showSettings = screen in setOf("settings", "history", "share"),
                 showHistory = screen == "history",
                 showShare = screen == "share",
+                showSpeed = screen == "speed",
+                speedResult = intent.hasExtra("demoSpeed") || screen == "speed",
             )
         }
     }

@@ -99,6 +99,17 @@
     <string name="speed_testing">正在测试…</string>
     <string name="speed_unavailable">无连接</string>
     <string name="speed_result">%1$d 毫秒 · %2$s Mbps</string>
+    <string name="speedtest_title">网速测试</string>
+    <string name="speedtest_start">开始</string>
+    <string name="speedtest_stop">停止</string>
+    <string name="speedtest_again">重新测试</string>
+    <string name="speedtest_download">下载</string>
+    <string name="speedtest_upload">上传</string>
+    <string name="speedtest_ping">延迟</string>
+    <string name="speedtest_jitter">抖动</string>
+    <string name="speedtest_failed_title">无法测试</string>
+    <string name="speedtest_failed">无法连接测试服务器。请确认你已连接 Wi-Fi 并且可以上网。</string>
+    <string name="speedtest_footer">仅通过 Wi-Fi 测试，使用 Cloudflare 的测速服务器。在高速 Wi-Fi 上，一次测试可能消耗超过 100 MB 流量。</string>
     <string name="tile_label">校园 Wi-Fi</string>
     <string name="tile_signing_in">正在登录…</string>
     <string name="tile_tap_to_sign_in">点按登录</string>
