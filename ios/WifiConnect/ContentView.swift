@@ -239,7 +239,7 @@ struct ContentView: View {
         if defaults.string(forKey: "demoSpeed") != nil { speedTest.showDemoResult() }
         switch demoState {
         case "working": model.state = .working
-        case "connected": model.state = .connected("You're signed in and ready to go.")
+        case "connected": model.state = .connected(String(localized: "You're signed in and ready to go."))
         case "failed": model.state = .failed(LoginError.stillOffline.localizedDescription)
         default: model.state = .idle
         }
