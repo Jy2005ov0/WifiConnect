@@ -1,15 +1,31 @@
 # WiFi Connect
 
-A small iPhone app that signs you in to your school's Wi-Fi login page with your student ID and password, so you don't have to type them every time you get to campus.
+A small app for **iPhone and Android** that signs you in to your school's Wi-Fi login page with your student ID and password, so you don't have to type them every time you get to campus.
 
 - **One tap:** open the app and tap **Connect**. Opening the app also tries to sign in on its own.
-- **Fully automatic:** set up a Shortcuts automation once and your iPhone signs in by itself every time it joins the school Wi-Fi.
-- **Private:** your student ID and password are stored in the iPhone Keychain and are only sent to your school's login page.
-- **Simple design:** built with SwiftUI and standard iOS controls, with support for Dark Mode and Dynamic Type.
+- **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
+- **Private:** your student ID and password are stored encrypted on your phone and are only sent to your school's login page.
+- **Simple design:** a clean, Apple-style layout on both phones, with Dark Mode support.
 
-Requires iOS 17 or later.
+| | iPhone | Android |
+| --- | --- | --- |
+| Main screen | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
+| Settings | <img src="screenshots/ios-3-settings.png" width="220"> | <img src="screenshots/android-3-settings.png" width="220"> |
 
-## Install it on your iPhone (no Mac needed)
+Requires iOS 17 or later, or Android 9 or later.
+
+## Install it on Android
+
+1. On GitHub, open this repository's **Actions** tab and click the newest **Build Android app** run with a green tick ✅.
+2. Under **Artifacts**, download **WifiConnect-apk** and unzip it to get `WifiConnect.apk`. Copy it to your phone, or download it on the phone directly.
+3. Open `WifiConnect.apk` on your phone. If Android asks, allow your browser or file manager to **install unknown apps**, then tap **Install**.
+4. Open **WiFi Connect**, enter your student ID and password, and allow notifications so it can tell you when it has signed you in.
+
+That's it. **Sign In Automatically** is on by default, so the next time your phone joins the school Wi-Fi, it signs in by itself, even if the app is closed.
+
+> Each new build is signed with a different key. To update the app, uninstall the old version first.
+
+## Install it on iPhone (no Mac needed)
 
 GitHub builds the app for you on one of its Macs, and you install it from a Windows PC with **Sideloadly**.
 
@@ -36,9 +52,9 @@ To build again, open **Actions** › **Build iPhone app** › **Run workflow**.
 
 ### Have a Mac instead?
 
-Open `WifiConnect.xcodeproj` in Xcode 16 or later. Under **Signing & Capabilities**, pick your Apple ID as the **Team** and change the **Bundle Identifier** to something unique. Then select your iPhone and press **Run**.
+Open `ios/WifiConnect.xcodeproj` in Xcode 16 or later. Under **Signing & Capabilities**, pick your Apple ID as the **Team** and change the **Bundle Identifier** to something unique. Then select your iPhone and press **Run**.
 
-## No-install alternative: a Shortcuts automation only
+## iPhone alternative with nothing to install: a Shortcuts automation
 
 If you'd rather not install anything, the Shortcuts app can send the login form by itself. This works for most simple login pages, but not ones that add a new security token each time. It also stores your password in the shortcut as plain text.
 
@@ -57,7 +73,7 @@ If you'd rather not install anything, the Shortcuts app can send the login form 
 4. Add one field for each entry you wrote down. Use your student ID and password for those two fields.
 5. Tap **Done**. Next time you join the school Wi-Fi, your iPhone logs in by itself.
 
-## Set it up
+## Set it up on iPhone
 
 1. Open **WiFi Connect** and enter your **student ID** and **password**.
 2. Enter your school's **Wi-Fi name**. It's used in the setup guide.
@@ -77,7 +93,7 @@ To stop iOS from showing the login popup as well, go to **Settings › Wi-Fi**, 
 
 The app finds your school's login form the same way iOS does: it loads `captive.apple.com`, follows the redirect to the login page and fills in the form. Some portals build their login page entirely in JavaScript, and those need to be set up by hand:
 
-1. In **Settings**, join the school Wi-Fi (don't sign in yet) and tap **Detect Login Page**. If the form is found, the details are filled in for you.
+1. Join the school Wi-Fi (don't sign in yet), open **Settings** in the app and tap **Detect Login Page**. If the form is found, the details are filled in for you.
 2. Otherwise, turn on **Set Login Page Manually** and fill in:
    - **URL:** where the form is submitted.
    - **Method:** usually `POST`.
@@ -92,12 +108,9 @@ That's a WPA2/WPA3-Enterprise (802.1X) network, such as eduroam. iOS saves those
 
 ## Project layout
 
-| File | Purpose |
+| Path | Purpose |
 | --- | --- |
-| `WifiConnect/ContentView.swift` | Main screen with the status indicator and Connect button |
-| `WifiConnect/SettingsView.swift` | Account, Wi-Fi name and login page settings |
-| `WifiConnect/AutomationGuideView.swift` | Shortcuts automation guide |
-| `WifiConnect/PortalLogin.swift` | Detects the captive portal, submits the form and checks you're online |
-| `WifiConnect/HTMLForm.swift` | Finds the login form and its fields in the portal's HTML |
-| `WifiConnect/LogInIntent.swift` | The **Log In to Campus Wi-Fi** action for Shortcuts and Siri |
-| `WifiConnect/Credentials.swift` | Keychain storage for the student ID and password |
+| `ios/` | iPhone app (SwiftUI). `PortalLogin.swift` signs in, `HTMLForm.swift` reads the login page, and `LogInIntent.swift` adds the Shortcuts action. |
+| `android/` | Android app (Kotlin + Jetpack Compose). `PortalLogin.kt` signs in, `HtmlForm.kt` reads the login page, and `AutoLogin.kt` signs in automatically when you join a network. |
+| `.github/workflows/` | Builds the iPhone `.ipa` and Android `.apk`, and takes the screenshots. |
+| `screenshots/` | Screenshots of both apps, taken automatically in the iOS simulator and Android emulator. |
