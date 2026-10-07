@@ -5,6 +5,8 @@ import androidx.core.content.edit
 
 /** How to reach the school's login page. By default the page is detected automatically. */
 data class PortalSettings(
+    /** The campus Wi-Fi name, shown on the main screen. */
+    val wifiName: String = DEFAULT_WIFI_NAME,
     val autoLogin: Boolean = true,
     val useCustomPortal: Boolean = false,
     val loginUrl: String = "",
@@ -22,6 +24,7 @@ data class PortalSettings(
 
     fun save(context: Context) {
         prefs(context).edit {
+            putString("wifiName", wifiName)
             putBoolean("autoLogin", autoLogin)
             putBoolean("useCustomPortal", useCustomPortal)
             putString("loginUrl", loginUrl)
@@ -33,12 +36,16 @@ data class PortalSettings(
     }
 
     companion object {
+        /** UTAR's campus Wi-Fi. */
+        const val DEFAULT_WIFI_NAME = "utarwifi"
+
         private fun prefs(context: Context) = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         fun load(context: Context): PortalSettings {
             val p = prefs(context)
             val d = PortalSettings()
             return PortalSettings(
+                wifiName = p.getString("wifiName", d.wifiName) ?: d.wifiName,
                 autoLogin = p.getBoolean("autoLogin", d.autoLogin),
                 useCustomPortal = p.getBoolean("useCustomPortal", d.useCustomPortal),
                 loginUrl = p.getString("loginUrl", d.loginUrl) ?: d.loginUrl,

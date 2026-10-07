@@ -27,8 +27,12 @@ enum Credentials {
 
     private static func read(_ account: String) -> String {
         #if DEBUG
-        // Unsigned simulator builds (used for screenshots) can't use the Keychain.
-        if let demoID = UserDefaults.standard.string(forKey: "demoStudentID") {
+        // Unsigned simulator builds (used for screenshots and tests) can't use the Keychain.
+        let defaults = UserDefaults.standard
+        if let testID = defaults.string(forKey: "testStudentID") {
+            return account == "studentID" ? testID : (defaults.string(forKey: "testPassword") ?? "")
+        }
+        if let demoID = defaults.string(forKey: "demoStudentID") {
             return account == "studentID" ? demoID : "password"
         }
         #endif

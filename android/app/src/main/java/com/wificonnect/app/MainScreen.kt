@@ -164,10 +164,7 @@ fun MainScreen(
             ) {
                 Column {
                     val settings = PortalSettings.load(context)
-                    DetailRow(
-                        Icons.Rounded.Wifi, Blue, "Network",
-                        networkName(context) ?: if (PortalLogin.wifiNetwork(context) != null) "Wi-Fi" else "Not Connected",
-                    )
+                    DetailRow(Icons.Rounded.Wifi, Blue, "Network", settings.wifiName.ifEmpty { "Not Set" })
                     RowDivider()
                     DetailRow(
                         Icons.Rounded.Badge, Indigo, "Student ID",
@@ -361,12 +358,6 @@ private fun ConnectionState.tint(primary: Color) = when (this) {
     else -> primary
 }
 
-/** The joined Wi-Fi's name. Android hides it from apps without location access, so this is often null. */
-@Suppress("DEPRECATION")
-private fun networkName(context: android.content.Context): String? {
-    val wifi = context.applicationContext.getSystemService(android.net.wifi.WifiManager::class.java)
-    return wifi?.connectionInfo?.ssid?.trim('"')?.takeIf { it.isNotEmpty() && it != "<unknown ssid>" }
-}
 
 private fun title(state: ConnectionState, hasCredentials: Boolean) = when (state) {
     ConnectionState.Idle -> if (hasCredentials) "Ready" else "Welcome"

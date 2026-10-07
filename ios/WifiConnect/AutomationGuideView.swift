@@ -4,7 +4,7 @@ import SwiftUI
 struct AutomationGuideView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
-    @AppStorage(SettingsKey.wifiName) private var wifiName = ""
+    @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
 
     private var networkName: String {
         wifiName.isEmpty ? "your school Wi-Fi" : "“\(wifiName)”"

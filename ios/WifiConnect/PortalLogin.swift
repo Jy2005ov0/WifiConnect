@@ -44,7 +44,15 @@ struct PortalLogin {
     }
 
     /// The page iOS itself uses to detect Wi-Fi login screens.
-    static let probeURL = URL(string: "http://captive.apple.com/hotspot-detect.html")!
+    static var probeURL: URL {
+        #if DEBUG
+        // Lets the end-to-end test point the app at a mock login page.
+        if let override = UserDefaults.standard.string(forKey: "testProbeURL"), let url = URL(string: override) {
+            return url
+        }
+        #endif
+        return URL(string: "http://captive.apple.com/hotspot-detect.html")!
+    }
 
     private let session: URLSession
 

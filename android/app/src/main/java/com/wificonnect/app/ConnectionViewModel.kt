@@ -33,6 +33,8 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
             } catch (e: LoginError) {
                 ConnectionState.Failed(e.message.orEmpty())
             }
+            // The end-to-end test reads this from logcat.
+            if (BuildConfig.DEBUG) android.util.Log.i("WifiConnect", "Result: $state")
         }
     }
 }

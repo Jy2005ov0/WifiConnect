@@ -135,6 +135,13 @@ fun SettingsScreen(
             }
 
             Section(
+                header = "School Wi-Fi",
+                footer = "The Wi-Fi name you join on campus.",
+            ) {
+                PlainField(settings.wifiName, { settings = settings.copy(wifiName = it) }, "Network Name")
+            }
+
+            Section(
                 header = "Automatic Sign-In",
                 footer = "Signs in by itself whenever your phone joins a Wi-Fi network with a login page, even when the app is closed.",
             ) {

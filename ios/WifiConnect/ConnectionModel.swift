@@ -31,5 +31,11 @@ final class ConnectionModel {
         } catch {
             state = .failed(error.localizedDescription)
         }
+        #if DEBUG
+        // Read back by the end-to-end test.
+        let run = UserDefaults.standard.string(forKey: "testRun") ?? ""
+        UserDefaults.standard.set("\(run): \(String(describing: state))", forKey: "testResult")
+        UserDefaults.standard.synchronize()
+        #endif
     }
 }

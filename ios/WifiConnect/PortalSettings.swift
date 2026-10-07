@@ -8,6 +8,9 @@ enum SettingsKey {
     static let usernameField = "usernameField"
     static let passwordField = "passwordField"
     static let extraFields = "extraFields"
+
+    /// UTAR's campus Wi-Fi.
+    static let defaultWifiName = "utarwifi"
 }
 
 /// How to reach the school's login page. By default the page is detected automatically.

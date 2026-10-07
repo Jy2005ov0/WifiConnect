@@ -4,7 +4,7 @@ struct ContentView: View {
     @State private var model = ConnectionModel()
     @State private var hasCredentials = Credentials.isConfigured
     @State private var studentID = Credentials.studentID
-    @AppStorage(SettingsKey.wifiName) private var wifiName = ""
+    @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @State private var showSettings = false
     @State private var showAutomationGuide = false
     @Environment(\.scenePhase) private var scenePhase
@@ -115,16 +115,31 @@ struct ContentView: View {
             .onAppear {
                 #if DEBUG
                 if applyDemo() { return }
+                if UserDefaults.standard.string(forKey: "testStudentID") != nil {
+                    // End-to-end test: sign in straight away with the test account.
+                    hasCredentials = true
+                    studentID = Credentials.studentID
+                    Task { await model.connect() }
+                    return
+                }
                 #endif
                 if !hasCredentials { showSettings = true }
             }
             .onChange(of: scenePhase) {
                 // Opening the app on campus signs you in straight away.
-                if scenePhase == .active, hasCredentials, model.state != .working, !isDemo {
+                if scenePhase == .active, hasCredentials, model.state != .working, !isDemo, !isTest {
                     Task { await model.connect(automatic: true) }
                 }
             }
         }
+    }
+
+    private var isTest: Bool {
+        #if DEBUG
+        return UserDefaults.standard.string(forKey: "testStudentID") != nil
+        #else
+        return false
+        #endif
     }
 
     private var isDemo: Bool {

@@ -9,7 +9,7 @@ struct SettingsView: View {
     @State private var detecting = false
     @State private var detectMessage: String?
 
-    @AppStorage(SettingsKey.wifiName) private var wifiName = ""
+    @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
     @AppStorage(SettingsKey.useCustomPortal) private var useCustomPortal = false
     @AppStorage(SettingsKey.loginURL) private var loginURL = ""

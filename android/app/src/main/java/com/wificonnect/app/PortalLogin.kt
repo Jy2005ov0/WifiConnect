@@ -90,8 +90,8 @@ class PortalLogin(private val network: Network) {
     }
 
     private fun probe(): ProbeResult {
-        var page = request(PROBE_URL)
-        if (page.status == 204 && page.url.host == PROBE_URL.host) return ProbeResult.Online
+        var page = request(probeUrl)
+        if (page.status == 204 && page.url.host == probeUrl.host) return ProbeResult.Online
         // Some portals bounce through a page or two of meta/JavaScript redirects.
         repeat(3) {
             if (HtmlForm.loginForm(page.html, page.url) != null) return ProbeResult.Portal(page)
@@ -186,7 +186,10 @@ class PortalLogin(private val network: Network) {
 
     companion object {
         /** The page Android itself uses to detect Wi-Fi login screens. Returns 204 when online. */
-        private val PROBE_URL = URL("http://connectivitycheck.gstatic.com/generate_204")
+        private val DEFAULT_PROBE_URL = URL("http://connectivitycheck.gstatic.com/generate_204")
+
+        /** Debug builds let the end-to-end test point this at a mock login page. */
+        var probeUrl: URL = DEFAULT_PROBE_URL
         private const val MAX_REDIRECTS = 8
         private const val TIMEOUT_MS = 10_000
         private const val USER_AGENT =

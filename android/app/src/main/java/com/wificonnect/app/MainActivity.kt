@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
         AutoLogin.sync(this)
 
         val demo = if (BuildConfig.DEBUG) Demo.from(intent, this) else null
+        if (BuildConfig.DEBUG) applyTestExtras()
 
         setContent {
             val context = LocalContext.current
@@ -101,6 +102,13 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+/** Debug-only launch extras used by the end-to-end test: a mock login page and a test account. */
+private fun ComponentActivity.applyTestExtras() {
+    intent.getStringExtra("testProbeUrl")?.let { PortalLogin.probeUrl = java.net.URL(it) }
+    intent.getStringExtra("testStudentId")?.let { Credentials.setStudentId(this, it) }
+    intent.getStringExtra("testPassword")?.let { Credentials.setPassword(this, it) }
 }
 
 /** Debug-only launch extras used to take the README screenshots. */
