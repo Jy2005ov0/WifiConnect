@@ -95,6 +95,11 @@ class PortalLogin(private val network: Network) {
             throw LoginError.StillOffline
         }
 
+    /** True when this network is showing a login page, i.e. you've been signed out. */
+    suspend fun needsSignIn(): Boolean = withContext(Dispatchers.IO) {
+        runCatching { probe() is ProbeResult.Portal }.getOrDefault(false)
+    }
+
     /** Finds the login form on the current network, for filling in the manual settings. Null when already online. */
     suspend fun detectForm(): HtmlForm? = withContext(Dispatchers.IO) {
         val result = try {

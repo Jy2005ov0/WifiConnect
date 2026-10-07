@@ -8,6 +8,8 @@ enum SettingsKey {
     static let usernameField = "usernameField"
     static let passwordField = "passwordField"
     static let extraFields = "extraFields"
+    static let staySignedIn = "staySignedIn"
+    static let notifyOnConnect = "notifyOnConnect"
 
     /// UTAR's campus Wi-Fi.
     static let defaultWifiName = "utarwifi"

@@ -124,6 +124,7 @@ struct ContentView: View {
                 }
                 #endif
                 if !hasCredentials { showSettings = true }
+                Task { await Notifier.requestPermission() }
             }
             .onOpenURL { url in
                 guard url.scheme == "wificonnect" else { return }

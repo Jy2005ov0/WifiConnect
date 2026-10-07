@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -143,9 +144,18 @@ fun SettingsScreen(
 
             Section(
                 header = "Automatic Sign-In",
-                footer = "Signs in by itself whenever your phone joins a Wi-Fi network with a login page, even when the app is closed.",
+                footer = "Signs in by itself whenever your phone joins a Wi-Fi network with a login page, even when the app is closed. " +
+                    stringResource(R.string.setting_stay_signed_in_footer),
             ) {
                 SwitchRow("Sign In Automatically", settings.autoLogin) { settings = settings.copy(autoLogin = it) }
+                Divider()
+                SwitchRow(stringResource(R.string.setting_stay_signed_in), settings.staySignedIn) {
+                    settings = settings.copy(staySignedIn = it)
+                }
+                Divider()
+                SwitchRow(stringResource(R.string.setting_notify), settings.notifyOnConnect) {
+                    settings = settings.copy(notifyOnConnect = it)
+                }
             }
 
             Section(header = "Appearance", footer = null, card = false) {

@@ -18,11 +18,7 @@ final class ConnectionModel {
         guard state != .working else { return }
         state = .working
         do {
-            let outcome = try await PortalLogin().logIn(
-                studentID: Credentials.studentID,
-                password: Credentials.password,
-                settings: .load()
-            )
+            let outcome = try await SignIn.run(automatic ? .automatic : .app)
             switch outcome {
             case .alreadyOnline: state = .connected("You're already online.")
             case .loggedIn: state = .connected("You're signed in and ready to go.")

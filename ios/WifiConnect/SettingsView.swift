@@ -11,6 +11,8 @@ struct SettingsView: View {
 
     @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
+    @AppStorage(SettingsKey.staySignedIn) private var staySignedIn = true
+    @AppStorage(SettingsKey.notifyOnConnect) private var notifyOnConnect = true
     @AppStorage(SettingsKey.useCustomPortal) private var useCustomPortal = false
     @AppStorage(SettingsKey.loginURL) private var loginURL = ""
     @AppStorage(SettingsKey.method) private var method = "POST"
@@ -62,6 +64,16 @@ struct SettingsView: View {
                     Text("School Wi-Fi")
                 } footer: {
                     Text("The Wi-Fi name you join on campus. Used in the auto-connect guide.")
+                }
+
+                Section {
+                    Toggle("Stay Signed In", isOn: $staySignedIn)
+                        .onChange(of: staySignedIn) { KeepAlive.schedule() }
+                    Toggle("Notify When Connected", isOn: $notifyOnConnect)
+                } header: {
+                    Text("Automatic Sign-In")
+                } footer: {
+                    Text("Stay Signed In checks in the background and signs you back in if the campus Wi-Fi logs you out. iOS decides exactly when it runs. Notifications appear when the app signs you in on its own.")
                 }
 
                 Section {

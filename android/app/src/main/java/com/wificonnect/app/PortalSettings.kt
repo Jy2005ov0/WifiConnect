@@ -8,6 +8,10 @@ data class PortalSettings(
     /** The campus Wi-Fi name, shown on the main screen. */
     val wifiName: String = DEFAULT_WIFI_NAME,
     val autoLogin: Boolean = true,
+    /** Check every 15 minutes and sign back in if the Wi-Fi logged you out. */
+    val staySignedIn: Boolean = true,
+    /** Notify when the app signs in on its own. */
+    val notifyOnConnect: Boolean = true,
     val useCustomPortal: Boolean = false,
     val loginUrl: String = "",
     val method: String = "POST",
@@ -26,6 +30,8 @@ data class PortalSettings(
         prefs(context).edit {
             putString("wifiName", wifiName)
             putBoolean("autoLogin", autoLogin)
+            putBoolean("staySignedIn", staySignedIn)
+            putBoolean("notifyOnConnect", notifyOnConnect)
             putBoolean("useCustomPortal", useCustomPortal)
             putString("loginUrl", loginUrl)
             putString("method", method)
@@ -47,6 +53,8 @@ data class PortalSettings(
             return PortalSettings(
                 wifiName = p.getString("wifiName", d.wifiName) ?: d.wifiName,
                 autoLogin = p.getBoolean("autoLogin", d.autoLogin),
+                staySignedIn = p.getBoolean("staySignedIn", d.staySignedIn),
+                notifyOnConnect = p.getBoolean("notifyOnConnect", d.notifyOnConnect),
                 useCustomPortal = p.getBoolean("useCustomPortal", d.useCustomPortal),
                 loginUrl = p.getString("loginUrl", d.loginUrl) ?: d.loginUrl,
                 method = p.getString("method", d.method) ?: d.method,

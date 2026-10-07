@@ -8,15 +8,13 @@ struct LogInIntent: AppIntent {
     static var openAppWhenRun: Bool = false
 
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let outcome = try await PortalLogin().logIn(
-            studentID: Credentials.studentID,
-            password: Credentials.password,
-            settings: .load()
-        )
+        let outcome = try await SignIn.run(.shortcut)
         switch outcome {
         case .alreadyOnline:
             return .result(dialog: "You're already online.")
         case .loggedIn:
+            // A Shortcuts automation runs this when you arrive, so say so.
+            await Notifier.signedIn()
             return .result(dialog: "Logged in to campus Wi-Fi.")
         }
     }

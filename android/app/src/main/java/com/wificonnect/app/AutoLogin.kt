@@ -24,20 +24,22 @@ import kotlinx.coroutines.launch
  * with a login page appears, even when the app isn't open.
  */
 object AutoLogin {
-    private const val CHANNEL_ID = "login"
+    private const val CHANNEL_ID = "sign-in"
     private const val NOTIFICATION_ID = 1
 
     fun sync(context: Context) {
+        val settings = PortalSettings.load(context)
         val cm = context.getSystemService(ConnectivityManager::class.java)
         val intent = callbackIntent(context)
         runCatching { cm.unregisterNetworkCallback(intent) }
-        if (PortalSettings.load(context).autoLogin) {
+        if (settings.autoLogin) {
             val request = NetworkRequest.Builder()
                 .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL)
                 .build()
             cm.registerNetworkCallback(request, intent)
         }
+        KeepAliveWorker.sync(context, settings.staySignedIn)
     }
 
     private fun callbackIntent(context: Context): PendingIntent =
@@ -49,20 +51,28 @@ object AutoLogin {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
         )
 
-    suspend fun run(context: Context, network: Network?) {
+    suspend fun run(context: Context, network: Network?, trigger: SignInTrigger = SignInTrigger.AUTOMATIC) {
         if (!Credentials.isConfigured(context)) return
-        val message = try {
-            when (PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), SignInTrigger.AUTOMATIC)) {
-                LoginOutcome.LOGGED_IN -> "Signed in to campus Wi-Fi."
-                LoginOutcome.ALREADY_ONLINE -> return
-            }
+        try {
+            val outcome = PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), trigger)
+            if (outcome == LoginOutcome.LOGGED_IN) notifySignedIn(context)
         } catch (e: LoginError) {
-            e.message ?: "Couldn't sign in."
+            notify(context, context.getString(R.string.notify_failed_title), e.message.orEmpty())
         }
-        notify(context, message)
     }
 
-    private fun notify(context: Context, message: String) {
+    /** "Connected to utarwifi": shown when the app signs you in on its own. */
+    fun notifySignedIn(context: Context) {
+        val network = PortalSettings.load(context).wifiName.ifEmpty { PortalSettings.DEFAULT_WIFI_NAME }
+        notify(
+            context,
+            context.getString(R.string.notify_connected_title, network),
+            context.getString(R.string.notify_connected_body),
+        )
+    }
+
+    private fun notify(context: Context, title: String, message: String) {
+        if (!PortalSettings.load(context).notifyOnConnect) return
         if (Build.VERSION.SDK_INT >= 33 &&
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
             PackageManager.PERMISSION_GRANTED
@@ -70,18 +80,19 @@ object AutoLogin {
 
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(
-            NotificationChannel(CHANNEL_ID, "Wi-Fi sign-in", NotificationManager.IMPORTANCE_LOW)
+            NotificationChannel(CHANNEL_ID, context.getString(R.string.notify_channel), NotificationManager.IMPORTANCE_DEFAULT)
         )
         val open = PendingIntent.getActivity(
             context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE,
         )
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_monochrome)
-            .setContentTitle(context.getString(R.string.app_name))
+            .setContentTitle(title)
             .setContentText(message)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setContentIntent(open)
             .setAutoCancel(true)
-            .setTimeoutAfter(60_000)
+            .setTimeoutAfter(10 * 60_000)
             .build()
         manager.notify(NOTIFICATION_ID, notification)
     }

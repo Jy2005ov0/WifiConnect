@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">WiFi Connect</string>
 
+    <!-- Notifications -->
+    <string name="notify_channel">Wi-Fi sign-in</string>
+    <string name="notify_connected_title">Connected to %1$s</string>
+    <string name="notify_connected_body">You\'re signed in and online.</string>
+    <string name="notify_failed_title">Couldn\'t sign in to campus Wi-Fi</string>
+
+    <!-- Settings -->
+    <string name="setting_stay_signed_in">Stay Signed In</string>
+    <string name="setting_notify">Notify When Connected</string>
+    <string name="setting_stay_signed_in_footer">Stay Signed In checks every 15 minutes and signs you back in if the Wi-Fi logs you out.</string>
+
     <!-- Status -->
     <string name="status_ready">Ready</string>
     <string name="status_signing_in">Signing In…</string>
