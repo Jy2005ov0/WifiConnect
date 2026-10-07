@@ -101,6 +101,7 @@ private struct HistoryRow: View {
         case .signedIn: return String(localized: "Signed In")
         case .alreadyOnline: return String(localized: "Already Online")
         case .failed: return String(localized: "Couldn't Sign In")
+        case .signedOut: return String(localized: "Signed Out")
         }
     }
 
@@ -109,6 +110,7 @@ private struct HistoryRow: View {
         case .signedIn: return "checkmark"
         case .alreadyOnline: return "wifi"
         case .failed: return "xmark"
+        case .signedOut: return "rectangle.portrait.and.arrow.right"
         }
     }
 
@@ -117,6 +119,7 @@ private struct HistoryRow: View {
         case .signedIn: return .green
         case .alreadyOnline: return .blue
         case .failed: return .orange
+        case .signedOut: return .gray
         }
     }
 

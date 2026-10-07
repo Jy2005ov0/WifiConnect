@@ -9,9 +9,26 @@ final class ConnectionModel {
         case working
         case connected(String)
         case failed(String)
+        case signedOut
     }
 
     var state: State = .idle
+
+    func signOut() async {
+        guard state != .working else { return }
+        state = .working
+        do {
+            try await SignIn.signOut()
+            state = .signedOut
+        } catch {
+            state = .failed(error.localizedDescription)
+        }
+        #if DEBUG
+        let run = UserDefaults.standard.string(forKey: "testRun") ?? ""
+        UserDefaults.standard.set("\(run): \(String(describing: state))", forKey: "testResult")
+        UserDefaults.standard.synchronize()
+        #endif
+    }
 
     /// - Parameter automatic: When the app signs in on its own (e.g. on launch), stay quiet if there's no Wi-Fi.
     func connect(automatic: Bool = false) async {

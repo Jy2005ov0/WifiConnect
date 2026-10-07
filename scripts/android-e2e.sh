@@ -20,12 +20,13 @@ adb shell input keyevent KEYCODE_HOME
 failures=0
 run_case() {
   local name=$1 password=$2 expect_result=$3 expect_authorized=$4
+  shift 4 # Any further arguments are passed to the app as extras.
   echo "::group::$name"
   adb shell am force-stop "$PACKAGE"
   adb logcat -c
   adb shell am start -W -n "$PACKAGE/.MainActivity" \
     --es testProbeUrl "$PORTAL_FROM_EMULATOR/generate_204" \
-    --es testStudentId 2201234 --es testPassword "$password"
+    --es testStudentId 2201234 --es testPassword "$password" "$@"
 
   local result=""
   for _ in $(seq 1 60); do
@@ -56,6 +57,8 @@ run_case wrong-password wrong-pass "Failed(" false
 curl -s -X POST "$PORTAL/reset" > /dev/null
 run_case sign-in utar-test "signed in" true
 run_case already-online utar-test "already online" true
+# Sign out with the link the app found after signing in.
+run_case sign-out utar-test "SignedOut" false --es testAction signOut
 # Another block: the campus sends the app to a login page at a different address.
 curl -s -X POST "$PORTAL/reset" > /dev/null
 curl -s -X POST "$PORTAL/move?to=B" > /dev/null

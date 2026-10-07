@@ -13,10 +13,25 @@ sealed interface ConnectionState {
     object Working : ConnectionState
     data class Connected(val message: String) : ConnectionState
     data class Failed(val message: String) : ConnectionState
+    object SignedOut : ConnectionState
 }
 
 class ConnectionViewModel(application: Application) : AndroidViewModel(application) {
     var state by mutableStateOf<ConnectionState>(ConnectionState.Idle)
+
+    fun signOut() {
+        if (state == ConnectionState.Working) return
+        state = ConnectionState.Working
+        viewModelScope.launch {
+            state = try {
+                PortalLogin.signOut(getApplication())
+                ConnectionState.SignedOut
+            } catch (e: LoginError) {
+                ConnectionState.Failed(e.message.orEmpty())
+            }
+            if (BuildConfig.DEBUG) android.util.Log.i("WifiConnect", "Result: $state")
+        }
+    }
 
     /** @param automatic When the app signs in on its own (e.g. on launch), stay quiet if there's no Wi-Fi. */
     fun connect(automatic: Boolean = false) {

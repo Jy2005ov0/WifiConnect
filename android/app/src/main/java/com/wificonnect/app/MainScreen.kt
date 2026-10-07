@@ -57,6 +57,8 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.res.stringResource
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -84,6 +86,7 @@ fun MainScreen(
     onOpenSettings: () -> Unit,
     appearance: Appearance,
     onAppearanceChange: (Appearance) -> Unit,
+    onSignOut: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -186,7 +189,7 @@ fun MainScreen(
                 enabled = state != ConnectionState.Working,
                 shape = CircleShape,
                 modifier = Modifier
-                    .padding(top = 20.dp, bottom = 16.dp)
+                    .padding(top = 20.dp, bottom = if (state is ConnectionState.Connected) 0.dp else 16.dp)
                     .fillMaxWidth()
                     .height(54.dp),
             ) {
@@ -199,6 +202,12 @@ fun MainScreen(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
+            }
+
+            if (state is ConnectionState.Connected) {
+                TextButton(onClick = onSignOut, modifier = Modifier.padding(bottom = 4.dp)) {
+                    Text(stringResource(R.string.sign_out), color = Color(0xFFFF3B30), fontWeight = FontWeight.Medium)
+                }
             }
         }
     }
@@ -283,7 +292,7 @@ private fun StatusBadge(state: ConnectionState, tint: Color) {
         AnimatedContent(
             targetState = when (state) {
                 is ConnectionState.Connected -> Icons.Rounded.Check
-                is ConnectionState.Failed -> Icons.Rounded.WifiOff
+                is ConnectionState.Failed, ConnectionState.SignedOut -> Icons.Rounded.WifiOff
                 else -> Icons.Rounded.Wifi
             },
             transitionSpec = { (fadeIn() + scaleIn(initialScale = 0.6f)) togetherWith fadeOut() },
@@ -357,6 +366,7 @@ private fun lighten(color: Color) = lerp(color, Color.White, 0.18f)
 private fun ConnectionState.tint(primary: Color) = when (this) {
     is ConnectionState.Connected -> Green
     is ConnectionState.Failed -> Orange
+    ConnectionState.SignedOut -> Color.Gray
     else -> primary
 }
 
@@ -366,6 +376,7 @@ private fun title(state: ConnectionState, hasCredentials: Boolean) = when (state
     ConnectionState.Working -> "Signing In…"
     is ConnectionState.Connected -> "Connected"
     is ConnectionState.Failed -> "Couldn't Sign In"
+    ConnectionState.SignedOut -> "Signed Out"
 }
 
 private fun subtitle(state: ConnectionState, hasCredentials: Boolean) = when (state) {
@@ -375,4 +386,5 @@ private fun subtitle(state: ConnectionState, hasCredentials: Boolean) = when (st
     ConnectionState.Working -> "Talking to your school's login page."
     is ConnectionState.Connected -> state.message
     is ConnectionState.Failed -> state.message
+    ConnectionState.SignedOut -> "You've signed out of the campus Wi-Fi."
 }

@@ -115,6 +115,22 @@ data class HtmlForm(
             return if (trimmed.isEmpty()) null else resolve(baseUrl, trimmed)
         }
 
+        private val SIGN_OUT_WORDS = "(?:logout|log-out|log_out|logoff|log-off|signout|sign-out|sign_out)"
+        private val SIGN_OUT_PATTERNS = listOf(
+            Regex("""<a\b[^>]*href\s*=\s*["']([^"']*$SIGN_OUT_WORDS[^"']*)["']""", OPTIONS),
+            Regex("""<form\b[^>]*action\s*=\s*["']([^"']*$SIGN_OUT_WORDS[^"']*)["']""", OPTIONS),
+        )
+
+        /** A "Log out" link or form on the page shown after signing in, if there is one. */
+        fun signOutLink(html: String, baseUrl: URL): URL? {
+            val clean = COMMENT.replace(html, "")
+            for (pattern in SIGN_OUT_PATTERNS) {
+                val link = pattern.find(clean)?.groupValues?.get(1) ?: continue
+                return resolve(baseUrl, decodeEntities(link))
+            }
+            return null
+        }
+
         private fun parseInputs(html: String): List<Input> =
             INPUT.findAll(html).mapNotNull { match ->
                 val attrs = attributes(match.groupValues[1])

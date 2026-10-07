@@ -16,6 +16,7 @@ class LoginTrace {
     var formAction: URL? = null
     var method: String? = null
     var fieldNames: List<String> = emptyList()
+    var signOutUrl: URL? = null
 }
 
 data class HistoryEntry(
@@ -29,7 +30,7 @@ data class HistoryEntry(
     val fields: List<String> = emptyList(),
     val durationMs: Long = 0,
 ) {
-    enum class Result { SIGNED_IN, ALREADY_ONLINE, FAILED }
+    enum class Result { SIGNED_IN, ALREADY_ONLINE, FAILED, SIGNED_OUT }
 
     fun toJson(): JSONObject = JSONObject().apply {
         put("time", time)

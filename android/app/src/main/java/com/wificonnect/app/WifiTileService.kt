@@ -48,7 +48,7 @@ class WifiTileService : TileService() {
         val (state, subtitle, icon) = when {
             working -> Triple(Tile.STATE_ACTIVE, getString(R.string.tile_signing_in), R.drawable.ic_status_wifi)
             last == null -> Triple(Tile.STATE_INACTIVE, getString(R.string.tile_tap_to_sign_in), R.drawable.ic_status_wifi)
-            last.kind == SignInStatus.Kind.FAILED ->
+            last.kind == SignInStatus.Kind.FAILED || last.kind == SignInStatus.Kind.SIGNED_OUT ->
                 Triple(Tile.STATE_INACTIVE, getString(R.string.tile_tap_to_retry), R.drawable.ic_status_wifi_off)
             else -> Triple(Tile.STATE_ACTIVE, getString(R.string.tile_signed_in_at, last.timeText(this)), R.drawable.ic_status_check)
         }

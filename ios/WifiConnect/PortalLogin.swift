@@ -12,6 +12,8 @@ enum LoginError: LocalizedError {
     case invalidURL
     case network(String)
     case stillOffline
+    case noSignOutLink
+    case stillSignedIn
 
     var errorDescription: String? {
         switch self {
@@ -27,6 +29,10 @@ enum LoginError: LocalizedError {
             return "The login page didn't respond: \(message)"
         case .stillOffline:
             return "Signed in, but there's still no internet. Check your student ID and password."
+        case .noSignOutLink:
+            return "Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page."
+        case .stillSignedIn:
+            return "The sign-out link didn't sign you out."
         }
     }
 }
@@ -118,7 +124,8 @@ struct PortalLogin {
         trace?.method = submission.method
         trace?.fieldNames = submission.fields.map(\.name)
 
-        try await submit(submission, referer: page.url)
+        let landing = try await submit(submission, referer: page.url)
+        rememberSignOutLink(landing: landing, portal: page.url)
 
         // Give the network a moment to let us through, then confirm.
         for attempt in 0..<4 {
@@ -164,7 +171,38 @@ struct PortalLogin {
         return Page(url: response.url ?? url, html: html)
     }
 
-    private func submit(_ submission: FormSubmission, referer: URL) async throws {
+    /// Signs out using the link found after signing in, or the one set in Settings.
+    func signOut() async throws {
+        let defaults = UserDefaults.standard
+        let base = defaults.string(forKey: SettingsKey.lastPortalURL).flatMap(URL.init(string:))
+        let custom = (defaults.string(forKey: SettingsKey.signOutURL) ?? "").trimmingCharacters(in: .whitespaces)
+        let url = custom.isEmpty
+            ? defaults.string(forKey: SettingsKey.detectedSignOutURL).flatMap(URL.init(string:))
+            : URL(string: custom, relativeTo: base)?.absoluteURL
+        guard let url, url.host != nil else { throw LoginError.noSignOutLink }
+
+        do {
+            _ = try await fetch(url)
+        } catch {
+            throw LoginError.network(error.localizedDescription)
+        }
+        for attempt in 0..<3 {
+            if attempt > 0 { try? await Task.sleep(nanoseconds: 1_000_000_000) }
+            if case .portal? = try? await probe() { return }
+        }
+        throw LoginError.stillSignedIn
+    }
+
+    private func rememberSignOutLink(landing: Page?, portal: URL) {
+        let defaults = UserDefaults.standard
+        defaults.set(portal.absoluteString, forKey: SettingsKey.lastPortalURL)
+        if let landing, let link = HTMLForm.signOutLink(in: landing.html, baseURL: landing.url) {
+            defaults.set(link.absoluteString, forKey: SettingsKey.detectedSignOutURL)
+        }
+    }
+
+    /// Sends the form and returns the page it led to, if any.
+    private func submit(_ submission: FormSubmission, referer: URL) async throws -> Page? {
         let body = submission.fields
             .map { "\(Self.formEncode($0.name))=\(Self.formEncode($0.value))" }
             .joined(separator: "&")
@@ -184,7 +222,9 @@ struct PortalLogin {
         request.setValue(referer.absoluteString, forHTTPHeaderField: "Referer")
 
         do {
-            _ = try await session.data(for: request)
+            let (data, response) = try await session.data(for: request)
+            let html = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .isoLatin1) ?? ""
+            return Page(url: response.url ?? submission.url, html: html)
         } catch {
             throw LoginError.network(error.localizedDescription)
         }

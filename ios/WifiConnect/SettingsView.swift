@@ -20,6 +20,7 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.usernameField) private var usernameField = "username"
     @AppStorage(SettingsKey.passwordField) private var passwordField = "password"
     @AppStorage(SettingsKey.extraFields) private var extraFields = ""
+    @AppStorage(SettingsKey.signOutURL) private var signOutURL = ""
 
     var body: some View {
         NavigationStack {
@@ -127,6 +128,7 @@ struct SettingsView: View {
                         }
                         LabeledField("ID Field", text: $usernameField, placeholder: "username")
                         LabeledField("Password Field", text: $passwordField, placeholder: "password")
+                        LabeledField("Sign-Out URL", text: $signOutURL, placeholder: "/logout")
                         TextField("Extra fields, one name=value per line", text: $extraFields, axis: .vertical)
                             .lineLimit(2...5)
                             .font(.callout.monospaced())

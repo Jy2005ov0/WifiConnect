@@ -57,6 +57,8 @@ run_case wrong-password wrong-pass 'failed(' false
 curl -s -X POST "$PORTAL/reset" > /dev/null
 run_case sign-in utar-test "signed in" true
 run_case already-online utar-test "already online" true
+# Sign out with the link the app found after signing in.
+run_case sign-out utar-test "signedOut" false -testAction signOut
 # Another block: the campus sends the app to a login page at a different address.
 curl -s -X POST "$PORTAL/reset" > /dev/null
 curl -s -X POST "$PORTAL/move?to=B" > /dev/null

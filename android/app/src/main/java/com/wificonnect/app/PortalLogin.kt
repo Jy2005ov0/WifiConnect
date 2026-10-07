@@ -30,6 +30,9 @@ sealed class LoginError(message: String) : Exception(message) {
     object InvalidUrl : LoginError("The custom login URL in Settings isn't valid.")
     class Network(detail: String) : LoginError("The login page didn't respond: $detail")
     object StillOffline : LoginError("Signed in, but there's still no internet. Check your student ID and password.")
+    object NoSignOutLink :
+        LoginError("Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page.")
+    object StillSignedIn : LoginError("The sign-out link didn't sign you out.")
 }
 
 /**
@@ -90,7 +93,8 @@ class PortalLogin(private val network: Network) {
             trace.fieldNames = submission.fields.map { it.name }
 
             try {
-                submit(submission, referer = page.url)
+                val landing = submit(submission, referer = page.url)
+                trace.signOutUrl = HtmlForm.signOutLink(landing.html, landing.url)
             } catch (e: IOException) {
                 throw LoginError.Network(e.message ?: "no response")
             }
@@ -131,15 +135,29 @@ class PortalLogin(private val network: Network) {
         return ProbeResult.Portal(page)
     }
 
-    private fun submit(submission: FormSubmission, referer: URL) {
+    /** Opens the sign-out link, then checks the login page is back. */
+    suspend fun signOut(url: URL) = withContext(Dispatchers.IO) {
+        try {
+            request(url)
+        } catch (e: IOException) {
+            throw LoginError.Network(e.message ?: "no response")
+        }
+        repeat(3) { attempt ->
+            if (attempt > 0) delay(1_000)
+            if (needsSignIn()) return@withContext
+        }
+        throw LoginError.StillSignedIn
+    }
+
+    /** Sends the form and returns the page it led to. */
+    private fun submit(submission: FormSubmission, referer: URL): Page {
         val body = submission.fields.joinToString("&") { "${encode(it.name)}=${encode(it.value)}" }
         if (submission.method.equals("GET", ignoreCase = true)) {
             val base = submission.url.toString()
             val separator = if (submission.url.query.isNullOrEmpty()) "?" else "&"
-            request(URL(base + separator + body), referer = referer)
-        } else {
-            request(submission.url, method = "POST", body = body, referer = referer)
+            return request(URL(base + separator + body), referer = referer)
         }
+        return request(submission.url, method = "POST", body = body, referer = referer)
     }
 
     /** Fetches [url], following redirects (including http ↔ https, which HttpURLConnection won't). */
@@ -301,6 +319,7 @@ class PortalLogin(private val network: Network) {
                 )
                 if (outcome == LoginOutcome.LOGGED_IN) {
                     context.getSystemService(ConnectivityManager::class.java).reportNetworkConnectivity(wifi, true)
+                    rememberSignOutLink(context, login?.trace)
                 }
                 record(
                     if (outcome == LoginOutcome.LOGGED_IN) HistoryEntry.Result.SIGNED_IN else HistoryEntry.Result.ALREADY_ONLINE,
@@ -315,6 +334,45 @@ class PortalLogin(private val network: Network) {
             } catch (e: LoginError) {
                 record(HistoryEntry.Result.FAILED, e.message)
                 SignInStatus.save(context, SignInStatus.Kind.FAILED, e.message.orEmpty())
+                throw e
+            }
+        }
+
+        private fun portalPrefs(context: Context) = context.getSharedPreferences("portal", Context.MODE_PRIVATE)
+
+        private fun rememberSignOutLink(context: Context, trace: LoginTrace?) {
+            val edit = portalPrefs(context).edit()
+            trace?.portalUrl?.let { edit.putString("lastPortal", it.toString()) }
+            trace?.signOutUrl?.let { edit.putString("signOut", it.toString()) }
+            edit.apply()
+        }
+
+        /** Signs out using the link found after signing in, or the one set in Settings. */
+        suspend fun signOut(context: Context) {
+            val started = System.currentTimeMillis()
+            try {
+                val prefs = portalPrefs(context)
+                val custom = PortalSettings.load(context).signOutUrl.trim()
+                val base = prefs.getString("lastPortal", null)?.let { runCatching { URL(it) }.getOrNull() }
+                val url = when {
+                    custom.isNotEmpty() && base != null -> HtmlForm.resolve(base, custom)
+                    custom.isNotEmpty() -> runCatching { URL(custom) }.getOrNull()
+                    else -> prefs.getString("signOut", null)?.let { runCatching { URL(it) }.getOrNull() }
+                } ?: throw LoginError.NoSignOutLink
+                val wifi = wifiNetwork(context) ?: throw LoginError.NotOnWiFi
+                PortalLogin(wifi).signOut(url)
+                History.add(
+                    context,
+                    HistoryEntry(started, SignInTrigger.APP, HistoryEntry.Result.SIGNED_OUT,
+                        durationMs = System.currentTimeMillis() - started),
+                )
+                SignInStatus.save(context, SignInStatus.Kind.SIGNED_OUT, "")
+            } catch (e: LoginError) {
+                History.add(
+                    context,
+                    HistoryEntry(started, SignInTrigger.APP, HistoryEntry.Result.FAILED, message = e.message,
+                        durationMs = System.currentTimeMillis() - started),
+                )
                 throw e
             }
         }

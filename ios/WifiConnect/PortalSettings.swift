@@ -11,6 +11,10 @@ enum SettingsKey {
     static let staySignedIn = "staySignedIn"
     static let notifyOnConnect = "notifyOnConnect"
     static let requireUnlock = "requireUnlock"
+    static let signOutURL = "signOutURL"
+    /// Learned while signing in: the sign-out link and the login page it came from.
+    static let detectedSignOutURL = "detectedSignOutURL"
+    static let lastPortalURL = "lastPortalURL"
 
     /// UTAR's campus Wi-Fi.
     static let defaultWifiName = "utarwifi"

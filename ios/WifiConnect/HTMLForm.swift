@@ -126,6 +126,22 @@ struct HTMLForm {
         return URL(string: target, relativeTo: baseURL)?.absoluteURL
     }
 
+    /// A "Log out" link or form on the page shown after signing in, if there is one.
+    static func signOutLink(in html: String, baseURL: URL) -> URL? {
+        let words = "(?:logout|log-out|log_out|logoff|log-off|signout|sign-out|sign_out)"
+        let patterns = [
+            #"<a\b[^>]*href\s*=\s*["']([^"']*"# + words + #"[^"']*)["']"#,
+            #"<form\b[^>]*action\s*=\s*["']([^"']*"# + words + #"[^"']*)["']"#,
+        ]
+        let clean = stripComments(html)
+        for pattern in patterns {
+            if let link = clean.regexMatches(pattern).first?[1] {
+                return URL(string: decodeEntities(link), relativeTo: baseURL)?.absoluteURL
+            }
+        }
+        return nil
+    }
+
     private static func parseInputs(_ html: String) -> [Input] {
         html.regexMatches(#"<input\b([^>]*)>"#).compactMap { match in
             let attrs = attributes(match[1] ?? "")

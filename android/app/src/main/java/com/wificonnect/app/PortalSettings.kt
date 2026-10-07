@@ -21,6 +21,8 @@ data class PortalSettings(
     val passwordField: String = "password",
     /** Extra `name=value` pairs, one per line. */
     val extraFields: String = "",
+    /** Optional sign-out link; a path is resolved against the last login page. */
+    val signOutUrl: String = "",
 ) {
     fun parsedExtraFields(): List<FormField> =
         extraFields.split('\n', '&').mapNotNull { line ->
@@ -41,6 +43,7 @@ data class PortalSettings(
             putString("usernameField", usernameField)
             putString("passwordField", passwordField)
             putString("extraFields", extraFields)
+            putString("signOutUrl", signOutUrl)
         }
     }
 
@@ -65,6 +68,7 @@ data class PortalSettings(
                 usernameField = p.getString("usernameField", d.usernameField) ?: d.usernameField,
                 passwordField = p.getString("passwordField", d.passwordField) ?: d.passwordField,
                 extraFields = p.getString("extraFields", d.extraFields) ?: d.extraFields,
+                signOutUrl = p.getString("signOutUrl", d.signOutUrl) ?: d.signOutUrl,
             )
         }
     }

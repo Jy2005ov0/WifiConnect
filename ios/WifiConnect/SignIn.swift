@@ -38,4 +38,18 @@ enum SignIn {
             throw error
         }
     }
+
+    static func signOut() async throws {
+        let started = Date()
+        do {
+            try await PortalLogin().signOut()
+            History.add(HistoryEntry(date: started, trigger: .app, result: .signedOut,
+                                     duration: Date().timeIntervalSince(started)))
+        } catch {
+            History.add(HistoryEntry(date: started, trigger: .app, result: .failed,
+                                     message: error.localizedDescription,
+                                     duration: Date().timeIntervalSince(started)))
+            throw error
+        }
+    }
 }

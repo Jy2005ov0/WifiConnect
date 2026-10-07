@@ -35,6 +35,7 @@ class MainActivity : FragmentActivity() {
         AutoLogin.sync(this)
 
         val demo = if (BuildConfig.DEBUG) Demo.from(intent, this) else null
+        val testAction = if (BuildConfig.DEBUG) intent.getStringExtra("testAction") else null
         if (BuildConfig.DEBUG) applyTestExtras()
 
         setContent {
@@ -75,7 +76,11 @@ class MainActivity : FragmentActivity() {
 
                 // Opening the app on campus signs you in straight away.
                 LifecycleResumeEffect(Unit) {
-                    if (demo == null && hasCredentials && !showSettings) model.connect(automatic = true)
+                    if (testAction == "signOut") {
+                        model.signOut()
+                    } else if (demo == null && hasCredentials && !showSettings) {
+                        model.connect(automatic = true)
+                    }
                     onPauseOrDispose { }
                 }
 
@@ -118,6 +123,7 @@ class MainActivity : FragmentActivity() {
                             },
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
+                            onSignOut = { model.signOut() },
                         )
                     }
                 }

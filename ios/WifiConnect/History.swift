@@ -11,7 +11,7 @@ final class LoginTrace {
 
 struct HistoryEntry: Codable, Identifiable {
     enum Result: String, Codable {
-        case signedIn, alreadyOnline, failed
+        case signedIn, alreadyOnline, failed, signedOut
     }
 
     var id = UUID()

@@ -9,7 +9,7 @@ import java.util.Date
 
 /** The result of the last sign-in, shown by the widget and the Quick Settings tile. */
 object SignInStatus {
-    enum class Kind { SIGNED_IN, ALREADY_ONLINE, FAILED }
+    enum class Kind { SIGNED_IN, ALREADY_ONLINE, FAILED, SIGNED_OUT }
 
     data class Last(val kind: Kind, val message: String, val time: Long) {
         fun timeText(context: Context): String = DateFormat.getTimeFormat(context).format(Date(time))

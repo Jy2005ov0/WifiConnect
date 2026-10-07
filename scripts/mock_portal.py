@@ -13,6 +13,8 @@ Like a real campus, each building has its own login page address: building A's
 portal is on [port], building B's on [port + 1]. POST /move?to=B makes the
 connectivity checks send you to building B instead.
 
+After signing in, /success links to /logout, which signs you out again.
+
 Endpoints for the test itself: GET /status (JSON), POST /reset and POST /move.
 
 Usage: mock_portal.py [port]   (student ID 2201234, password utar-test)
@@ -86,6 +88,16 @@ class Portal(BaseHTTPRequestHandler):
                   <input type="submit" name="login" value="Log In">
                 </form></body></html>"""
             return self.send(200, page.encode(), headers={"Set-Cookie": f"PORTALSESSION={state['session']}; Path=/"})
+
+        if path == "/success":
+            return self.send(200, b"""<html><body><h1>You're online</h1>
+                <p>Welcome to utarwifi.</p>
+                <a href="/logout?from=success">Log out</a></body></html>""")
+
+        if path == "/logout":
+            state["authorized"] = False
+            state["logged_out"] = state.get("logged_out", 0) + 1
+            return self.send(200, b"<html><body>You have been logged out.</body></html>")
 
         if path == "/status":
             return self.send(200, json.dumps(state).encode(), "application/json")

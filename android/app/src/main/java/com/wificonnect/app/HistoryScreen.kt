@@ -27,6 +27,7 @@ import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material.icons.rounded.Wifi
+import androidx.compose.material.icons.rounded.WifiOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -158,6 +159,7 @@ private fun HistoryRow(entry: HistoryEntry) {
         HistoryEntry.Result.SIGNED_IN -> Triple(stringResource(R.string.history_signed_in), Icons.Rounded.Check, Green)
         HistoryEntry.Result.ALREADY_ONLINE -> Triple(stringResource(R.string.history_already_online), Icons.Rounded.Wifi, Blue)
         HistoryEntry.Result.FAILED -> Triple(stringResource(R.string.status_failed), Icons.Rounded.Close, Orange)
+        HistoryEntry.Result.SIGNED_OUT -> Triple(stringResource(R.string.status_signed_out), Icons.Rounded.WifiOff, Color.Gray)
     }
     val trigger = stringResource(
         when (entry.trigger) {

@@ -63,6 +63,10 @@ class StatusWidget : AppWidgetProvider() {
                     context.getString(R.string.status_ready), context.getString(R.string.widget_tap_to_sign_in),
                     R.drawable.ic_status_wifi, R.drawable.widget_circle_blue,
                 )
+                last.kind == SignInStatus.Kind.SIGNED_OUT -> Look(
+                    context.getString(R.string.status_signed_out), context.getString(R.string.widget_tap_to_sign_in),
+                    R.drawable.ic_status_wifi_off, R.drawable.widget_circle_blue,
+                )
                 last.kind == SignInStatus.Kind.FAILED -> Look(
                     context.getString(R.string.status_failed), last.message,
                     R.drawable.ic_status_wifi_off, R.drawable.widget_circle_orange,

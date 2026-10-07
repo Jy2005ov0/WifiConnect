@@ -45,6 +45,9 @@
     <string name="status_signing_in_detail">Talking to your school\'s login page.</string>
     <string name="status_connected">Connected</string>
     <string name="status_failed">Couldn\'t Sign In</string>
+    <string name="status_signed_out">Signed Out</string>
+    <string name="status_signed_out_detail">You\'ve signed out of the campus Wi-Fi.</string>
+    <string name="sign_out">Sign Out</string>
 
     <!-- Quick Settings tile -->
     <string name="tile_label">Campus Wi-Fi</string>

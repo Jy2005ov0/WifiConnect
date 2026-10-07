@@ -67,8 +67,19 @@ struct ContentView: View {
                 .disabled(model.state == .working)
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
-                .padding(.bottom, 12)
+                .padding(.bottom, isConnected ? 4 : 12)
+
+                if isConnected {
+                    Button("Sign Out") {
+                        Task { await model.signOut() }
+                    }
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.red)
+                    .padding(.bottom, 8)
+                    .transition(.opacity)
+                }
             }
+            .animation(.default, value: isConnected)
             .background {
                 // A soft glow in the status color, like the lock screen's wallpaper tint.
                 ZStack {
@@ -120,10 +131,14 @@ struct ContentView: View {
                 #if DEBUG
                 if applyDemo() { return }
                 if UserDefaults.standard.string(forKey: "testStudentID") != nil {
-                    // End-to-end test: sign in straight away with the test account.
+                    // End-to-end test: sign in (or out) straight away with the test account.
                     hasCredentials = true
                     studentID = Credentials.studentID
-                    Task { await model.connect() }
+                    if UserDefaults.standard.string(forKey: "testAction") == "signOut" {
+                        Task { await model.signOut() }
+                    } else {
+                        Task { await model.connect() }
+                    }
                     return
                 }
                 #endif
@@ -213,7 +228,13 @@ struct ContentView: View {
         case .working: return "Signing In…"
         case .connected: return "Connected"
         case .failed: return "Couldn't Sign In"
+        case .signedOut: return "Signed Out"
         }
+    }
+
+    private var isConnected: Bool {
+        if case .connected = model.state { return true }
+        return false
     }
 
     private var subtitle: String {
@@ -224,6 +245,7 @@ struct ContentView: View {
                 : "Add your student ID and password to get started."
         case .working: return "Talking to your school's login page."
         case .connected(let message), .failed(let message): return message
+        case .signedOut: return "You've signed out of the campus Wi-Fi."
         }
     }
 
@@ -323,6 +345,7 @@ private extension ConnectionModel.State {
         case .idle, .working: return "wifi"
         case .connected: return "checkmark"
         case .failed: return "wifi.exclamationmark"
+        case .signedOut: return "wifi.slash"
         }
     }
 
@@ -331,6 +354,7 @@ private extension ConnectionModel.State {
         case .idle, .working: return .blue
         case .connected: return .green
         case .failed: return .orange
+        case .signedOut: return .gray
         }
     }
 }

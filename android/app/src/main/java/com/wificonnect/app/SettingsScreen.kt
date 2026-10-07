@@ -253,6 +253,10 @@ fun SettingsScreen(
                         settings = settings.copy(passwordField = it)
                     }
                     Divider()
+                    LabeledField("Sign-Out URL", settings.signOutUrl, "/logout", KeyboardType.Uri) {
+                        settings = settings.copy(signOutUrl = it)
+                    }
+                    Divider()
                     PlainField(
                         value = settings.extraFields,
                         onValueChange = { settings = settings.copy(extraFields = it) },
