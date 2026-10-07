@@ -12,6 +12,8 @@ data class PortalSettings(
     val staySignedIn: Boolean = true,
     /** Notify when the app signs in on its own. */
     val notifyOnConnect: Boolean = true,
+    /** Ask for a fingerprint or the screen lock before showing Settings. */
+    val requireUnlock: Boolean = false,
     val useCustomPortal: Boolean = false,
     val loginUrl: String = "",
     val method: String = "POST",
@@ -32,6 +34,7 @@ data class PortalSettings(
             putBoolean("autoLogin", autoLogin)
             putBoolean("staySignedIn", staySignedIn)
             putBoolean("notifyOnConnect", notifyOnConnect)
+            putBoolean("requireUnlock", requireUnlock)
             putBoolean("useCustomPortal", useCustomPortal)
             putString("loginUrl", loginUrl)
             putString("method", method)
@@ -55,6 +58,7 @@ data class PortalSettings(
                 autoLogin = p.getBoolean("autoLogin", d.autoLogin),
                 staySignedIn = p.getBoolean("staySignedIn", d.staySignedIn),
                 notifyOnConnect = p.getBoolean("notifyOnConnect", d.notifyOnConnect),
+                requireUnlock = p.getBoolean("requireUnlock", d.requireUnlock),
                 useCustomPortal = p.getBoolean("useCustomPortal", d.useCustomPortal),
                 loginUrl = p.getString("loginUrl", d.loginUrl) ?: d.loginUrl,
                 method = p.getString("method", d.method) ?: d.method,

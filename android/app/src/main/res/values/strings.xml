@@ -12,6 +12,13 @@
     <string name="setting_notify">Notify When Connected</string>
     <string name="setting_stay_signed_in_footer">Stay Signed In checks every 15 minutes and signs you back in if the Wi-Fi logs you out.</string>
 
+    <!-- App lock -->
+    <string name="lock_section">Security</string>
+    <string name="lock_title">Require Fingerprint or Screen Lock</string>
+    <string name="lock_footer">Asks for your fingerprint, face or screen lock before showing Settings, where your password is saved.</string>
+    <string name="lock_open_settings">Unlock to see your student ID and password</string>
+    <string name="lock_confirm">Confirm it\'s you to change the app lock</string>
+
     <!-- History -->
     <string name="history_title">Sign-In History</string>
     <string name="history_help">Help</string>

@@ -10,6 +10,7 @@ enum SettingsKey {
     static let extraFields = "extraFields"
     static let staySignedIn = "staySignedIn"
     static let notifyOnConnect = "notifyOnConnect"
+    static let requireUnlock = "requireUnlock"
 
     /// UTAR's campus Wi-Fi.
     static let defaultWifiName = "utarwifi"

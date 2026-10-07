@@ -90,7 +90,7 @@ struct ContentView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        showSettings = true
+                        openSettings()
                     } label: {
                         Image(systemName: "gearshape")
                     }
@@ -145,6 +145,19 @@ struct ContentView: View {
                 if scenePhase == .active, hasCredentials, model.state != .working, !isDemo, !isTest {
                     Task { await model.connect(automatic: true) }
                 }
+            }
+        }
+    }
+
+    /// Opens Settings, asking for Face ID first when the app lock is on.
+    private func openSettings() {
+        guard AppLock.isEnabled, hasCredentials else {
+            showSettings = true
+            return
+        }
+        Task {
+            if await AppLock.authenticate(reason: String(localized: "Unlock to see your student ID and password.")) {
+                showSettings = true
             }
         }
     }

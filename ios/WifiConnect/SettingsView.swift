@@ -13,6 +13,7 @@ struct SettingsView: View {
     @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
     @AppStorage(SettingsKey.staySignedIn) private var staySignedIn = true
     @AppStorage(SettingsKey.notifyOnConnect) private var notifyOnConnect = true
+    @AppStorage(SettingsKey.requireUnlock) private var requireUnlock = false
     @AppStorage(SettingsKey.useCustomPortal) private var useCustomPortal = false
     @AppStorage(SettingsKey.loginURL) private var loginURL = ""
     @AppStorage(SettingsKey.method) private var method = "POST"
@@ -74,6 +75,26 @@ struct SettingsView: View {
                     Text("Automatic Sign-In")
                 } footer: {
                     Text("Stay Signed In checks in the background and signs you back in if the campus Wi-Fi logs you out. iOS decides exactly when it runs. Notifications appear when the app signs you in on its own.")
+                }
+
+                Section {
+                    Toggle(isOn: Binding(
+                        get: { requireUnlock },
+                        set: { newValue in
+                            // Turning the lock on or off needs the same unlock.
+                            Task {
+                                if await AppLock.authenticate(reason: String(localized: "Confirm it's you to change the app lock.")) {
+                                    requireUnlock = newValue
+                                }
+                            }
+                        }
+                    )) {
+                        Text("Require \(AppLock.methodName)")
+                    }
+                } header: {
+                    Text("Security")
+                } footer: {
+                    Text("Asks for \(AppLock.methodName) before showing Settings, where your password is saved.")
                 }
 
                 Section {

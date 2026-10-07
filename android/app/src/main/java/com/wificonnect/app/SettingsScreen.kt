@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.fragment.app.FragmentActivity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -162,6 +163,21 @@ fun SettingsScreen(
                 Divider()
                 SwitchRow(stringResource(R.string.setting_notify), settings.notifyOnConnect) {
                     settings = settings.copy(notifyOnConnect = it)
+                }
+            }
+
+            val activity = context as? FragmentActivity
+            Section(header = stringResource(R.string.lock_section), footer = stringResource(R.string.lock_footer)) {
+                SwitchRow(stringResource(R.string.lock_title), settings.requireUnlock) { enabled ->
+                    // Turning the lock on or off needs the same unlock.
+                    val confirm = context.getString(R.string.lock_confirm)
+                    if (activity == null) {
+                        settings = settings.copy(requireUnlock = enabled)
+                    } else {
+                        AppLock.authenticate(activity, confirm) { ok ->
+                            if (ok) settings = settings.copy(requireUnlock = enabled)
+                        }
+                    }
                 }
             }
 

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -27,7 +28,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -105,7 +106,16 @@ class MainActivity : ComponentActivity() {
                             state = model.state,
                             hasCredentials = hasCredentials,
                             onConnect = { if (hasCredentials) model.connect() else showSettings = true },
-                            onOpenSettings = { showSettings = true },
+                            onOpenSettings = {
+                                // Ask for a fingerprint first when the app lock is on.
+                                if (hasCredentials && PortalSettings.load(context).requireUnlock) {
+                                    AppLock.authenticate(this@MainActivity, getString(R.string.lock_open_settings)) { ok ->
+                                        if (ok) showSettings = true
+                                    }
+                                } else {
+                                    showSettings = true
+                                }
+                            },
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
                         )
