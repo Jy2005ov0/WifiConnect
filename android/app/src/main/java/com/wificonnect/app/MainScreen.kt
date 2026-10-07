@@ -102,6 +102,8 @@ fun MainScreen(
 
     Scaffold(
         containerColor = Color.Transparent,
+        // With a transparent container Material can't pick a text colour, so set it explicitly.
+        contentColor = MaterialTheme.colorScheme.onBackground,
         modifier = Modifier.drawBehind {
             drawRect(background)
             // A soft glow in the status color behind the badge.

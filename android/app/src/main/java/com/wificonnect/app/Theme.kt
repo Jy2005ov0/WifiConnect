@@ -22,6 +22,9 @@ private val Light = lightColorScheme(
     surfaceContainerHighest = Color.White,
     onSurfaceVariant = Color(0xFF6E6E73),
     outlineVariant = Color(0xFFE5E5EA),
+    // Selected segment, like iOS's segmented control.
+    secondaryContainer = Color(0xFFE5E5EA),
+    onSecondaryContainer = Color(0xFF000000),
 )
 
 private val Dark = darkColorScheme(
@@ -36,6 +39,8 @@ private val Dark = darkColorScheme(
     surfaceContainerHighest = Color(0xFF2C2C2E),
     onSurfaceVariant = Color(0xFF98989F),
     outlineVariant = Color(0xFF38383A),
+    secondaryContainer = Color(0xFF3A3A3C),
+    onSecondaryContainer = Color.White,
 )
 
 val Blue = Color(0xFF007AFF)
