@@ -39,21 +39,28 @@ struct WelcomeView: View {
 
                 Spacer()
 
-                VStack(spacing: 8) {
+                // A frosted-glass pill, like the handle on the Lock Screen.
+                HStack(spacing: 8) {
                     Image(systemName: "chevron.up")
-                        .font(.title3.weight(.semibold))
-                        .offset(y: bounce ? -6 : 2)
+                        .font(.subheadline.weight(.bold))
                     Text("Swipe up to start")
-                        .font(.subheadline.weight(.medium))
+                        .font(.subheadline.weight(.semibold))
                 }
                 .foregroundStyle(.secondary)
+                .padding(.horizontal, 22)
+                .padding(.vertical, 14)
+                .background(.ultraThinMaterial, in: Capsule())
+                .overlay(Capsule().strokeBorder(.white.opacity(0.35), lineWidth: 1))
+                .shadow(color: .black.opacity(0.08), radius: 12, y: 6)
+                .offset(y: bounce ? -6 : 0)
                 .padding(.bottom, 20)
                 .contentShape(Rectangle())
                 .onTapGesture { finish(height: height) }
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 32)
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
+            // Frosted glass: the app shows through, blurred, behind the welcome.
+            .background(Rectangle().fill(.regularMaterial).ignoresSafeArea())
             .offset(y: drag)
             .opacity(1 - Double(min(-drag / height, 1)) * 0.6)
             .gesture(

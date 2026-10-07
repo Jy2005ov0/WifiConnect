@@ -59,6 +59,7 @@ struct ContentView: View {
                     .padding(.horizontal, 14)
                     .padding(.vertical, 6)
                     .background(model.state.tint.opacity(0.12), in: Capsule())
+                    .background(.ultraThinMaterial, in: Capsule())
                     .padding(.top, 6)
                     .opacity(hint == nil ? 0 : 1)
                     .contentTransition(.opacity)
@@ -129,22 +130,27 @@ struct ContentView: View {
             }) {
                 SettingsView()
                     .presentationCornerRadius(36)
+                    .presentationBackground(.regularMaterial)
             }
             .sheet(isPresented: $showAutomationGuide) {
                 AutomationGuideView()
                     .presentationCornerRadius(36)
+                    .presentationBackground(.regularMaterial)
             }
             .sheet(isPresented: $showDemoHistory) {
                 NavigationStack { HistoryView() }
                     .presentationCornerRadius(36)
+                    .presentationBackground(.regularMaterial)
             }
             .sheet(isPresented: $showSpeedTest) {
                 NavigationStack { SpeedTestView(test: speedTest) }
                     .presentationCornerRadius(36)
+                    .presentationBackground(.regularMaterial)
             }
             .sheet(isPresented: $showDemoShare) {
                 NavigationStack { ShareSetupView() }
                     .presentationCornerRadius(36)
+                    .presentationBackground(.regularMaterial)
             }
             .alert(
                 "Use a classmate's setup?",
@@ -378,8 +384,12 @@ private struct DetailsCard<Content: View>: View {
         VStack(spacing: 0) {
             content
         }
-        .background(Color(.secondarySystemGroupedBackground),
-                    in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        // Frosted glass, with a fine light edge.
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 26, style: .continuous)
+                .strokeBorder(.white.opacity(0.4), lineWidth: 0.5)
+        }
     }
 }
 

@@ -66,6 +66,7 @@ struct AutomationGuideView: View {
                 .padding(.bottom, 8)
                 .background(.bar)
             }
+            .scrollContentBackground(.hidden)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {

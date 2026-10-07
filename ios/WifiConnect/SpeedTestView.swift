@@ -54,7 +54,13 @@ struct SpeedTestView: View {
             .padding(20)
             .animation(.default, value: test.phase)
         }
-        .background(Color(.systemGroupedBackground))
+        .background {
+            // A soft glow in the stage's color, seen through the glass tiles.
+            RadialGradient(colors: [glow.opacity(0.28), .clear], center: UnitPoint(x: 0.5, y: 0.22),
+                           startRadius: 0, endRadius: 360)
+                .ignoresSafeArea()
+                .animation(.easeInOut(duration: 0.6), value: test.phase)
+        }
         .navigationTitle("Speed Test")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -67,6 +73,15 @@ struct SpeedTestView: View {
             }
         }
         .sensoryFeedback(.success, trigger: test.phase == .done)
+    }
+
+    private var glow: Color {
+        switch test.phase {
+        case .ping: return .orange
+        case .upload: return .purple
+        case .failed: return .orange
+        default: return .blue
+        }
     }
 
     private var buttonTitle: String {
@@ -192,7 +207,7 @@ private struct ResultTile: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 26, style: .continuous)
                 .strokeBorder(color.opacity(active ? 0.8 : 0), lineWidth: 2)

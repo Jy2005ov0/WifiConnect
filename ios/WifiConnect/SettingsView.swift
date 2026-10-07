@@ -179,6 +179,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

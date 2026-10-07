@@ -40,6 +40,7 @@ struct HistoryView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("Sign-In History")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

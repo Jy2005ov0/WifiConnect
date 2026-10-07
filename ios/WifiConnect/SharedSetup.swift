@@ -122,6 +122,7 @@ struct ShareSetupView: View {
                 Text("Only the Wi-Fi name and login page settings are shared. Never your student ID or password.")
             }
         }
+        .scrollContentBackground(.hidden)
         .navigationTitle("Share Setup")
         .navigationBarTitleDisplayMode(.inline)
     }

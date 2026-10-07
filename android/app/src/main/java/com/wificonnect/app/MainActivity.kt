@@ -23,6 +23,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.draw.blur
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.DisposableEffect
@@ -139,8 +142,11 @@ class MainActivity : FragmentActivity() {
                     )
                 }
 
+                // Behind the welcome page the app is blurred, so the page reads as frosted glass.
+                val blur by animateDpAsState(if (showWelcome) 28.dp else 0.dp, label = "blur")
                 Box(Modifier.fillMaxSize()) {
                 AnimatedContent(
+                    modifier = Modifier.blur(blur),
                     targetState = when {
                         showSpeed -> 4
                         showSettings && showShare -> 3

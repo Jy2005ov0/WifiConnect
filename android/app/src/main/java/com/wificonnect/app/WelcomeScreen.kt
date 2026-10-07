@@ -43,6 +43,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.border
 import java.util.Locale
 import java.util.Date
 import java.util.Calendar
@@ -76,7 +81,8 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                     translationY = offset.value
                     alpha = 1f - (-offset.value / height).coerceIn(0f, 1f) * 0.6f
                 }
-                .background(MaterialTheme.colorScheme.background)
+                // Frosted glass: the app shows through, blurred (Android 12+), behind the welcome.
+                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.78f))
                 .pointerInput(height) {
                     val velocity = VelocityTracker()
                     detectVerticalDragGestures(
@@ -129,21 +135,26 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                 animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
                 label = "bounce",
             )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+            // A see-through glass pill, like the handle on a lock screen.
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 20.dp)
-                    .clickable(remember { MutableInteractionSource() }, indication = null) { finish() },
+                    .graphicsLayer { translationY = bounce.dp.toPx() }
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.55f))
+                    .border(1.dp, Color.White.copy(alpha = 0.35f), CircleShape)
+                    .clickable(remember { MutableInteractionSource() }, indication = null) { finish() }
+                    .padding(horizontal = 22.dp, vertical = 12.dp),
             ) {
                 Icon(
                     Icons.Rounded.KeyboardArrowUp,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .graphicsLayer { translationY = bounce.dp.toPx() },
+                    modifier = Modifier.size(22.dp),
                 )
+                Spacer(Modifier.width(6.dp))
                 Text(
                     swipeLabel,
                     style = MaterialTheme.typography.titleSmall,

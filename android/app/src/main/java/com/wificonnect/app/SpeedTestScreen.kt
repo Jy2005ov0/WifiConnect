@@ -57,6 +57,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.util.Locale
+import androidx.compose.ui.draw.drawBehind
 import kotlin.math.log10
 import kotlin.math.min
 
@@ -71,9 +72,31 @@ fun SpeedTestScreen(test: SpeedTestViewModel, onBack: () -> Unit) {
     BackHandler(onBack = close)
     val phase = test.phase
 
+    val background = MaterialTheme.colorScheme.background
+    val glow by animateColorAsState(
+        when (phase) {
+            SpeedTestViewModel.Phase.PING -> Color(0xFFFF9500)
+            SpeedTestViewModel.Phase.UPLOAD -> Color(0xFFAF52DE)
+            else -> Color(0xFF007AFF)
+        },
+        tween(600),
+        label = "glow",
+    )
+
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
+        // A soft glow in the stage's color, seen through the glass tiles.
+        modifier = Modifier.drawBehind {
+            drawRect(background)
+            drawRect(
+                Brush.radialGradient(
+                    colors = listOf(glow.copy(alpha = 0.28f), Color.Transparent),
+                    center = Offset(size.width / 2, size.height * 0.22f),
+                    radius = size.width,
+                )
+            )
+        },
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text(stringResource(R.string.speedtest_title), fontWeight = FontWeight.SemiBold) },
@@ -82,7 +105,7 @@ fun SpeedTestScreen(test: SpeedTestViewModel, onBack: () -> Unit) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
             )
         },
     ) { padding ->
@@ -240,7 +263,8 @@ private fun ResultTile(
 ) {
     Surface(
         shape = RoundedCornerShape(26.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
+        // See-through glass over the glow behind the gauge.
+        color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.6f),
         border = if (active) BorderStroke(2.dp, color) else null,
         modifier = modifier,
     ) {
