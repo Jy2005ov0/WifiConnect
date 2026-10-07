@@ -220,8 +220,6 @@ fun MainScreen(
                     fontWeight = FontWeight.SemiBold,
                 )
             }
-
-            }
         }
     }
 }
