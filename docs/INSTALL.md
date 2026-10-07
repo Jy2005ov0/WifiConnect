@@ -224,6 +224,15 @@ These steps are the same on both phones.
   3. Tap **New Blank Automation**, search for **WiFi Connect** and add **Log In to Campus Wi-Fi**.
   4. Tap **Done**.
 
+### Extras
+
+- **Widget (both):** long-press an empty spot on your Home Screen, tap **+** (iPhone) or **Widgets** (Android), search for **WiFi Connect** and add the **Campus Wi-Fi** widget.
+- **Control Center button (iPhone, iOS 18):** open Control Center, tap **+** at the top left, then **Add a Control**, and search for **WiFi Connect**.
+- **Quick Settings tile (Android):** swipe down twice, tap the pencil (✏️) icon, and drag **Campus Wi-Fi** into your tiles.
+- **Face ID or fingerprint lock:** in Settings, turn on **Require Face ID** or **Require Fingerprint or Screen Lock**.
+- **Share with a classmate:** **Settings › Share Setup with Friends** shows a QR code. They scan it with their camera and their app fills in the same Wi-Fi and login page settings. Your student ID and password are never shared.
+- **Language:** the app follows your phone's language (English, Bahasa Melayu or 中文).
+
 **Optional (iPhone):** to stop iOS's own login page from popping up as well, go to **Settings › Wi-Fi**, tap **ⓘ** next to `utarwifi` and turn off **Auto-Login**.
 
 If it doesn't sign in, see [If automatic detection doesn't work](../README.md#if-automatic-detection-doesnt-work) in the README.

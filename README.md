@@ -8,16 +8,33 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 
 - **One tap:** open the app and tap **Connect**. Opening the app also tries to sign in on its own.
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
+- **"Connected to utarwifi" notification** when the app signs you in on arrival.
 - **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
 - **Private:** your student ID and password are stored encrypted on your phone and are only sent to your school's login page.
 - **Apple-style design:** a clean layout on both phones, with Light, Dark or System appearance (☀️ / 🌙 button), and an icon that follows Dark Mode.
 - **Your language:** English, Bahasa Melayu and 中文 (Simplified Chinese), following your phone's language.
-- **Tested:** every change is checked by signing in through both apps against a mock campus login page.
+- **Tested:** every change is checked by signing in through both apps and the Windows tool against a mock campus login page.
+
+### Features
+
+| Feature | iPhone | Android |
+| --- | --- | --- |
+| **Sign in without opening the app** | Home Screen / Lock Screen widget, and a Control Center button (iOS 18) | Quick Settings tile and a Home Screen widget |
+| **Stay signed in** | Background check, timed by iOS | Checks every 15 minutes |
+| **Laptop sign-in** | `windows/Install.cmd` signs your Windows laptop in to `utarwifi` too | |
+| **Sign-in history** | Settings › Sign-In History, with **Copy Diagnostics** to send if something goes wrong | Same |
+| **App lock** | Face ID / Touch ID before showing Settings | Fingerprint, face or screen lock |
+| **Sign out** | Sign Out button when connected | Same |
+| **Speed check** | Ping and download speed over the Wi-Fi | Same |
+| **Languages** | English, Bahasa Melayu, 中文 | Same |
+| **Share with classmates** | Settings › Share Setup: a QR code they scan with their camera (no password included) | Same, plus pasting a shared link |
 
 | | iPhone | Android |
 | --- | --- | --- |
 | Main screen | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
 | Settings | <img src="screenshots/ios-3-settings.png" width="220"> | <img src="screenshots/android-3-settings.png" width="220"> |
+| Sign-in history | <img src="screenshots/ios-6-history.png" width="220"> | <img src="screenshots/android-6-history.png" width="220"> |
+| Share with friends | <img src="screenshots/ios-7-share.png" width="220"> | <img src="screenshots/android-7-share.png" width="220"> |
 
 Requires iOS 17 or later, or Android 9 or later.
 
