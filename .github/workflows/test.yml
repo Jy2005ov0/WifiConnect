@@ -91,10 +91,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Start mock login page
-        shell: pwsh
-        run: Start-Process python -ArgumentList 'scripts/mock_portal.py', '8080' -RedirectStandardOutput portal.log -RedirectStandardError portal-err.log
-
       # Windows PowerShell 5.1, the same one the scheduled task uses.
       - name: Sign in through the Windows script
         shell: powershell

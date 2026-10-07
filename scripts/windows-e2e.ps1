@@ -5,6 +5,10 @@ $dir = Join-Path $env:RUNNER_TEMP 'wificonnect'
 New-Item -ItemType Directory -Force -Path $dir | Out-Null
 $config = Join-Path $dir 'config.json'
 
+# Windows stops a step's background processes when the step ends, so start the portal here.
+$server = Start-Process python -ArgumentList 'scripts/mock_portal.py', '8080' -PassThru `
+    -RedirectStandardOutput portal.log -RedirectStandardError portal-err.log
+
 for ($i = 0; $i -lt 30; $i++) {
     try { Invoke-WebRequest "$portal/status" -UseBasicParsing | Out-Null; break } catch { Start-Sleep -Seconds 1 }
 }
@@ -47,4 +51,5 @@ Post '/reset'
 Post '/move?to=B'
 Run-Case 'other-building' 'utar-test' 0 $true
 
+Stop-Process -Id $server.Id -ErrorAction SilentlyContinue
 exit $failures
