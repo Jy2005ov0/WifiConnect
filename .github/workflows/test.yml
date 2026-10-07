@@ -8,6 +8,7 @@ on:
       - "ios/**"
       - "android/**"
       - "scripts/**"
+      - "windows/**"
       - ".github/workflows/test.yml"
   workflow_dispatch:
 
@@ -84,3 +85,25 @@ jobs:
           path: |
             e2e/
             portal.log
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start mock login page
+        shell: pwsh
+        run: Start-Process python -ArgumentList 'scripts/mock_portal.py', '8080' -RedirectStandardOutput portal.log -RedirectStandardError portal-err.log
+
+      # Windows PowerShell 5.1, the same one the scheduled task uses.
+      - name: Sign in through the Windows script
+        shell: powershell
+        run: ./scripts/windows-e2e.ps1
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-windows
+          path: |
+            portal.log
+            portal-err.log

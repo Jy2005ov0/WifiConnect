@@ -34,6 +34,8 @@ The short version:
 | **Keep it working** | Nothing to do | Renew every 7 days with a free Apple ID |
 | **Auto sign-in** | Built in, on by default | A Shortcuts automation for `utarwifi` |
 
+**Windows laptop too:** download this repository as a ZIP and double-click `windows/Install.cmd`. Your laptop then signs in to `utarwifi` by itself. See [docs/INSTALL.md](docs/INSTALL.md#windows-laptop).
+
 ## iPhone alternative with nothing to install: a Shortcuts automation
 
 If you'd rather not install anything, the Shortcuts app can send the login form by itself. This works for most simple login pages, but not ones that add a new security token each time. It also stores your password in the shortcut as plain text.
@@ -96,6 +98,7 @@ That's a WPA2/WPA3-Enterprise (802.1X) network, such as eduroam. iOS saves those
 | --- | --- |
 | `ios/` | iPhone app (SwiftUI). `PortalLogin.swift` signs in, `HTMLForm.swift` reads the login page, and `LogInIntent.swift` adds the Shortcuts action. |
 | `android/` | Android app (Kotlin + Jetpack Compose). `PortalLogin.kt` signs in, `HtmlForm.kt` reads the login page, and `AutoLogin.kt` signs in automatically when you join a network. |
+| `windows/` | Auto sign-in for a Windows laptop (PowerShell): `Install.cmd`, `Uninstall.cmd` and `WifiConnect.ps1`. |
 | `.github/workflows/` | Builds the iPhone `.ipa` and Android `.apk`, runs the tests and takes the screenshots. |
 | `scripts/mock_portal.py` | A mock campus login page with two buildings, used by the **Test** workflow (`scripts/*-e2e.sh`). |
 | `scripts/make_app_icon.py` | Draws the app icon (light, dark and tinted) for both apps. |

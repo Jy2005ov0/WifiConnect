@@ -4,6 +4,7 @@ WiFi Connect isn't on the App Store or Google Play, so you install it yourself. 
 
 - [Android](#android): about 5 minutes, nothing else needed.
 - [iPhone](#iphone): about 15 minutes the first time, using a Windows PC (or a Mac) and a USB cable.
+- [Windows laptop](#windows-laptop): about 2 minutes. Signs your laptop in to campus Wi-Fi too.
 
 After installing, follow [First-time setup](#first-time-setup).
 
@@ -160,6 +161,47 @@ The same 7-day limit applies with a free Apple ID. Press **Run** again to renew.
 | "Developer Mode required" | Do [step 4](#4-allow-the-app-on-your-iphone-first-time-only), part 1. |
 | "WiFi Connect is no longer available" | The 7 days are up. [Renew it](#5-renew-it-every-7-days-free-apple-id). |
 | The Shortcuts action is missing | Open WiFi Connect once after installing, then search Shortcuts for "WiFi Connect". |
+
+---
+
+## Windows laptop
+
+**You need:** Windows 10 or 11. Nothing else to install: it uses PowerShell, which comes with Windows.
+
+### Install
+
+1. On GitHub, open this repository, click the green **Code** button and choose **Download ZIP**. Unzip it.
+2. Open the `windows` folder and double-click **`Install.cmd`**.
+   - If Windows SmartScreen says "Windows protected your PC", click **More info › Run anyway**. It appears for any downloaded script.
+3. Type your **student ID**, your **password** (nothing shows while you type, which is normal) and press **Enter** to accept `utarwifi`.
+4. It tries to sign in straight away and tells you the result. Press **Enter** to close.
+
+From now on, your laptop signs in by itself:
+
+- whenever it joins a network (Windows logs a "network connected" event, and the tool reacts to it),
+- when you sign in to Windows,
+- and every 15 minutes, so you stay signed in.
+
+You'll see a "Connected to utarwifi" notification when it signs you in.
+
+### How it keeps your password safe
+
+Your password is encrypted with Windows' built-in data protection, tied to your Windows account. Only you, signed in to this laptop, can decrypt it. It's stored in `%APPDATA%\WifiConnect\config.json` and only ever sent to the campus login page.
+
+### Change your password or remove it
+
+- **Change the student ID or password:** run `Install.cmd` again.
+- **Remove everything:** double-click **`Uninstall.cmd`**.
+- **See what it did:** open `%APPDATA%\WifiConnect\log.txt` (paste that into File Explorer's address bar).
+
+### Windows troubleshooting
+
+| Problem | Fix |
+| --- | --- |
+| Nothing happens after joining the Wi-Fi | Open **Task Scheduler**, find **WiFi Connect** in the Task Scheduler Library, right-click it and choose **Run**, then check `log.txt`. |
+| "On 'X', not 'utarwifi'" in the log | You're on another network, or the Wi-Fi name is different. Run `Install.cmd` again and type the exact name. |
+| Signs in on other networks too | Recent Windows versions hide the Wi-Fi name from scripts unless **Settings › Privacy & security › Location** is on. With Location off, the tool can't tell networks apart, so it tries any login page. |
+| A PowerShell window flashes briefly | That's the tool running. It closes by itself. |
 
 ---
 
