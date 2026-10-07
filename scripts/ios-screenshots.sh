@@ -48,30 +48,36 @@ shoot 12-chinese  -demoState connected -demoSpeed "18 ms · 92 Mbps" -AppleLangu
 if command -v applesimutils > /dev/null; then
   applesimutils --byId "$UDID" --bundle "$BUNDLE_ID" --setPermissions notifications=YES || true
   sleep 3
+  # The banner only shows for a few seconds, and a simulator screenshot is slow, so record
+  # the screen and keep the frame where the banner reaches furthest down.
+  shots=$(mktemp -d)
+  xcrun simctl io "$UDID" recordVideo --codec h264 --force "$shots/banner.mp4" &
+  recorder=$!
+  sleep 3
   xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoStudentID A0123456X -demoState connected -demoNotify YES
   sleep 2
   xcrun simctl terminate "$UDID" "$BUNDLE_ID"
-  sleep 1
-  # The banner slides in and stays a few seconds. Take pictures quickly and keep the one
-  # where the banner reaches furthest down (the most changed rows at the top of the screen).
-  shots=$(mktemp -d)
-  xcrun simctl io "$UDID" screenshot "$shots/home.png"
-  for i in $(seq 1 24); do
-    xcrun simctl io "$UDID" screenshot "$shots/shot-$i.png" > /dev/null 2>&1
-  done
+  sleep 12
+  kill -INT "$recorder"
+  wait "$recorder" || true
+  swift scripts/video_frames.swift "$shots/banner.mp4" "$shots"
   python3 -m venv "$shots/venv" && "$shots/venv/bin/pip" install --quiet pillow
   "$shots/venv/bin/python" - "$shots" "$OUT/ios-13-notification.png" <<'PY'
 import os, shutil, sys
 from PIL import Image, ImageChops
 folder, out = sys.argv[1], sys.argv[2]
-home = Image.open(os.path.join(folder, "home.png")).convert("RGB")
+frames = sorted(f for f in os.listdir(folder) if f.startswith("frame-"))
+# The last frame is the plain Home Screen again, after the banner has gone.
+home = Image.open(os.path.join(folder, frames[-1])).convert("RGB")
 top = (0, 0, home.width, home.height // 4)
 def banner_depth(name):
     diff = ImageChops.difference(Image.open(os.path.join(folder, name)).convert("RGB"), home).crop(top)
     box = diff.point(lambda v: 255 if v > 40 else 0).getbbox()
     return box[3] if box else 0
-best = max((f for f in os.listdir(folder) if f.startswith("shot-")), key=banner_depth)
-shutil.copy(os.path.join(folder, best), out)
+# Only frames after the app has closed (recording starts 3 s before launch; the app
+# closes 2 s after), so the app itself never counts as a banner.
+best = max(frames[int(7.5 / 0.25):-1], key=banner_depth)
+Image.open(os.path.join(folder, best)).save(out)
 print("Notification picture:", best, banner_depth(best))
 PY
   sleep 6
