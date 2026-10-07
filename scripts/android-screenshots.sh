@@ -35,10 +35,10 @@ shoot() {
 }
 
 shoot 1-ready     --es demoState idle
-shoot 2-connected --es demoState connected
+shoot 2-connected --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"
 shoot 3-settings  --es demoState idle --es demoScreen settings
 shoot 6-history   --es demoState idle --es demoScreen history
 shoot 7-share     --es demoState idle --es demoScreen share
 adb shell cmd uimode night yes
 sleep 2
-shoot 5-dark      --es demoState connected
+shoot 5-dark      --es demoState connected --es demoSpeed "'18 ms · 92 Mbps'"

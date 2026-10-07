@@ -249,6 +249,7 @@ struct ContentView: View {
         }
         hasCredentials = Credentials.isConfigured
         studentID = Credentials.studentID
+        speed = defaults.string(forKey: "demoSpeed")
         switch demoState {
         case "working": model.state = .working
         case "connected": model.state = .connected("You're signed in and ready to go.")

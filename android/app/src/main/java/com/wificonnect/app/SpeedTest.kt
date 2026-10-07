@@ -10,6 +10,9 @@ import java.util.Locale
 
 /** A quick connection check over the Wi-Fi: best of three round trips, then a 10 MB download. */
 object SpeedTest {
+    /** Debug-only: a result to show in the README screenshots. */
+    var demoResult: String? = null
+
     data class Result(val pingMs: Long, val mbps: Double) {
         fun summary(context: Context): String {
             val speed = if (mbps >= 10) String.format(Locale.getDefault(), "%.0f", mbps)

@@ -31,10 +31,10 @@ shoot() {
 }
 
 shoot 1-ready     -demoState idle
-shoot 2-connected -demoState connected
+shoot 2-connected -demoState connected -demoSpeed "18 ms · 92 Mbps"
 shoot 3-settings  -demoState idle -demoScreen settings
 shoot 4-guide     -demoState idle -demoScreen guide
 shoot 6-history   -demoState idle -demoScreen history
 shoot 7-share     -demoState idle -demoScreen share
 xcrun simctl ui "$UDID" appearance dark
-shoot 5-dark      -demoState connected
+shoot 5-dark      -demoState connected -demoSpeed "18 ms · 92 Mbps"

@@ -94,7 +94,7 @@ fun MainScreen(
     val context = LocalContext.current
     val view = LocalView.current
     val scope = rememberCoroutineScope()
-    var speed by remember { mutableStateOf<String?>(null) }
+    var speed by remember { mutableStateOf(SpeedTest.demoResult) }
     var testingSpeed by remember { mutableStateOf(false) }
 
     LaunchedEffect(state) {
