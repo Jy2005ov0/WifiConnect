@@ -52,7 +52,7 @@ object AutoLogin {
     suspend fun run(context: Context, network: Network?) {
         if (!Credentials.isConfigured(context)) return
         val message = try {
-            when (PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context))) {
+            when (PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), SignInTrigger.AUTOMATIC)) {
                 LoginOutcome.LOGGED_IN -> "Signed in to campus Wi-Fi."
                 LoginOutcome.ALREADY_ONLINE -> return
             }

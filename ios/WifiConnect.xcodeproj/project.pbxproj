@@ -6,8 +6,37 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C0A2000000000000000000B2 /* WifiConnectWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C0A2000000000000000000A1 /* WifiConnectWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C0A2000000000000000000D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0A1000000000000000000E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0A2000000000000000000D1;
+			remoteInfo = WifiConnectWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C0A2000000000000000000C4 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C0A2000000000000000000B2 /* WifiConnectWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C0A1000000000000000000A1 /* WifiConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WifiConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0A2000000000000000000A1 /* WifiConnectWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WifiConnectWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -17,6 +46,13 @@
 				Info.plist,
 			);
 			target = C0A1000000000000000000D1 /* WifiConnect */;
+		};
+		C0A2000000000000000000B1 /* Exceptions for "WifiConnectWidget" folder in "WifiConnectWidget" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C0A2000000000000000000D1 /* WifiConnectWidget */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,10 +65,30 @@
 			path = WifiConnect;
 			sourceTree = "<group>";
 		};
+		C0A2000000000000000000A2 /* WifiConnectWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C0A2000000000000000000B1 /* Exceptions for "WifiConnectWidget" folder in "WifiConnectWidget" target */,
+			);
+			path = WifiConnectWidget;
+			sourceTree = "<group>";
+		};
+		C0A2000000000000000000A4 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C0A1000000000000000000C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0A2000000000000000000C1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				C0A1000000000000000000A2 /* WifiConnect */,
+				C0A2000000000000000000A2 /* WifiConnectWidget */,
+				C0A2000000000000000000A4 /* Shared */,
 				C0A1000000000000000000A3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				C0A1000000000000000000A1 /* WifiConnect.app */,
+				C0A2000000000000000000A1 /* WifiConnectWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,13 +127,16 @@
 				C0A1000000000000000000C2 /* Sources */,
 				C0A1000000000000000000C1 /* Frameworks */,
 				C0A1000000000000000000C3 /* Resources */,
+				C0A2000000000000000000C4 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C0A2000000000000000000D3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C0A1000000000000000000A2 /* WifiConnect */,
+				C0A2000000000000000000A4 /* Shared */,
 			);
 			name = WifiConnect;
 			packageProductDependencies = (
@@ -82,6 +144,29 @@
 			productName = WifiConnect;
 			productReference = C0A1000000000000000000A1 /* WifiConnect.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C0A2000000000000000000D1 /* WifiConnectWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0A2000000000000000000F2 /* Build configuration list for PBXNativeTarget "WifiConnectWidget" */;
+			buildPhases = (
+				C0A2000000000000000000C2 /* Sources */,
+				C0A2000000000000000000C1 /* Frameworks */,
+				C0A2000000000000000000C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C0A2000000000000000000A2 /* WifiConnectWidget */,
+				C0A2000000000000000000A4 /* Shared */,
+			);
+			name = WifiConnectWidget;
+			packageProductDependencies = (
+			);
+			productName = WifiConnectWidget;
+			productReference = C0A2000000000000000000A1 /* WifiConnectWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -94,6 +179,9 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					C0A1000000000000000000D1 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					C0A2000000000000000000D1 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
@@ -113,12 +201,20 @@
 			projectRoot = "";
 			targets = (
 				C0A1000000000000000000D1 /* WifiConnect */,
+				C0A2000000000000000000D1 /* WifiConnectWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C0A1000000000000000000C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0A2000000000000000000C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +231,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0A2000000000000000000C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C0A2000000000000000000D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0A2000000000000000000D1 /* WifiConnectWidget */;
+			targetProxy = C0A2000000000000000000D2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C0A1000000000000000000F3 /* Debug */ = {
@@ -249,6 +360,54 @@
 			};
 			name = Release;
 		};
+		C0A2000000000000000000F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WifiConnectWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "WiFi Connect";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.WifiConnect.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C0A2000000000000000000F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WifiConnectWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "WiFi Connect";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.WifiConnect.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -266,6 +425,15 @@
 			buildConfigurations = (
 				C0A1000000000000000000F5 /* Debug */,
 				C0A1000000000000000000F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0A2000000000000000000F2 /* Build configuration list for PBXNativeTarget "WifiConnectWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0A2000000000000000000F5 /* Debug */,
+				C0A2000000000000000000F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

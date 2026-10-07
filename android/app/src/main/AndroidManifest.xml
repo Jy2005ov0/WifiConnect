@@ -30,6 +30,31 @@
             android:name=".CaptivePortalReceiver"
             android:exported="false" />
 
+        <!-- Quick Settings tile. -->
+        <service
+            android:name=".WifiTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_status_wifi"
+            android:label="@string/tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- Home Screen widget. -->
+        <receiver
+            android:name=".StatusWidget"
+            android:exported="false"
+            android:label="@string/tile_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_status_info" />
+        </receiver>
+
         <!-- Network callbacks are cleared on reboot and app updates, so register again. -->
         <receiver
             android:name=".BootReceiver"

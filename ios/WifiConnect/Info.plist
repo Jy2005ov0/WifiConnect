@@ -3,6 +3,18 @@
 <plist version="1.0">
 <dict>
 	<!-- Campus login pages are often plain http:// and use self-signed hosts, so allow them. -->
+	<!-- wificonnect://connect (widget) and wificonnect://setup (shared settings). -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>WiFi Connect</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wificonnect</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

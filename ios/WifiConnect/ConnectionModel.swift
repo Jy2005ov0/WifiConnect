@@ -15,6 +15,7 @@ final class ConnectionModel {
 
     /// - Parameter automatic: When the app signs in on its own (e.g. on launch), stay quiet if there's no Wi-Fi.
     func connect(automatic: Bool = false) async {
+        guard state != .working else { return }
         state = .working
         do {
             let outcome = try await PortalLogin().logIn(

@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">WiFi Connect</string>
+
+    <!-- Status -->
+    <string name="status_ready">Ready</string>
+    <string name="status_signing_in">Signing In…</string>
+    <string name="status_signing_in_detail">Talking to your school\'s login page.</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_failed">Couldn\'t Sign In</string>
+
+    <!-- Quick Settings tile -->
+    <string name="tile_label">Campus Wi-Fi</string>
+    <string name="tile_signing_in">Signing in…</string>
+    <string name="tile_tap_to_sign_in">Tap to sign in</string>
+    <string name="tile_tap_to_retry">Tap to try again</string>
+    <string name="tile_signed_in_at">Signed in %1$s</string>
+
+    <!-- Home Screen widget -->
+    <string name="widget_description">See if you\'re signed in, and sign in with one tap.</string>
+    <string name="widget_sign_in">Sign In</string>
+    <string name="widget_tap_to_sign_in">Tap Sign In on campus Wi-Fi.</string>
+    <string name="widget_signed_in_at">Signed in at %1$s</string>
+    <string name="widget_set_up">Set Up</string>
+    <string name="widget_set_up_detail">Open the app to add your student ID.</string>
 </resources>

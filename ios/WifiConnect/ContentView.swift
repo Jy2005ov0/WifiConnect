@@ -125,6 +125,16 @@ struct ContentView: View {
                 #endif
                 if !hasCredentials { showSettings = true }
             }
+            .onOpenURL { url in
+                guard url.scheme == "wificonnect" else { return }
+                if url.host == "connect", hasCredentials {
+                    Task { await model.connect() }
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .connectRequested)) { _ in
+                // From the widget or the Control Center button.
+                if hasCredentials { Task { await model.connect() } }
+            }
             .onChange(of: scenePhase) {
                 // Opening the app on campus signs you in straight away.
                 if scenePhase == .active, hasCredentials, model.state != .working, !isDemo, !isTest {

@@ -19,6 +19,9 @@ import javax.net.ssl.X509TrustManager
 
 enum class LoginOutcome { ALREADY_ONLINE, LOGGED_IN }
 
+/** What started a sign-in, for the history. */
+enum class SignInTrigger { APP, AUTOMATIC, TILE, WIDGET, BACKGROUND }
+
 sealed class LoginError(message: String) : Exception(message) {
     object MissingCredentials : LoginError("Add your student ID and password in Settings first.")
     object NotOnWiFi : LoginError("Couldn't reach the Wi-Fi. Make sure you're connected to your school's network.")
@@ -246,18 +249,35 @@ class PortalLogin(private val network: Network) {
             }
         }
 
-        /** Signs in on the Wi-Fi network, then asks Android to re-check it so the "Sign in" notice goes away. */
-        suspend fun logIn(context: Context, network: Network? = wifiNetwork(context)): LoginOutcome {
-            val wifi = network ?: throw LoginError.NotOnWiFi
-            val outcome = PortalLogin(wifi).logIn(
-                Credentials.studentId(context),
-                Credentials.password(context),
-                PortalSettings.load(context),
-            )
-            if (outcome == LoginOutcome.LOGGED_IN) {
-                context.getSystemService(ConnectivityManager::class.java).reportNetworkConnectivity(wifi, true)
+        /**
+         * Signs in on the Wi-Fi network, then asks Android to re-check it so the "Sign in" notice goes away.
+         * Every attempt is recorded for the widget, the tile and the history.
+         */
+        suspend fun logIn(
+            context: Context,
+            network: Network? = wifiNetwork(context),
+            trigger: SignInTrigger = SignInTrigger.APP,
+        ): LoginOutcome {
+            try {
+                val wifi = network ?: throw LoginError.NotOnWiFi
+                val outcome = PortalLogin(wifi).logIn(
+                    Credentials.studentId(context),
+                    Credentials.password(context),
+                    PortalSettings.load(context),
+                )
+                if (outcome == LoginOutcome.LOGGED_IN) {
+                    context.getSystemService(ConnectivityManager::class.java).reportNetworkConnectivity(wifi, true)
+                }
+                SignInStatus.save(
+                    context,
+                    if (outcome == LoginOutcome.LOGGED_IN) SignInStatus.Kind.SIGNED_IN else SignInStatus.Kind.ALREADY_ONLINE,
+                    "",
+                )
+                return outcome
+            } catch (e: LoginError) {
+                SignInStatus.save(context, SignInStatus.Kind.FAILED, e.message.orEmpty())
+                throw e
             }
-            return outcome
         }
     }
 }
