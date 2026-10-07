@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Draws the WiFi Connect app icon: a fan-style Wi-Fi symbol inside a loading ring,
-with a light version (black on white) and a dark version (white on black).
+"""Draws the WiFi Connect app icon ("Graphite"): a fan-style Wi-Fi symbol inside a
+loading ring on a soft gradient, in a light and a dark version. The unfilled part of
+the ring and the waiting dots are see-through, so the background shows through them.
 
 Writes the iOS icon PNGs, the Android adaptive-icon vectors and a preview.
 Usage: make_app_icon.py
@@ -16,19 +17,23 @@ SS = 2
 
 # Geometry in a 1024 x 1024 design space (y points down, angles clockwise from 3 o'clock).
 CENTER = (512, 512)
-RING_RADIUS, RING_WIDTH = 330, 54
-RING_MAIN = (138, 360)   # Over the top, from bottom-left round to 3 o'clock.
-RING_REST = (0, 42)      # The unfinished part of the "loading" ring.
-DOTS = [(117, "primary"), (99, "primary"), (81, "secondary"), (63, "tertiary")]
-DOT_RADIUS = 29
-FAN_APEX = (512, 655)
+RING_RADIUS, RING_WIDTH = 330, 62
+RING_MAIN = (136, 360)   # Over the top, from bottom-left round to 3 o'clock.
+RING_REST = (0, 44)      # The unfilled part of the "loading" ring.
+DOTS = [(118, "primary"), (99, "primary"), (80, "secondary"), (61, "tertiary")]
+DOT_RADIUS = 33
+FAN_APEX = (512, 660)
 FAN_ANGLES = (225, 315)
-FAN_BANDS = [(0, 92), (138, 232), (278, 372)]  # Tip, middle band, top band.
-CORNER = 10
+FAN_BANDS = [(0, 96), (140, 232), (276, 366)]  # Tip, middle band, top band.
+CORNER = 20
+
+# Everything is drawn in the glyph colour; these opacities make the
+# unfilled ring ("track") and the waiting dots see-through.
+ROLES = {"primary": 1.0, "track": 0.28, "secondary": 0.5, "tertiary": 0.24}
 
 THEMES = {
-    "light": {"background": (255, 255, 255), "primary": (0, 0, 0), "secondary": (142, 142, 147), "tertiary": (199, 199, 204)},
-    "dark": {"background": (0, 0, 0), "primary": (255, 255, 255), "secondary": (142, 142, 147), "tertiary": (72, 72, 74)},
+    "light": {"top": (255, 255, 255), "bottom": (229, 229, 234), "glyph": (0, 0, 0)},
+    "dark": {"top": (44, 44, 46), "bottom": (0, 0, 0), "glyph": (255, 255, 255)},
 }
 
 
@@ -49,7 +54,7 @@ def sector_points(inner, outer, steps=64):
 def layer_masks():
     """One mask per colour role, at supersampled size."""
     s = SS
-    masks = {role: Image.new("L", (SIZE * s, SIZE * s), 0) for role in ("primary", "secondary", "tertiary")}
+    masks = {role: Image.new("L", (SIZE * s, SIZE * s), 0) for role in ROLES}
 
     def scaled(points):
         return [(x * s, y * s) for x, y in points]
@@ -74,7 +79,7 @@ def layer_masks():
             d.ellipse([x - w / 2, y - w / 2, x + w / 2, y + w / 2], fill=255)
 
     ring("primary", *RING_MAIN, caps=[RING_MAIN[0]])
-    ring("secondary", *RING_REST, caps=[RING_REST[1]])
+    ring("track", *RING_REST, caps=[RING_REST[1]])
 
     for angle, role in DOTS:
         x, y = polar(CENTER, RING_RADIUS, angle)
@@ -83,22 +88,28 @@ def layer_masks():
     return masks
 
 
-def render(theme, background=True):
-    colors = THEMES[theme]
-    masks = layer_masks()
-    base = Image.new("RGBA", (SIZE * SS, SIZE * SS), colors["background"] + (255,) if background else (0, 0, 0, 0))
+def gradient(top, bottom, size):
+    column = Image.new("RGB", (1, 256))
+    for y in range(256):
+        t = y / 255
+        column.putpixel((0, y), tuple(int(top[i] + (bottom[i] - top[i]) * t) for i in range(3)))
+    return column.resize((size, size))
+
+
+def compose(base, color, masks):
     for role, mask in masks.items():
-        base.paste(colors[role] + (255,), mask=mask)
+        base.paste(color, mask=mask.point(lambda v, a=ROLES[role]: int(v * a)))
     return base.resize((SIZE, SIZE), Image.LANCZOS)
+
+
+def render(theme):
+    t = THEMES[theme]
+    return compose(gradient(t["top"], t["bottom"], SIZE * SS), t["glyph"], layer_masks())
 
 
 def tinted():
     """iOS 18 tinted icons: a greyscale glyph on black that the system colours in."""
-    masks = layer_masks()
-    base = Image.new("RGB", (SIZE * SS, SIZE * SS), (0, 0, 0))
-    for role, level in (("primary", 255), ("secondary", 150), ("tertiary", 90)):
-        base.paste((level, level, level), mask=masks[role])
-    return base.resize((SIZE, SIZE), Image.LANCZOS)
+    return compose(Image.new("RGB", (SIZE * SS, SIZE * SS), (0, 0, 0)), (255, 255, 255), layer_masks())
 
 
 # ---- Android vector drawables ----
@@ -133,38 +144,39 @@ def circle_path(x, y, r):
     return f"M{fmt(x - r)},{fmt(y)} a{fmt(r)},{fmt(r)} 0 1,0 {fmt(2 * r)},0 a{fmt(r)},{fmt(r)} 0 1,0 {fmt(-2 * r)},0 Z"
 
 
-def hex_color(rgb):
-    return "#FF%02X%02X%02X" % rgb
-
-
-def vector(colors, monochrome=False):
+def vector(glyph, monochrome=False):
     """Adaptive-icon foreground: the design scaled into the 108dp icon's safe zone."""
-    def color(role):
-        return "#FFFFFFFF" if monochrome else hex_color(colors[role])
+    color = "#FFFFFFFF" if monochrome else "#FF%02X%02X%02X" % glyph
+
+    def alpha(role):
+        return fmt(ROLES[role])
 
     fan = " ".join(sector_path(i, o) for i, o in FAN_BANDS)
     caps = {
         "primary": [polar(CENTER, RING_RADIUS, RING_MAIN[0])],
-        "secondary": [polar(CENTER, RING_RADIUS, RING_REST[1])],
+        "track": [polar(CENTER, RING_RADIUS, RING_REST[1])],
     }
-    dots = {role: [] for role in ("primary", "secondary", "tertiary")}
+    dots = {role: [] for role in ROLES}
     for angle, role in DOTS:
         dots[role].append(polar(CENTER, RING_RADIUS, angle))
 
     paths = [
-        f'        <path android:fillColor="{color("primary")}" android:strokeColor="{color("primary")}"\n'
-        f'            android:strokeWidth="{CORNER * 2}" android:strokeLineJoin="round"\n'
+        f'        <path android:fillColor="{color}" android:strokeColor="{color}"\n'
+        f'            android:strokeWidth="{CORNER}" android:strokeLineJoin="round"\n'
         f'            android:pathData="{fan}" />',
-        f'        <path android:strokeColor="{color("primary")}" android:strokeWidth="{RING_WIDTH}"\n'
+        f'        <path android:strokeColor="{color}" android:strokeWidth="{RING_WIDTH}"\n'
         f'            android:pathData="{arc_path(*RING_MAIN)}" />',
-        f'        <path android:strokeColor="{color("secondary")}" android:strokeWidth="{RING_WIDTH}"\n'
-        f'            android:pathData="{arc_path(*RING_REST)}" />',
+        f'        <path android:strokeColor="{color}" android:strokeAlpha="{alpha("track")}"\n'
+        f'            android:strokeWidth="{RING_WIDTH}" android:pathData="{arc_path(*RING_REST)}" />',
     ]
-    for role in ("primary", "secondary", "tertiary"):
+    for role in ROLES:
         circles = [circle_path(x, y, RING_WIDTH / 2) for x, y in caps.get(role, [])]
         circles += [circle_path(x, y, DOT_RADIUS) for x, y in dots[role]]
         if circles:
-            paths.append(f'        <path android:fillColor="{color(role)}"\n            android:pathData="{" ".join(circles)}" />')
+            paths.append(
+                f'        <path android:fillColor="{color}" android:fillAlpha="{alpha(role)}"\n'
+                f'            android:pathData="{" ".join(circles)}" />'
+            )
 
     scale = 0.62
     shift = SIZE * (1 - scale) / 2
@@ -186,6 +198,20 @@ def vector(colors, monochrome=False):
 """
 
 
+def background_shape(theme):
+    """Adaptive-icon background: the same top-to-bottom gradient."""
+    t = THEMES[theme]
+    return f"""<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated by scripts/make_app_icon.py -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:startColor="#FF%02X%02X%02X"
+        android:endColor="#FF%02X%02X%02X" />
+</shape>
+""" % (t["top"] + t["bottom"])
+
+
 def write(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text)
@@ -198,9 +224,11 @@ if __name__ == "__main__":
     tinted().save(ios / "AppIcon-Tinted.png")
 
     res = ROOT / "android/app/src/main/res"
-    write(res / "drawable/ic_launcher_foreground.xml", vector(THEMES["light"]))
-    write(res / "drawable-night/ic_launcher_foreground.xml", vector(THEMES["dark"]))
-    write(res / "drawable/ic_launcher_monochrome.xml", vector(THEMES["light"], monochrome=True))
+    write(res / "drawable/ic_launcher_foreground.xml", vector(THEMES["light"]["glyph"]))
+    write(res / "drawable-night/ic_launcher_foreground.xml", vector(THEMES["dark"]["glyph"]))
+    write(res / "drawable/ic_launcher_monochrome.xml", vector(THEMES["light"]["glyph"], monochrome=True))
+    write(res / "drawable/ic_launcher_background.xml", background_shape("light"))
+    write(res / "drawable-night/ic_launcher_background.xml", background_shape("dark"))
 
     # Preview: dark and light side by side, like the reference.
     preview_dir = ROOT / "design"
