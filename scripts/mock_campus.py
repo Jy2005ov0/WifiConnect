@@ -31,6 +31,7 @@ import html
 import json
 import os
 import secrets
+import socketserver
 import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -317,8 +318,16 @@ class Campus(BaseHTTPRequestHandler):
         return self.send(404, "not found")
 
 
+class Server(ThreadingHTTPServer):
+    # HTTPServer looks up the machine's full name for every server it opens, which can
+    # take many seconds on a Mac; the campus opens seven, so skip the lookup.
+    def server_bind(self):
+        socketserver.TCPServer.server_bind(self)
+        self.server_name, self.server_port = "localhost", self.server_address[1]
+
+
 def serve(name, port):
-    server = ThreadingHTTPServer(("0.0.0.0", port), Campus)
+    server = Server(("0.0.0.0", port), Campus)
     server.name = name
     threading.Thread(target=server.serve_forever, daemon=True).start()
 
@@ -335,6 +344,6 @@ if __name__ == "__main__":
         serve(name, port)
     print("Mock campus: probe on port %d; %s" % (
         probe, ", ".join(f"{n} at {HOSTS[n]}:{PORTS[n]}" for n in PORTS)), flush=True)
-    server = ThreadingHTTPServer(("0.0.0.0", probe), Campus)
+    server = Server(("0.0.0.0", probe), Campus)
     server.name = "PROBE"
     server.serve_forever()
