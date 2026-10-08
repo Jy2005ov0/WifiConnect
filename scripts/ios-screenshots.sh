@@ -53,11 +53,11 @@ notification_shot() {
   shots=$(mktemp -d)
   xcrun simctl io "$UDID" recordVideo --codec h264 --force "$shots/banner.mp4" &
   recorder=$!
-  sleep 3
+  sleep 5
   xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoStudentID A0123456X -demoState connected -demoNotify YES
   sleep 2
   xcrun simctl terminate "$UDID" "$BUNDLE_ID"
-  sleep 12
+  sleep 15
   kill -INT "$recorder"
   wait "$recorder" || true
   swift scripts/video_frames.swift "$shots/banner.mp4" "$shots"
@@ -74,9 +74,16 @@ def banner_depth(name):
     diff = ImageChops.difference(Image.open(os.path.join(folder, name)).convert("RGB"), home).crop(top)
     box = diff.point(lambda v: 255 if v > 40 else 0).getbbox()
     return box[3] if box else 0
-# Only frames after the app has closed (recording starts 3 s before launch; the app
-# closes 2 s after), so the app itself never counts as a banner.
-best = max(frames[int(7.5 / 0.25):-1], key=banner_depth)
+# Only frames showing the Home Screen below the top quarter, so the app itself
+# (open, opening or closing) never counts as a banner.
+rest = (0, home.height // 4, home.width, home.height)
+def on_home_screen(name):
+    diff = ImageChops.difference(Image.open(os.path.join(folder, name)).convert("RGB"), home).crop(rest)
+    return diff.point(lambda v: 255 if v > 40 else 0).getbbox() is None
+candidates = [f for f in frames[:-1] if on_home_screen(f)]
+best = max(candidates, key=banner_depth)
+if banner_depth(best) == 0:
+    sys.exit("No notification banner in the recording")
 Image.open(os.path.join(folder, best)).save(out)
 print("Notification picture:", best, banner_depth(best))
 PY
