@@ -159,4 +159,25 @@ wait_for "Connected" 60 || fail "Signing in again after signing out"
 shot connected-again
 pass "Signing in again works, and so does the internet"
 
+# 9. Turn off the welcome page in Settings, then open the app again.
+tap "Settings"
+wait_for "Done" 20 || fail "The gear opens Settings"
+for _ in 1 2 3 4 5 6; do
+  point=$(find_on_screen "Show When Opening the App") && [[ ${point#* } -lt $((HEIGHT * 80 / 100)) ]] && break
+  adb shell input swipe $((WIDTH / 2)) $((HEIGHT * 75 / 100)) $((WIDTH / 2)) $((HEIGHT * 35 / 100)) 300
+  sleep 1
+done
+tap "right:Show When Opening the App"
+sleep 1
+shot welcome-off
+tap "Done"
+wait_for "Tap to Disconnect" 20 || fail "Done goes back to the main page"
+adb shell am force-stop "$PACKAGE"
+adb shell am start -W -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n "$PACKAGE/.MainActivity" > /dev/null
+sleep 3
+wait_for "Tap to Connect" 20 || fail "With the welcome page off, the app opens straight to the circle"
+find_on_screen "Swipe up to start" > /dev/null && fail "With the welcome page off, the welcome page doesn't show"
+shot opens-without-welcome
+pass "Turning off the welcome page in Settings opens the app straight to the circle"
+
 finish 0
