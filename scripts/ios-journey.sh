@@ -205,10 +205,17 @@ for e in json.load(sys.stdin):
 }
 read -r switch sx sy sw sh < <(switch_value)
 echo "Welcome page switch: value $switch, frame $sx,$sy ${sw}x$sh"
-for x in $((sx + sw - 40)) $((sx + sw - 30)) $((sx + sw / 2)) $((sx + sw - 60)); do
-  idb ui tap --udid "$UDID" "$x" $((sy + sh / 2))
+# A switch wants a touch that lasts a moment, or a slide, rather than an instant tap.
+y=$((sy + sh / 2))
+for attempt in press press-wide slide; do
+  case $attempt in
+    press) idb ui tap --udid "$UDID" --duration 0.2 $((sx + sw - 35)) "$y" ;;
+    press-wide) idb ui tap --udid "$UDID" --duration 0.3 $((sx + sw - 25)) "$y" ;;
+    slide) idb ui swipe --udid "$UDID" --duration 0.3 $((sx + sw - 22)) "$y" $((sx + sw - 70)) "$y" ;;
+  esac
   sleep 1
   read -r switch _ < <(switch_value)
+  echo "After $attempt: $switch"
   [[ "$switch" == "0" ]] && break
 done
 shot welcome-off
