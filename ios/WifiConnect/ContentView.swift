@@ -33,14 +33,15 @@ struct ContentView: View {
         }
     }
 
-    /// The welcome page shows each time the app opens, but not in screenshots or tests unless asked for.
+    /// The welcome page shows each time the app opens, unless turned off in Settings › Welcome Page,
+    /// and not in screenshots or tests unless asked for.
     private static var startsWithWelcome: Bool {
         #if DEBUG
         let defaults = UserDefaults.standard
         if defaults.string(forKey: "demoState") != nil { return defaults.string(forKey: "demoScreen") == "welcome" }
         if defaults.string(forKey: "testStudentID") != nil { return false }
         #endif
-        return true
+        return UserDefaults.standard.object(forKey: SettingsKey.showWelcome) as? Bool ?? true
     }
 
     private var main: some View {

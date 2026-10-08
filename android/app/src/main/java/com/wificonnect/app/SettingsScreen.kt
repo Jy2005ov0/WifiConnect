@@ -254,6 +254,12 @@ fun SettingsScreen(
                 }
             }
 
+            Section(header = stringResource(R.string.welcome_page), footer = stringResource(R.string.welcome_show_footer)) {
+                SwitchRow(stringResource(R.string.welcome_show), settings.showWelcome) {
+                    settings = settings.copy(showWelcome = it)
+                }
+            }
+
             Section(header = stringResource(R.string.language), footer = null) {
                 val language = remember { AppLanguage.current(context) }
                 var choosing by remember { mutableStateOf(false) }

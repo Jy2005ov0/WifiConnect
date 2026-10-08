@@ -151,6 +151,9 @@
     <string name="widget_signed_in_at">%1$s にサインイン</string>
     <string name="widget_set_up">設定する</string>
     <string name="widget_set_up_detail">アプリを開いて学籍番号を追加してください。</string>
+    <string name="welcome_page">ようこそ画面</string>
+    <string name="welcome_show">アプリを開くときに表示</string>
+    <string name="welcome_show_footer">時計が表示され、上にスワイプして閉じる画面です。オフにすると Wi-Fi の円がすぐに表示されます。</string>
     <string name="guide_title">使い方</string>
     <string name="guide_step">ステップ %1$d/%2$d</string>
     <string name="guide_next">次へ</string>

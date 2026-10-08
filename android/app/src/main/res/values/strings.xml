@@ -152,6 +152,9 @@
     <string name="widget_signed_in_at">Signed in at %1$s</string>
     <string name="widget_set_up">Set Up</string>
     <string name="widget_set_up_detail">Open the app to add your student ID.</string>
+    <string name="welcome_page">Welcome Page</string>
+    <string name="welcome_show">Show When Opening the App</string>
+    <string name="welcome_show_footer">The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.</string>
     <string name="guide_title">How to Use</string>
     <string name="guide_step">Step %1$d of %2$d</string>
     <string name="guide_next">Next</string>

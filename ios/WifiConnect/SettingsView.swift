@@ -13,6 +13,7 @@ struct SettingsView: View {
 
     @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @AppStorage(Appearance.storageKey) private var appearance: Appearance = .system
+    @AppStorage(SettingsKey.showWelcome) private var showWelcome = true
     @AppStorage(SettingsKey.staySignedIn) private var staySignedIn = true
     @AppStorage(SettingsKey.notifyOnConnect) private var notifyOnConnect = true
     @AppStorage(SettingsKey.requireUnlock) private var requireUnlock = false
@@ -125,6 +126,14 @@ struct SettingsView: View {
                         .listRowInsets(EdgeInsets())
                 } header: {
                     Text("Appearance")
+                }
+
+                Section {
+                    Toggle("Show When Opening the App", isOn: $showWelcome)
+                } header: {
+                    Text("Welcome Page")
+                } footer: {
+                    Text("The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.")
                 }
 
                 Section {

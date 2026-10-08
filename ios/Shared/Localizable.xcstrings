@@ -2829,6 +2829,34 @@
         }
       }
     },
+    "Show When Opening the App": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tunjuk Semasa Membuka Aplikasi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开应用时显示"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリを開くときに表示"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "செயலியைத் திறக்கும்போது காட்டு"
+          }
+        }
+      }
+    },
     "Show password": {
       "localizations": {
         "ms": {
@@ -3977,6 +4005,34 @@
         }
       }
     },
+    "The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman dengan jam yang anda leret ke atas. Matikan untuk terus ke bulatan Wi-Fi."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "带时钟、需要向上轻扫的页面。关闭后会直接显示 Wi-Fi 圆圈。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "時計が表示され、上にスワイプして閉じる画面です。オフにすると Wi-Fi の円がすぐに表示されます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "மேலே ஸ்வைப் செய்யும் கடிகாரப் பக்கம். இதை முடக்கினால் நேரடியாக Wi-Fi வட்டத்திற்குச் செல்லலாம்."
+          }
+        }
+      }
+    },
     "The sign-out link didn't sign you out.": {
       "localizations": {
         "ms": {
@@ -4253,6 +4309,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "வரவேற்கிறோம்"
+          }
+        }
+      }
+    },
+    "Welcome Page": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman Selamat Datang"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "欢迎页"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ようこそ画面"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வரவேற்புப் பக்கம்"
           }
         }
       }

@@ -151,6 +151,9 @@
     <string name="widget_signed_in_at">%1$s 已登录</string>
     <string name="widget_set_up">设置</string>
     <string name="widget_set_up_detail">打开应用添加你的学号。</string>
+    <string name="welcome_page">欢迎页</string>
+    <string name="welcome_show">打开应用时显示</string>
+    <string name="welcome_show_footer">带时钟、需要向上轻扫的页面。关闭后会直接显示 Wi-Fi 圆圈。</string>
     <string name="guide_title">使用方法</string>
     <string name="guide_step">第 %1$d 步，共 %2$d 步</string>
     <string name="guide_next">下一步</string>

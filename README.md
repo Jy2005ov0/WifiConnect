@@ -32,7 +32,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 
 | | iPhone | Android |
 | --- | --- | --- |
-| Welcome (swipe up) | <img src="screenshots/ios-0-welcome.png" width="220"> | <img src="screenshots/android-0-welcome.png" width="220"> |
+| Welcome (swipe up; turn it off in Settings › Welcome Page) | <img src="screenshots/ios-0-welcome.png" width="220"> | <img src="screenshots/android-0-welcome.png" width="220"> |
 | Ready | <img src="screenshots/ios-1-ready.png" width="220"> | <img src="screenshots/android-1-ready.png" width="220"> |
 | Connected | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
 | Dark mode | <img src="screenshots/ios-5-dark.png" width="220"> | <img src="screenshots/android-5-dark.png" width="220"> |

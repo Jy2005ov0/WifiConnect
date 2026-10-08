@@ -151,6 +151,9 @@
     <string name="widget_signed_in_at">Log masuk pada %1$s</string>
     <string name="widget_set_up">Sediakan</string>
     <string name="widget_set_up_detail">Buka aplikasi untuk menambah ID pelajar anda.</string>
+    <string name="welcome_page">Halaman Selamat Datang</string>
+    <string name="welcome_show">Tunjuk Semasa Membuka Aplikasi</string>
+    <string name="welcome_show_footer">Halaman dengan jam yang anda leret ke atas. Matikan untuk terus ke bulatan Wi-Fi.</string>
     <string name="guide_title">Cara Menggunakan</string>
     <string name="guide_step">Langkah %1$d daripada %2$d</string>
     <string name="guide_next">Seterusnya</string>

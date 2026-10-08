@@ -151,6 +151,9 @@
     <string name="widget_signed_in_at">%1$s மணிக்கு உள்நுழைந்தது</string>
     <string name="widget_set_up">அமை</string>
     <string name="widget_set_up_detail">மாணவர் எண்ணைச் சேர்க்க செயலியைத் திறக்கவும்.</string>
+    <string name="welcome_page">வரவேற்புப் பக்கம்</string>
+    <string name="welcome_show">செயலியைத் திறக்கும்போது காட்டு</string>
+    <string name="welcome_show_footer">மேலே ஸ்வைப் செய்யும் கடிகாரப் பக்கம். இதை முடக்கினால் நேரடியாக Wi-Fi வட்டத்திற்குச் செல்லலாம்.</string>
     <string name="guide_title">பயன்படுத்தும் முறை</string>
     <string name="guide_step">படி %1$d / %2$d</string>
     <string name="guide_next">அடுத்து</string>

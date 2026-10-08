@@ -17,6 +17,8 @@ enum SettingsKey {
     static let lastPortalURL = "lastPortalURL"
     /// Set when you sign out yourself, so Stay Signed In doesn't sign you straight back in.
     static let signedOutByUser = "signedOutByUser"
+    /// Whether the welcome page (the clock you swipe up) shows when the app opens. On by default.
+    static let showWelcome = "showWelcome"
 
     /// UTAR's campus Wi-Fi.
     static let defaultWifiName = "utarwifi"

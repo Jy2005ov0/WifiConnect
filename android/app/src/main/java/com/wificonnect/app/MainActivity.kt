@@ -112,9 +112,13 @@ class MainActivity : FragmentActivity() {
                 var showHelp by rememberSaveable { mutableStateOf(demo?.showHelp ?: false) }
                 // Bumped when settings change outside the main screen, so it shows the new Wi-Fi name.
                 var settingsVersion by remember { mutableStateOf(0) }
-                // The welcome page shows each time the app opens (not in screenshots or tests unless asked for).
+                // The welcome page shows each time the app opens, unless turned off in Settings (and not in
+                // screenshots or tests unless asked for).
                 var showWelcome by rememberSaveable {
-                    mutableStateOf(demo?.showWelcome ?: !(BuildConfig.DEBUG && intent.hasExtra("testStudentId")))
+                    mutableStateOf(
+                        demo?.showWelcome
+                            ?: (!(BuildConfig.DEBUG && intent.hasExtra("testStudentId")) && PortalSettings.load(context).showWelcome)
+                    )
                 }
                 LaunchedEffect(Unit) { if (demo?.speedResult == true) speedTest.showDemoResult() }
                 // With the app lock on, never reopen Settings (and the password) without unlocking,

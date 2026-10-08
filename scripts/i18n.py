@@ -260,6 +260,10 @@ TABLE = [
     ("widget_set_up", "Set Up", "Sediakan", "设置"),
     ("widget_set_up_detail", "Open the app to add your student ID.", "Buka aplikasi untuk menambah ID pelajar anda.",
      "打开应用添加你的学号。"),
+    # Settings › Welcome Page.
+    ('welcome_page', 'Welcome Page', 'Halaman Selamat Datang', '欢迎页'),
+    ('welcome_show', 'Show When Opening the App', 'Tunjuk Semasa Membuka Aplikasi', '打开应用时显示'),
+    ('welcome_show_footer', 'The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.', 'Halaman dengan jam yang anda leret ke atas. Matikan untuk terus ke bulatan Wi-Fi.', '带时钟、需要向上轻扫的页面。关闭后会直接显示 Wi-Fi 圆圈。'),
     # The step-by-step guide behind the ? button.
     ('guide_title', 'How to Use', 'Cara Menggunakan', '使用方法'),
     ('guide_step', 'Step {0:d} of {1:d}', 'Langkah {0:d} daripada {1:d}', '第 {0:d} 步，共 {1:d} 步'),
