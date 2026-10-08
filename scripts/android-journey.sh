@@ -89,9 +89,16 @@ adb install "$APK" > /dev/null && pass "Install the app" || fail "Install the ap
 
 # 2. Open it from the home screen.
 adb shell input keyevent KEYCODE_HOME
-adb shell am start -W -a android.intent.action.MAIN -c android.intent.category.LAUNCHER \
-  -n "$PACKAGE/.MainActivity" --es testProbeUrl "$PORTAL_FROM_EMULATOR/generate_204" > /dev/null
-wait_for "Swipe up to start" 60 || fail "Welcome page shows when the app opens"
+# Let the home screen settle first, so the Home press can't land after the app opens.
+sleep 3
+open_app() {
+  adb shell am start -W -a android.intent.action.MAIN -c android.intent.category.LAUNCHER \
+    -n "$PACKAGE/.MainActivity" --es testProbeUrl "$PORTAL_FROM_EMULATOR/generate_204" > /dev/null
+}
+open_app
+# A slow emulator can still leave the home screen in front; open it once more if so.
+wait_for "Swipe up to start" 40 || { open_app; wait_for "Swipe up to start" 40; } ||
+  fail "Welcome page shows when the app opens"
 shot welcome
 pass "Welcome page shows when the app opens"
 

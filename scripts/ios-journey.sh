@@ -67,8 +67,24 @@ wait_for() {
 }
 tap() {
   local point
-  point=$(find_on_screen "$1") || fail "Couldn't find \"$1\" to tap"
+  point=$(find_on_screen "$1") || point=$(top_bar_button "$1") || fail "Couldn't find \"$1\" to tap"
   idb ui tap --udid "$UDID" $point
+}
+# idb's screen list leaves out the buttons in the top bar (? and Settings), so try where they sit,
+# checking the name of what's there before tapping.
+top_bar_button() {
+  local width x
+  width=$(screen | python3 -c 'import json,sys; d=json.load(sys.stdin); print(round(d[0]["frame"]["width"]))' 2>/dev/null || echo 402)
+  for x in 30 40 50 $((width - 30)) $((width - 40)) $((width - 50)) $((width - 76)) $((width - 86)); do
+    for y in 80 84 90 98 104; do
+      if idb ui describe-point --udid "$UDID" --json "$x" "$y" 2>/dev/null |
+        python3 -c 'import json,sys; e=json.load(sys.stdin); sys.exit(0 if e.get("AXLabel") == sys.argv[1] else 1)' "$1"; then
+        echo "$x $y"
+        return 0
+      fi
+    done
+  done
+  return 1
 }
 type_text() { idb ui text --udid "$UDID" "$1"; }
 attempts() { curl -s "$PORTAL/status" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["attempts"]))'; }
