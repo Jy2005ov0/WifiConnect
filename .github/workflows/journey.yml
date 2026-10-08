@@ -18,6 +18,7 @@ on:
 jobs:
   ios:
     runs-on: macos-15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
@@ -35,9 +36,11 @@ jobs:
       - name: Install the tools that tap and type
         run: |
           brew tap facebook/fb
-          brew install idb-companion
           brew tap wix/brew
-          brew install applesimutils
+          # Newer Homebrew only installs from taps you've said you trust.
+          brew trust facebook/fb 2>/dev/null || true
+          brew trust wix/brew 2>/dev/null || true
+          brew install idb-companion applesimutils
           python3 -m venv "$HOME/idb"
           "$HOME/idb/bin/pip" install --quiet fb-idb
           echo "$HOME/idb/bin" >> "$GITHUB_PATH"
@@ -58,6 +61,7 @@ jobs:
 
   android:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
@@ -101,6 +105,7 @@ jobs:
 
   windows:
     runs-on: windows-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 

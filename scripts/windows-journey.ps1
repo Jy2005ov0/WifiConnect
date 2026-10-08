@@ -28,10 +28,19 @@ $env:WIFICONNECT_PROBE_URL = "$portal/generate_204"
 # The scheduled task gets the user's saved variables, so save it there too.
 [Environment]::SetEnvironmentVariable('WIFICONNECT_PROBE_URL', "$portal/generate_204", 'User')
 
-# 1. Double-click Install.cmd and answer: student ID, password, Wi-Fi name (Enter for utarwifi),
+# 1. Run Install and answer: student ID, password, Wi-Fi name (Enter for utarwifi),
 #    then Enter to close.
-$answers = "2201234`r`nutar-test`r`n`r`n`r`n"
-$output = $answers | cmd /c "windows\Install.cmd" 2>&1 | Out-String
+# Read-Host reads the keyboard, not piped text, so stand in for it with one that reads
+# the typed answers from the input instead (everything else runs as it is).
+$typing = 'function Read-Host { param([string]$Prompt, [switch]$AsSecureString) ' +
+    'Write-Host "${Prompt}: " -NoNewline; $line = [Console]::In.ReadLine(); Write-Host $(if ($AsSecureString) { "********" } else { $line }); ' +
+    'if ($AsSecureString) { ConvertTo-SecureString "$line" -AsPlainText -Force } else { $line } }; '
+function Run-Typed([string]$Script, [string]$Answers) {
+    # Encoded, so the quotes inside reach the new PowerShell intact.
+    $command = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes("$typing & '$Script'"))
+    $Answers | powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand $command 2>&1 | Out-String
+}
+$output = Run-Typed 'windows\Install.ps1' "2201234`r`nutar-test`r`n`r`n`r`n"
 Write-Host $output
 Check 'Install finishes without an error' ($LASTEXITCODE -eq 0 -and $output -notmatch 'Exception')
 $config = Join-Path $env:APPDATA 'WifiConnect\config.json'
@@ -68,8 +77,8 @@ Check 'The internet works again' (InternetWorks)
 $log = Join-Path $env:APPDATA 'WifiConnect\log.txt'
 if (Test-Path $log) { Write-Host '--- log.txt ---'; Get-Content $log | Write-Host }
 
-# 5. Double-click Uninstall.cmd, then Enter to close.
-$output = "`r`n" | cmd /c "windows\Uninstall.cmd" 2>&1 | Out-String
+# 5. Run Uninstall, then Enter to close.
+$output = Run-Typed 'windows\Uninstall.ps1' "`r`n"
 Write-Host $output
 Check 'Uninstall removes the task and saved settings' (
     -not (Get-ScheduledTask -TaskName 'WiFi Connect' -ErrorAction SilentlyContinue) -and
