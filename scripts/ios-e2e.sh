@@ -37,7 +37,8 @@ run_case() {
     -testProbeURL "$PORTAL/hotspot-detect.html" -testStudentID 2201234 -testPassword "$password" "$@"
 
   local result=""
-  for _ in $(seq 1 60); do
+  # Up to 2 minutes: the simulator or emulator can be very slow on a busy test machine.
+  for _ in $(seq 1 120); do
     result=$(plutil -extract testResult raw "$PREFS" 2>/dev/null || true)
     [[ "$result" == "$name: "* ]] && break
     sleep 1

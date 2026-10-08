@@ -30,7 +30,8 @@ run_case() {
     --es testStudentId 2201234 --es testPassword "$password" "$@"
 
   local result=""
-  for _ in $(seq 1 60); do
+  # Up to 2 minutes: the simulator or emulator can be very slow on a busy test machine.
+  for _ in $(seq 1 120); do
     result=$(adb logcat -d -s WifiConnect:I | grep "Result:" | tail -1 || true)
     [[ -n "$result" ]] && break
     sleep 1
