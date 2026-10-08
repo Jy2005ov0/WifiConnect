@@ -49,22 +49,28 @@ struct WelcomeView: View {
 
                 // Just the words, like the hint on the Lock Screen. It bobs up and down with the
                 // clock, so it doesn't jump back to the start after Notification Center is pulled down.
-                TimelineView(.animation) { context in
-                    let phase = context.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 1.8) / 1.8
-                    HStack(spacing: 8) {
-                        Image(systemName: "chevron.up")
-                            .font(.subheadline.weight(.bold))
-                        Text("Swipe up to start")
-                            .font(.subheadline.weight(.semibold))
+                // A button too, so VoiceOver offers it and a tap works.
+                Button {
+                    finish(height: height)
+                } label: {
+                    TimelineView(.animation(paused: reduceMotion)) { context in
+                        let phase = context.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 1.8) / 1.8
+                        HStack(spacing: 8) {
+                            Image(systemName: "chevron.up")
+                                .font(.subheadline.weight(.bold))
+                                .accessibilityHidden(true)
+                            Text("Swipe up to start")
+                                .font(.subheadline.weight(.semibold))
+                        }
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 14)
+                        .offset(y: reduceMotion ? 0 : -3 + 3 * cos(phase * 2 * .pi))
+                        .contentShape(Rectangle())
                     }
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 22)
-                    .padding(.vertical, 14)
-                    .offset(y: reduceMotion ? 0 : -3 + 3 * cos(phase * 2 * .pi))
                 }
+                .buttonStyle(.plain)
                 .padding(.bottom, 20)
-                .contentShape(Rectangle())
-                .onTapGesture { finish(height: height) }
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 32)

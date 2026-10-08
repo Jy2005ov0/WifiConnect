@@ -130,6 +130,8 @@ struct SettingsView: View {
 
                 Section {
                     Toggle("Show When Opening the App", isOn: $showWelcome)
+                        // Section headers aren't read with each row, so say what it shows.
+                        .accessibilityLabel("Show Welcome Page When Opening the App")
                 } header: {
                     Text("Welcome Page")
                 } footer: {

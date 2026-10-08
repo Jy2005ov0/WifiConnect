@@ -17,20 +17,33 @@ struct ContentView: View {
     @State private var showSpeedTest = false
     @State private var showWelcome = ContentView.startsWithWelcome
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
             main
-                .scaleEffect(showWelcome ? 0.94 : 1)
-                .animation(.spring(duration: 0.45), value: showWelcome)
+                .scaleEffect(showWelcome && !reduceMotion ? 0.94 : 1)
+                .animation(reduceMotion ? nil : .spring(duration: 0.45), value: showWelcome)
+                // Out of VoiceOver's reach while the welcome page covers it.
+                .accessibilityHidden(showWelcome)
             if showWelcome {
                 WelcomeView {
                     showWelcome = false
-                    if !hasCredentials { showSettings = true }
+                    if hasCredentials {
+                        askForNotifications()
+                    } else {
+                        showSettings = true
+                    }
                 }
+                .accessibilityAddTraits(.isModal)
                 .zIndex(1)
             }
         }
+    }
+
+    /// Asks once the screen is free, so the question doesn't cover the welcome page or Settings.
+    private func askForNotifications() {
+        Task { await Notifier.requestPermission() }
     }
 
     /// The welcome page shows each time the app opens, unless turned off in Settings › Welcome Page,
@@ -151,6 +164,7 @@ struct ContentView: View {
             .sheet(isPresented: $showSettings, onDismiss: {
                 hasCredentials = Credentials.isConfigured
                 studentID = Credentials.studentID
+                if hasCredentials { askForNotifications() }
             }) {
                 SettingsView()
                     .presentationCornerRadius(36)
@@ -225,8 +239,9 @@ struct ContentView: View {
                     return
                 }
                 #endif
-                if !hasCredentials && !showWelcome { showSettings = true }
-                Task { await Notifier.requestPermission() }
+                if !showWelcome {
+                    if hasCredentials { askForNotifications() } else { showSettings = true }
+                }
             }
             .onOpenURL { url in
                 guard url.scheme == "wificonnect" else { return }
@@ -395,7 +410,7 @@ private struct StatusBadge: View {
             // The outer ring breathes in and out every 4 seconds. It follows the clock rather
             // than starting an animation, so it doesn't jump back to the start (and look like
             // it's connecting again) after the Notification Center or Control Center is pulled down.
-            TimelineView(.animation) { context in
+            TimelineView(.animation(paused: reduceMotion)) { context in
                 let phase = context.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 4) / 4
                 Circle()
                     .fill(state.tint.opacity(0.10))

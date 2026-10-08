@@ -561,6 +561,34 @@
         }
       }
     },
+    "Completed": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selesai"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已完成"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了済み"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "முடிந்தது"
+          }
+        }
+      }
+    },
     "Confirm it's you to change the app lock.": {
       "localizations": {
         "ms": {
@@ -2000,7 +2028,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开“设置 › 登录记录”查看发生了什么，点按“拷贝诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。"
+            "value": "打开“设置 › 登录记录”查看发生了什么，点按“复制诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。"
           }
         },
         "ja": {
@@ -2012,7 +2040,7 @@
         "ta": {
           "stringUnit": {
             "state": "translated",
-            "value": "என்ன நடந்தது என்பதைப் பார்க்க அமைப்புகள் › உள்நுழைவு வரலாறு என்பதைத் திறந்து, விவரங்களைப் பகிர கண்டறிதலை நகலெடு என்பதைத் தட்டவும். பிறகு மீண்டும் Wi-Fi உடன் இணைந்து வட்டத்தைத் தட்டவும்."
+            "value": "என்ன நடந்தது என்பதைப் பார்க்க அமைப்புகள் › உள்நுழைவு வரலாறு என்பதைத் திறந்து, விவரங்களைப் பகிர கண்டறிதல் தகவலை நகலெடு என்பதைத் தட்டவும். பிறகு மீண்டும் Wi-Fi உடன் இணைந்து வட்டத்தைத் தட்டவும்."
           }
         }
       }
@@ -2825,6 +2853,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shortcuts தன்னியக்கம்"
+          }
+        }
+      }
+    },
+    "Show Welcome Page When Opening the App": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tunjuk Halaman Selamat Datang Semasa Membuka Aplikasi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开应用时显示欢迎页"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリを開くときにようこそ画面を表示"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "செயலியைத் திறக்கும்போது வரவேற்புப் பக்கத்தைக் காட்டு"
           }
         }
       }

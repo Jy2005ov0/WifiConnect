@@ -263,11 +263,13 @@ TABLE = [
     # Settings › Welcome Page.
     ('welcome_page', 'Welcome Page', 'Halaman Selamat Datang', '欢迎页'),
     ('welcome_show', 'Show When Opening the App', 'Tunjuk Semasa Membuka Aplikasi', '打开应用时显示'),
+    (None, 'Show Welcome Page When Opening the App', 'Tunjuk Halaman Selamat Datang Semasa Membuka Aplikasi', '打开应用时显示欢迎页'),
     ('welcome_show_footer', 'The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.', 'Halaman dengan jam yang anda leret ke atas. Matikan untuk terus ke bulatan Wi-Fi.', '带时钟、需要向上轻扫的页面。关闭后会直接显示 Wi-Fi 圆圈。'),
     # The step-by-step guide behind the ? button.
     ('guide_title', 'How to Use', 'Cara Menggunakan', '使用方法'),
     ('guide_step', 'Step {0:d} of {1:d}', 'Langkah {0:d} daripada {1:d}', '第 {0:d} 步，共 {1:d} 步'),
     ('guide_next', 'Next', 'Seterusnya', '下一步'),
+    ('guide_completed', 'Completed', 'Selesai', '已完成'),
     ('guide_got_it', 'Got It', 'Faham', '知道了'),
     ('guide_open_settings', 'Open Settings', 'Buka Tetapan', '打开设置'),
     ('guide_open_wifi', 'Open Wi-Fi Settings', 'Buka Tetapan Wi-Fi', '打开 Wi-Fi 设置'),
@@ -284,7 +286,7 @@ TABLE = [
     ('guide_auto_text_android', "WiFi Connect signs in by itself whenever you join {0}. If it stops working, set the app's battery use to Unrestricted.", 'WiFi Connect log masuk sendiri setiap kali anda menyertai {0}. Jika ia berhenti berfungsi, tetapkan penggunaan bateri aplikasi kepada Tanpa Had.', '每次连接 {0} 时，WiFi Connect 都会自动登录。如果不起作用，请把应用的电池用量设为“无限制”。'),
     ('guide_auto_text_ios', 'Set up a Shortcuts automation once, and your iPhone signs in every time you join {0}.', 'Sediakan automasi Pintasan sekali, dan iPhone anda akan log masuk setiap kali anda menyertai {0}.', '只需设置一次快捷指令自动化，每次连接 {0} 时 iPhone 都会自动登录。'),
     ('guide_help_title', 'If something goes wrong', 'Jika ada masalah', '如果出现问题'),
-    ('guide_help_text', 'Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.', 'Buka Tetapan › Sejarah Log Masuk untuk melihat apa yang berlaku, dan ketik Salin Diagnostik untuk berkongsi butirannya. Kemudian sertai Wi-Fi sekali lagi dan ketik bulatan.', '打开“设置 › 登录记录”查看发生了什么，点按“拷贝诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。'),
+    ('guide_help_text', 'Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.', 'Buka Tetapan › Sejarah Log Masuk untuk melihat apa yang berlaku, dan ketik Salin Diagnostik untuk berkongsi butirannya. Kemudian sertai Wi-Fi sekali lagi dan ketik bulatan.', '打开“设置 › 登录记录”查看发生了什么，点按“复制诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。'),
 ]
 
 # Text only the iPhone app shows (Shortcuts guide, Face ID, widget, Siri).

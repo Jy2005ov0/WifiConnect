@@ -332,9 +332,11 @@ MORE = {
     "WiFi Connect signs in by itself whenever you join {0}. If it stops working, set the app's battery use to Unrestricted.": ('{0} に接続するたびに WiFi Connect が自動でサインインします。動かなくなったら、アプリの電池使用量を「制限なし」にしてください。', 'நீங்கள் {0} உடன் இணையும் ஒவ்வொரு முறையும் WiFi Connect தானாக உள்நுழையும். அது வேலை செய்யாவிட்டால், செயலியின் பேட்டரி பயன்பாட்டைக் கட்டுப்பாடற்றது என அமைக்கவும்.'),
     'Set up a Shortcuts automation once, and your iPhone signs in every time you join {0}.': ('ショートカットのオートメーションを一度設定すれば、{0} に接続するたびに iPhone がサインインします。', 'ஒருமுறை குறுக்குவழி தானியக்கத்தை அமைத்தால், நீங்கள் {0} உடன் இணையும் ஒவ்வொரு முறையும் உங்கள் iPhone உள்நுழையும்.'),
     'If something goes wrong': ('うまくいかないときは', 'ஏதாவது தவறு நடந்தால்'),
-    'Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.': ('「設定 › サインイン履歴」で何が起きたかを確認し、「診断情報をコピー」で詳細を共有できます。その後、もう一度 Wi-Fi に接続して円をタップします。', 'என்ன நடந்தது என்பதைப் பார்க்க அமைப்புகள் › உள்நுழைவு வரலாறு என்பதைத் திறந்து, விவரங்களைப் பகிர கண்டறிதலை நகலெடு என்பதைத் தட்டவும். பிறகு மீண்டும் Wi-Fi உடன் இணைந்து வட்டத்தைத் தட்டவும்.'),
+    'Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.': ('「設定 › サインイン履歴」で何が起きたかを確認し、「診断情報をコピー」で詳細を共有できます。その後、もう一度 Wi-Fi に接続して円をタップします。', 'என்ன நடந்தது என்பதைப் பார்க்க அமைப்புகள் › உள்நுழைவு வரலாறு என்பதைத் திறந்து, விவரங்களைப் பகிர கண்டறிதல் தகவலை நகலெடு என்பதைத் தட்டவும். பிறகு மீண்டும் Wi-Fi உடன் இணைந்து வட்டத்தைத் தட்டவும்.'),
     # Settings › Welcome Page.
     'Welcome Page': ('ようこそ画面', 'வரவேற்புப் பக்கம்'),
     'Show When Opening the App': ('アプリを開くときに表示', 'செயலியைத் திறக்கும்போது காட்டு'),
     'The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.': ('時計が表示され、上にスワイプして閉じる画面です。オフにすると Wi-Fi の円がすぐに表示されます。', 'மேலே ஸ்வைப் செய்யும் கடிகாரப் பக்கம். இதை முடக்கினால் நேரடியாக Wi-Fi வட்டத்திற்குச் செல்லலாம்.'),
+    'Show Welcome Page When Opening the App': ('アプリを開くときにようこそ画面を表示', 'செயலியைத் திறக்கும்போது வரவேற்புப் பக்கத்தைக் காட்டு'),
+    'Completed': ('完了済み', 'முடிந்தது'),
 }

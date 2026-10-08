@@ -23,7 +23,7 @@ struct HowToView: View {
     }
 
     private var networkName: String {
-        wifiName.isEmpty ? String(localized: "your school Wi-Fi") : "“\(wifiName)”"
+        wifiName.isEmpty ? String(localized: "your school Wi-Fi") : wifiName
     }
 
     private var steps: [Step] {
@@ -125,11 +125,12 @@ struct HowToView: View {
                         .foregroundStyle(.white)
                         .frame(width: 96, height: 96)
                         .background(step.color.gradient, in: Circle())
+                        .accessibilityHidden(true)
                     if step.done {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.title)
                             .foregroundStyle(.white, .green)
-                            .accessibilityLabel("Done")
+                            .accessibilityHidden(true)
                     }
                 }
                 .padding(.vertical, 8)
@@ -137,6 +138,8 @@ struct HowToView: View {
                 Text(step.title)
                     .font(.title2.weight(.bold))
                     .multilineTextAlignment(.center)
+                    // VoiceOver hears the tick as part of the step: "Add your student ID, Completed".
+                    .accessibilityValue(step.done ? Text("Completed") : Text(""))
                 Text(step.text)
                     .font(.body)
                     .foregroundStyle(.secondary)
