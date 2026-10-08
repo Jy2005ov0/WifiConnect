@@ -391,14 +391,16 @@ private fun DetailRow(
         Spacer(Modifier.width(14.dp))
         Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
-        // Shares the row with the title instead of taking a fixed width, so neither is squeezed out.
+        // Shares the row with the title instead of taking a fixed width, so neither is squeezed
+        // out; right-aligned like the iPhone.
         Text(
             value,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f, fill = false),
+            textAlign = TextAlign.End,
+            modifier = Modifier.weight(1f),
         )
         if (onClick != null) {
             Icon(
