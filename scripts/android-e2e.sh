@@ -18,6 +18,7 @@ sleep 30
 adb shell input keyevent KEYCODE_HOME
 
 failures=0
+summary=""
 run_case() {
   local name=$1 password=$2 expect_result=$3 expect_authorized=$4
   shift 4 # Any further arguments are passed to the app as extras.
@@ -45,9 +46,11 @@ run_case() {
   curl -s "$PORTAL/status"; echo
   if [[ "$result" == *"$expect_result"* && "$authorized" == "$expect_authorized" ]]; then
     echo "PASS: $name"
+    summary+="PASS  $name"$'\n'
   else
     echo "::error::FAIL: $name (expected '$expect_result' and authorized=$expect_authorized)"
     failures=$((failures + 1))
+    summary+="FAIL  $name: $result"$'\n'
   fi
   echo "::endgroup::"
 }
@@ -84,4 +87,6 @@ for building in A B C D E; do
   run_case "campus-$building-sign-out" utar-test "SignedOut" false --es testAction signOut
 done
 
+echo "===== Summary ($failures failed) ====="
+printf "%s" "$summary"
 exit $failures

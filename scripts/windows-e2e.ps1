@@ -24,6 +24,7 @@ function Set-Config([string]$Password) {
 }
 
 $failures = 0
+$summary = @()
 function Run-Case([string]$Name, [string]$Password, [int]$ExpectExit, [bool]$ExpectAuthorized) {
     Write-Host "::group::$Name"
     Set-Config $Password
@@ -35,9 +36,11 @@ function Run-Case([string]$Name, [string]$Password, [int]$ExpectExit, [bool]$Exp
     Write-Host ($status | ConvertTo-Json -Depth 5 -Compress)
     if ($code -eq $ExpectExit -and [bool]$status.authorized -eq $ExpectAuthorized) {
         Write-Host "PASS: $Name"
+        $script:summary += "PASS  $Name"
     } else {
         Write-Host "::error::FAIL: $Name (expected exit $ExpectExit and authorized=$ExpectAuthorized)"
         $script:failures++
+        $script:summary += "FAIL  $Name (exit $code)"
     }
     Write-Host '::endgroup::'
 }
@@ -68,4 +71,6 @@ foreach ($building in 'A', 'B', 'C', 'D', 'E') {
     Run-Case "campus-$building" 'utar-test' 0 $true
 }
 Stop-Process -Id $campus.Id -ErrorAction SilentlyContinue
+Write-Host "===== Summary ($failures failed) ====="
+$summary | ForEach-Object { Write-Host $_ }
 exit $failures

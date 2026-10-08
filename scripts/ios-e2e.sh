@@ -27,6 +27,7 @@ done
 PREFS="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Library/Preferences/$BUNDLE_ID.plist"
 
 failures=0
+summary=""
 run_case() {
   local name=$1 password=$2 expect_result=$3 expect_authorized=$4
   shift 4 # Any further arguments are passed to the app, e.g. settings.
@@ -51,9 +52,11 @@ run_case() {
   curl -s "$PORTAL/status"; echo
   if [[ "$result" == "$name: "*"$expect_result"* && "$authorized" == "$expect_authorized" ]]; then
     echo "PASS: $name"
+    summary+="PASS  $name"$'\n'
   else
     echo "::error::FAIL: $name (expected '$expect_result' and authorized=$expect_authorized)"
     failures=$((failures + 1))
+    summary+="FAIL  $name: $result"$'\n'
   fi
   echo "::endgroup::"
 }
@@ -91,4 +94,6 @@ for building in A B C D E; do
   run_case "campus-$building-sign-out" utar-test "signedOut" false -testAction signOut
 done
 
+echo "===== Summary ($failures failed) ====="
+printf "%s" "$summary"
 exit $failures
