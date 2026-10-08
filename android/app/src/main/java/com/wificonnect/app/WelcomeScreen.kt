@@ -48,7 +48,6 @@ import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.border
@@ -63,6 +62,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import android.text.format.DateFormat
+import android.os.Build
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.LifecycleResumeEffect
 
 /** The first page when the app opens: the time and a welcome. Swipe it up, like a lock screen. */
@@ -108,18 +112,22 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                     translationY = offset.value
                     alpha = 1f - (-offset.value / height).coerceIn(0f, 1f) * 0.6f
                 }
-                // Frosted glass: the app shows through, blurred (Android 12+), behind the welcome.
-                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.78f))
+                // Frosted glass: the app shows through, blurred, behind the welcome. Android 11 and
+                // older can't blur, so there it's nearly solid instead of showing the app sharply.
+                .background(MaterialTheme.colorScheme.background.copy(alpha = if (Build.VERSION.SDK_INT >= 31) 0.78f else 0.96f))
                 .semantics {
                     customActions = listOf(CustomAccessibilityAction(swipeLabel) { onFinish(); true })
                 }
                 .safeDrawingPadding()
                 .padding(horizontal = 32.dp),
         ) {
+            // The welcome fills the space above the hint, so a big clock or large text can't overlap it.
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
             // Design A, with the time where the logo was.
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.align(Alignment.Center),
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.weight(1f).fillMaxWidth(),
             ) {
                 Clock()
                 Spacer(Modifier.height(20.dp))
@@ -147,12 +155,12 @@ fun WelcomeScreen(onFinish: () -> Unit) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
                     .padding(bottom = 20.dp)
                     .graphicsLayer { translationY = bounce.dp.toPx() }
-                    .clip(CircleShape)
+                    // Rounded rather than a full circle, so wrapped words (Tamil) aren't cut at the ends.
+                    .clip(RoundedCornerShape(24.dp))
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.55f))
-                    .border(1.dp, Color.White.copy(alpha = 0.35f), CircleShape)
+                    .border(1.dp, Color.White.copy(alpha = 0.35f), RoundedCornerShape(24.dp))
                     .clickable(remember { MutableInteractionSource() }, indication = null) { finish() }
                     .padding(horizontal = 22.dp, vertical = 12.dp),
             ) {
@@ -167,7 +175,9 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                     swipeLabel,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
                 )
+            }
             }
         }
     }
@@ -200,12 +210,18 @@ private fun Clock(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
+        // Sized in dp, not sp: with a larger font setting the clock would no longer fit on one line.
+        val density = LocalDensity.current
         Text(
             time,
-            fontSize = 88.sp,
-            lineHeight = 96.sp,
+            fontSize = with(density) { 88.dp.toSp() },
+            lineHeight = with(density) { 96.dp.toSp() },
             fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            softWrap = false,
         )
     }
 }

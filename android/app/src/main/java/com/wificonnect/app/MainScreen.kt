@@ -23,7 +23,10 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Badge
@@ -117,11 +120,15 @@ fun MainScreen(
     val tint by animateColorAsState(state.tint(MaterialTheme.colorScheme.primary), tween(600), label = "tint")
     val background = MaterialTheme.colorScheme.background
 
+    // The big title shrinks into the bar when the page scrolls (small phones, large text).
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
         containerColor = Color.Transparent,
         // With a transparent container Material can't pick a text colour, so set it explicitly.
         contentColor = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.drawBehind { drawRect(background) },
+        modifier = Modifier
+            .drawBehind { drawRect(background) }
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
                 title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.Bold) },
@@ -135,13 +142,17 @@ fun MainScreen(
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent,
                 ),
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { padding ->
+        // Scrolls only when it doesn't fit (small phones, split screen, large text); otherwise
+        // the spacers spread it over the screen as before.
+        BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .heightIn(min = maxHeight)
                 .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -172,9 +183,11 @@ fun MainScreen(
                 modifier = Modifier
                     .padding(top = 6.dp)
                     .alpha(if (hint == null) 0f else 1f)
-                    .clip(CircleShape)
+                    // Rounded rather than a full circle, so wrapped words aren't cut at the ends.
+                    .clip(RoundedCornerShape(20.dp))
                     .background(tint.copy(alpha = 0.12f))
                     .padding(horizontal = 14.dp, vertical = 6.dp),
+                textAlign = TextAlign.Center,
             )
 
             Spacer(Modifier.height(14.dp))
@@ -224,6 +237,7 @@ fun MainScreen(
             }
 
             Spacer(Modifier.height(16.dp))
+        }
         }
     }
 }
@@ -376,13 +390,15 @@ private fun DetailRow(
         }
         Spacer(Modifier.width(14.dp))
         Text(title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Spacer(Modifier.width(8.dp))
+        // Shares the row with the title instead of taking a fixed width, so neither is squeezed out.
         Text(
             value,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.widthIn(max = 180.dp),
+            modifier = Modifier.weight(1f, fill = false),
         )
         if (onClick != null) {
             Icon(

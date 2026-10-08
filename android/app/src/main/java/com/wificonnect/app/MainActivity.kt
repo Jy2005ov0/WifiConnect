@@ -1,5 +1,7 @@
 package com.wificonnect.app
 
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -182,7 +184,9 @@ class MainActivity : FragmentActivity() {
 
                 // Behind the welcome page the app is blurred, so the page reads as frosted glass.
                 val blur by animateDpAsState(if (showWelcome) 28.dp else 0.dp, label = "blur")
-                Box(Modifier.fillMaxSize()) {
+                // The app's own background, so the phone's light/dark window doesn't flash through
+                // while screens cross-fade when the app's appearance differs from the phone's.
+                Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                 AnimatedContent(
                     modifier = Modifier.blur(blur),
                     targetState = when {

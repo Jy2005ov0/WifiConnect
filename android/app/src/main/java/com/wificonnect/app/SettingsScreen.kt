@@ -1,5 +1,7 @@
 package com.wificonnect.app
 
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -114,7 +116,7 @@ fun SettingsScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(stringResource(R.string.settings_title), fontWeight = FontWeight.SemiBold) },
+                title = { Text(stringResource(R.string.settings_title), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 navigationIcon = {
                     IconButton(onClick = ::saveAndClose) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
@@ -557,7 +559,8 @@ private fun LabeledField(
     onValueChange: (String) -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 16.dp)) {
-        Text(label)
+        // Capped, so a long label (Tamil, large text) can't squeeze the field out of the row.
+        Text(label, modifier = Modifier.widthIn(max = 140.dp))
         PlainField(
             value = value,
             onValueChange = onValueChange,

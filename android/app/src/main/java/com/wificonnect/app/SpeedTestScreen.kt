@@ -1,5 +1,9 @@
 package com.wificonnect.app
 
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -99,7 +103,7 @@ fun SpeedTestScreen(test: SpeedTestViewModel, onBack: () -> Unit) {
         },
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(stringResource(R.string.speedtest_title), fontWeight = FontWeight.SemiBold) },
+                title = { Text(stringResource(R.string.speedtest_title), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 navigationIcon = {
                     IconButton(onClick = close) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
@@ -155,7 +159,7 @@ fun SpeedTestScreen(test: SpeedTestViewModel, onBack: () -> Unit) {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(54.dp),
+                    .heightIn(min = 54.dp),
             ) {
                 Text(
                     stringResource(
@@ -240,8 +244,13 @@ private fun SpeedGauge(test: SpeedTestViewModel) {
             }
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(label, color = accent, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.titleSmall)
-            Text(number, fontSize = 60.sp, fontWeight = FontWeight.Bold)
+            Text(
+                label, color = accent, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.widthIn(max = 190.dp),
+            )
+            // In dp, so a larger font setting can't push the number out of the ring.
+            Text(number, fontSize = with(LocalDensity.current) { 60.dp.toSp() }, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
             Text(
                 if (phase == SpeedTestViewModel.Phase.PING) "ms" else "Mbps",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -276,12 +285,14 @@ private fun ResultTile(
             }
             Spacer(Modifier.height(6.dp))
             Row(verticalAlignment = Alignment.Bottom) {
-                Text(value ?: "–", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Text(value ?: "–", fontSize = 28.sp, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
                 Spacer(Modifier.width(4.dp))
                 Text(
                     unit,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    softWrap = false,
                     modifier = Modifier.padding(bottom = 4.dp),
                 )
             }

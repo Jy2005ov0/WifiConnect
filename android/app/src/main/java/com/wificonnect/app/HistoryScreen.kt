@@ -1,5 +1,6 @@
 package com.wificonnect.app
 
+import androidx.compose.ui.text.style.TextOverflow
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.text.format.DateUtils
@@ -69,7 +70,7 @@ fun HistoryScreen(onBack: () -> Unit) {
         contentColor = MaterialTheme.colorScheme.onBackground,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(stringResource(R.string.history_title), fontWeight = FontWeight.SemiBold) },
+                title = { Text(stringResource(R.string.history_title), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
