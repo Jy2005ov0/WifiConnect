@@ -55,6 +55,13 @@
     <string name="settings_school_wifi_footer">キャンパスで接続する Wi-Fi の名前です。</string>
     <string name="settings_automatic">自動サインイン</string>
     <string name="settings_automatic_footer">ログインページのある Wi-Fi に接続するたびに、アプリを閉じていても自動でサインインします。</string>
+    <string name="wifi_check_title">学校の Wi-Fi のみ</string>
+    <string name="wifi_check_on">%1$s でのみ自動でサインインします。</string>
+    <string name="wifi_check_needs_permission">位置情報へのアクセスを許可すると、自動サインインは %1$s のログインページにだけ入力します。Android が Wi-Fi 名を読み取るために必要です。位置情報は使用・保存しません。</string>
+    <string name="wifi_check_location_off">Wi-Fi 名を読み取れるよう位置情報をオンにしてください。それまでは、自動サインインはどの Wi-Fi ログインページにも入力します。</string>
+    <string name="wifi_check_allow">許可</string>
+    <string name="wifi_check_turn_on">オンにする</string>
+    <string name="error_other_network">%1$s は学校の Wi-Fi ではないため、サインインしませんでした。</string>
     <string name="setting_auto_login">自動でサインイン</string>
     <string name="setting_stay_signed_in">サインインを維持</string>
     <string name="setting_stay_signed_in_footer">「サインインを維持」は 15 分ごとに確認し、Wi-Fi からログアウトされた場合は再度サインインします。</string>

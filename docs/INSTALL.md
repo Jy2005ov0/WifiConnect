@@ -210,7 +210,7 @@ Your password is encrypted with Windows' built-in data protection, tied to your 
 These steps are the same on both phones.
 
 1. Open **WiFi Connect**.
-2. Enter your **Student ID** and **Password**. They're stored encrypted on your phone (Keychain on iPhone, Android Keystore on Android) and are only sent to the Wi-Fi login page the app signs in to. Automatic sign-in fills in any Wi-Fi login page that asks for an ID and password, so turn it off (or use Disconnect) on other Wi-Fi with a login page, such as hotels.
+2. Enter your **Student ID** and **Password**. They're stored encrypted on your phone (Keychain on iPhone, Android Keystore on Android) and are only sent to the Wi-Fi login page the app signs in to. On Android, tap **Allow** next to **Only on School Wi-Fi** in Settings so automatic sign-in only fills in the school's login page (Android needs location access to read the Wi-Fi name; your location isn't used or saved).
 3. Check that **School Wi-Fi** says `utarwifi` (it's the default).
 4. Android only: allow **notifications** when asked, so it can tell you when it has signed you in.
 5. On campus, join `utarwifi` and tap the big Wi-Fi circle (**Tap to Connect**). You should see **Connected**. Tap the circle again to disconnect.

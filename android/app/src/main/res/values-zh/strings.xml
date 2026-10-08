@@ -55,6 +55,13 @@
     <string name="settings_school_wifi_footer">你在校园里连接的 Wi-Fi 名称。</string>
     <string name="settings_automatic">自动登录</string>
     <string name="settings_automatic_footer">每当手机连接到带登录页面的 Wi-Fi 网络时自动登录，即使应用已关闭。</string>
+    <string name="wifi_check_title">仅限学校 Wi-Fi</string>
+    <string name="wifi_check_on">仅在 %1$s 上自动登录。</string>
+    <string name="wifi_check_needs_permission">允许位置权限，自动登录就只会填写 %1$s 的登录页面。Android 需要此权限才能读取 Wi-Fi 名称；不会使用或保存你的位置。</string>
+    <string name="wifi_check_location_off">请打开定位，以便应用读取 Wi-Fi 名称。在此之前，自动登录会填写任何 Wi-Fi 登录页面。</string>
+    <string name="wifi_check_allow">允许</string>
+    <string name="wifi_check_turn_on">打开</string>
+    <string name="error_other_network">当前是 %1$s，不是学校的 Wi-Fi，因此没有登录。</string>
     <string name="setting_auto_login">自动登录</string>
     <string name="setting_stay_signed_in">保持登录</string>
     <string name="setting_stay_signed_in_footer">“保持登录”每 15 分钟检查一次，如果 Wi-Fi 让你退出登录，会自动重新登录。</string>

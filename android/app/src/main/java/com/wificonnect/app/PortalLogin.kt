@@ -32,6 +32,8 @@ sealed class LoginError(@StringRes private val messageRes: Int, private val deta
     object StillOffline : LoginError(R.string.error_still_offline)
     object NoSignOutLink : LoginError(R.string.error_no_sign_out_link)
     object StillSignedIn : LoginError(R.string.error_still_signed_in)
+    /** Automatic sign-in skipped: this Wi-Fi isn't the school's. */
+    class OtherNetwork(name: String) : LoginError(R.string.error_other_network, name)
 
     /** The message in the phone's language. */
     fun describe(context: Context): String =
@@ -293,6 +295,10 @@ class PortalLogin(private val network: Network) {
             network: Network? = wifiNetwork(context),
             trigger: SignInTrigger = SignInTrigger.APP,
         ): LoginOutcome {
+            // Automatic sign-in only fills in your school's login page, never a hotel's or a café's.
+            if (trigger == SignInTrigger.AUTOMATIC || trigger == SignInTrigger.BACKGROUND) {
+                WifiName.otherNetwork(context, network)?.let { throw LoginError.OtherNetwork(it) }
+            }
             val started = System.currentTimeMillis()
             var login: PortalLogin? = null
 

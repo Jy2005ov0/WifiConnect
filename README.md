@@ -10,7 +10,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
 - **"Connected to utarwifi" notification** when the app signs you in on arrival.
 - **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
-- **Private:** your student ID and password are stored encrypted on your phone and are only sent to the Wi-Fi login page the app signs in to (see **Other Wi-Fi with a login page** below).
+- **Private:** your student ID and password are stored encrypted on your phone and are only sent to the Wi-Fi login page the app signs in to (see **Only on the school Wi-Fi** below).
 - **Apple-style design:** a clean layout on both phones, with Light, Dark or System appearance (☀️ / 🌙 button), and an icon that follows Dark Mode.
 - **Your language:** English, Bahasa Melayu, 简体中文 (Simplified Chinese), 日本語 (Japanese) and தமிழ் (Tamil), chosen in Settings › Language.
 - **Tested:** every change is checked by signing in through both apps and the Windows tool against a mock campus login page.
@@ -100,7 +100,7 @@ In the app, tap **Auto Sign-In › Set Up** for a step-by-step guide. In short:
 
 To stop iOS from showing the login popup as well, go to **Settings › Wi-Fi**, tap **ⓘ** next to the school network and turn off **Auto-Login**.
 
-**Other Wi-Fi with a login page:** on Android (and on Windows when Location is off), automatic sign-in fills in any Wi-Fi login page that asks for an ID and password, not only the campus one, because reading the Wi-Fi name needs location permission. On a hotel or café Wi-Fi, tap the circle to disconnect and the app won't sign in again until you tap it. On iPhone, automatic sign-in only runs for the network you pick in the Shortcuts automation.
+**Only on the school Wi-Fi:** on iPhone, automatic sign-in only runs for the network you pick in the Shortcuts automation. On Android, tap **Allow** next to **Only on School Wi-Fi** in Settings: the app then reads the Wi-Fi name and never fills in a hotel's or café's login page. Android only shares the Wi-Fi name with location access and Location turned on; the app doesn't use or save your location. Without it, automatic sign-in fills in any Wi-Fi login page that asks for an ID and password. (The Windows tool checks the Wi-Fi name too, except when Windows hides it because Location is off.)
 
 ## If automatic detection doesn't work
 

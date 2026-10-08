@@ -43,6 +43,8 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
                     LoginOutcome.ALREADY_ONLINE -> ConnectionState.Connected(getApplication<Application>().getString(R.string.result_already_online))
                     LoginOutcome.LOGGED_IN -> ConnectionState.Connected(getApplication<Application>().getString(R.string.result_signed_in))
                 }
+            } catch (e: LoginError.OtherNetwork) {
+                ConnectionState.Idle
             } catch (e: LoginError.NotOnWiFi) {
                 if (automatic) ConnectionState.Idle else ConnectionState.Failed(e.describe(getApplication()))
             } catch (e: LoginError) {

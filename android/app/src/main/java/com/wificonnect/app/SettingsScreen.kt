@@ -1,6 +1,15 @@
 package com.wificonnect.app
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.core.app.ActivityCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.rememberLauncherForActivityResult
+import android.net.Uri
+import android.content.Intent
+import android.app.Activity
+import android.Manifest
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
@@ -172,6 +181,8 @@ fun SettingsScreen(
                 SwitchRow(stringResource(R.string.setting_notify), settings.notifyOnConnect) {
                     settings = settings.copy(notifyOnConnect = it)
                 }
+                Divider()
+                WifiCheckRow(settings.wifiName)
             }
 
             val activity = context as? FragmentActivity
@@ -434,6 +445,65 @@ internal fun Section(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 6.dp),
             )
+        }
+    }
+}
+
+/**
+ * "Only on School Wi-Fi": automatic sign-in checks the Wi-Fi name first, which Android only
+ * shares with location access and Location on. Asks for whichever is missing.
+ */
+@Composable
+private fun WifiCheckRow(wifiName: String) {
+    val context = LocalContext.current
+    var check by remember { mutableStateOf(WifiName.check(context)) }
+    LifecycleResumeEffect(Unit) {
+        check = WifiName.check(context)
+        onPauseOrDispose { }
+    }
+    val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        check = WifiName.check(context)
+        val activity = context as? Activity
+        if (check == WifiName.Check.NEEDS_PERMISSION && activity != null &&
+            !ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+        ) {
+            // Android won't ask again: open the app's page in Settings instead.
+            context.startActivity(
+                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
+            )
+        }
+    }
+    val name = wifiName.trim().ifEmpty { PortalSettings.DEFAULT_WIFI_NAME }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(start = 16.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(R.string.wifi_check_title))
+            Text(
+                when (check) {
+                    WifiName.Check.ON -> stringResource(R.string.wifi_check_on, name)
+                    WifiName.Check.NEEDS_PERMISSION -> stringResource(R.string.wifi_check_needs_permission, name)
+                    WifiName.Check.LOCATION_OFF -> stringResource(R.string.wifi_check_location_off)
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        when (check) {
+            WifiName.Check.ON -> Icon(
+                Icons.Rounded.CheckCircle,
+                contentDescription = stringResource(R.string.on),
+                tint = Color(0xFF34C759),
+                modifier = Modifier.padding(start = 8.dp),
+            )
+            WifiName.Check.NEEDS_PERMISSION -> TextButton(onClick = {
+                permission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+            }) { Text(stringResource(R.string.wifi_check_allow)) }
+            WifiName.Check.LOCATION_OFF -> TextButton(onClick = {
+                context.startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }) { Text(stringResource(R.string.wifi_check_turn_on)) }
         }
     }
 }

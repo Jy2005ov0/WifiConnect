@@ -55,6 +55,13 @@
     <string name="settings_school_wifi_footer">Nama Wi-Fi yang anda sertai di kampus.</string>
     <string name="settings_automatic">Log Masuk Automatik</string>
     <string name="settings_automatic_footer">Log masuk sendiri setiap kali telefon anda menyertai rangkaian Wi-Fi yang mempunyai halaman log masuk, walaupun aplikasi ditutup.</string>
+    <string name="wifi_check_title">Hanya pada Wi-Fi Universiti</string>
+    <string name="wifi_check_on">Log masuk secara automatik hanya pada %1$s.</string>
+    <string name="wifi_check_needs_permission">Benarkan akses lokasi supaya log masuk automatik hanya mengisi halaman log masuk %1$s. Android memerlukannya untuk membaca nama Wi-Fi; lokasi anda tidak digunakan atau disimpan.</string>
+    <string name="wifi_check_location_off">Hidupkan Lokasi supaya aplikasi boleh membaca nama Wi-Fi. Sehingga itu, log masuk automatik mengisi mana-mana halaman log masuk Wi-Fi.</string>
+    <string name="wifi_check_allow">Benarkan</string>
+    <string name="wifi_check_turn_on">Hidupkan</string>
+    <string name="error_other_network">Pada %1$s, bukan Wi-Fi universiti anda, jadi aplikasi tidak log masuk.</string>
     <string name="setting_auto_login">Log Masuk Secara Automatik</string>
     <string name="setting_stay_signed_in">Kekal Log Masuk</string>
     <string name="setting_stay_signed_in_footer">Kekal Log Masuk menyemak setiap 15 minit dan melog masuk semula jika Wi-Fi melog keluar anda.</string>

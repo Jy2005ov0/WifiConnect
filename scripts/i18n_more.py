@@ -292,4 +292,17 @@ MORE = {
         "新しい言語を使うには WiFi Connect を閉じて開き直してください。",
         "புதிய மொழியைப் பயன்படுத்த WiFi Connect-ஐ மூடி மீண்டும் திறக்கவும்."),
     "OK": ("OK", "சரி"),
+    "Only on School Wi-Fi": ("学校の Wi-Fi のみ", "பள்ளி Wi-Fi-இல் மட்டும்"),
+    "Signs in automatically only on {0}.": ("{0} でのみ自動でサインインします。", "{0} இல் மட்டுமே தானாக உள்நுழையும்."),
+    "Allow location access so automatic sign-in only fills in {0}'s login page. Android needs it to read the Wi-Fi name; your location isn't used or saved.": (
+        "位置情報へのアクセスを許可すると、自動サインインは {0} のログインページにだけ入力します。Android が Wi-Fi 名を読み取るために必要です。位置情報は使用・保存しません。",
+        "இருப்பிட அனுமதியை வழங்கினால், தானியங்கு உள்நுழைவு {0} இன் உள்நுழைவுப் பக்கத்தை மட்டுமே நிரப்பும். Wi-Fi பெயரைப் படிக்க Android-க்கு இது தேவை; உங்கள் இருப்பிடம் பயன்படுத்தப்படவோ சேமிக்கப்படவோ மாட்டாது."),
+    "Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in fills in any Wi-Fi login page.": (
+        "Wi-Fi 名を読み取れるよう位置情報をオンにしてください。それまでは、自動サインインはどの Wi-Fi ログインページにも入力します。",
+        "Wi-Fi பெயரைப் படிக்க இருப்பிடத்தை இயக்கவும். அதுவரை, தானியங்கு உள்நுழைவு எந்த Wi-Fi உள்நுழைவுப் பக்கத்தையும் நிரப்பும்."),
+    "Allow": ("許可", "அனுமதி"),
+    "Turn On": ("オンにする", "இயக்கு"),
+    "On {0}, not your school Wi-Fi, so the app didn't sign in.": (
+        "{0} は学校の Wi-Fi ではないため、サインインしませんでした。",
+        "{0} உங்கள் பள்ளி Wi-Fi அல்ல, அதனால் செயலி உள்நுழையவில்லை."),
 }

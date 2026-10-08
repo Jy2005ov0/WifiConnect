@@ -56,6 +56,13 @@
     <string name="settings_school_wifi_footer">The Wi-Fi name you join on campus.</string>
     <string name="settings_automatic">Automatic Sign-In</string>
     <string name="settings_automatic_footer">Signs in by itself whenever your phone joins a Wi-Fi network with a login page, even when the app is closed.</string>
+    <string name="wifi_check_title">Only on School Wi-Fi</string>
+    <string name="wifi_check_on">Signs in automatically only on %1$s.</string>
+    <string name="wifi_check_needs_permission">Allow location access so automatic sign-in only fills in %1$s\'s login page. Android needs it to read the Wi-Fi name; your location isn\'t used or saved.</string>
+    <string name="wifi_check_location_off">Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in fills in any Wi-Fi login page.</string>
+    <string name="wifi_check_allow">Allow</string>
+    <string name="wifi_check_turn_on">Turn On</string>
+    <string name="error_other_network">On %1$s, not your school Wi-Fi, so the app didn\'t sign in.</string>
     <string name="setting_auto_login">Sign In Automatically</string>
     <string name="setting_stay_signed_in">Stay Signed In</string>
     <string name="setting_stay_signed_in_footer">Stay Signed In checks every 15 minutes and signs you back in if the Wi-Fi logs you out.</string>
