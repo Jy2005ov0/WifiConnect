@@ -31,7 +31,13 @@ jobs:
             -configuration Debug \
             -sdk iphonesimulator \
             SYMROOT="$PWD/build" \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGN_IDENTITY=- \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM= \
+            PROVISIONING_PROFILE_SPECIFIER=
+          # Signed "to run locally" like Xcode does for the simulator, so the app can save the
+          # student ID and password in the Keychain, as on a real phone.
+          codesign -dv --entitlements - build/Debug-iphonesimulator/WifiConnect.app 2>&1 | tail -15 || true
 
       - name: Install the tools that tap and type
         run: |

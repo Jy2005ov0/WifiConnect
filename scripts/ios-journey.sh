@@ -105,6 +105,7 @@ point=$(find_on_screen "Password") || fail "Couldn't find the password box"
 idb ui tap --udid "$UDID" $point; sleep 1
 type_text utar-test
 sleep 1
+find_on_screen "2201234" > /dev/null || fail "The student ID shows in its box after typing"
 shot settings-filled
 pass "Type the student ID and password"
 tap "Done"

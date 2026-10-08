@@ -57,7 +57,8 @@ def ios(dump, want):
     for exact in (True, False):
         for element in elements:
             label = element.get("AXLabel") or ""
-            if (label == want) if exact else (want in label):
+            value = element.get("AXValue") or ""
+            if (want in (label, value)) if exact else (want in label):
                 return center(element)
     return None
 
