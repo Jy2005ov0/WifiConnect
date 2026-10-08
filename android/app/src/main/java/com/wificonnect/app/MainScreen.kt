@@ -138,16 +138,20 @@ fun MainScreen(
         topBar = {
             // Scrolled: a solid glass-like bar that fades softly into the content below, rather than
             // ending in a hard edge (Apple's design guidance, via the apple-design skill).
-            val scrolled = scrollBehavior.state.collapsedFraction
             val barColor = MaterialTheme.colorScheme.background
+            // A faint shadow in light mode; a faint light edge in dark mode, where a shadow can't show.
+            val dark = barColor.luminance() < 0.5f
+            val edge = if (dark) Color.White.copy(alpha = 0.08f) else Color.Black.copy(alpha = 0.06f)
             LargeTopAppBar(
                 modifier = Modifier.drawWithContent {
                     drawContent()
+                    // Read while drawing, so scrolling only redraws the bar.
+                    val scrolled = scrollBehavior.state.collapsedFraction
                     if (scrolled > 0f) {
                         val fade = 12.dp.toPx()
                         drawRect(
                             Brush.verticalGradient(
-                                listOf(Color.Black.copy(alpha = 0.06f * scrolled), Color.Transparent),
+                                listOf(edge.copy(alpha = edge.alpha * scrolled), Color.Transparent),
                                 startY = size.height, endY = size.height + fade,
                             ),
                             topLeft = Offset(0f, size.height),
@@ -156,7 +160,15 @@ fun MainScreen(
                     }
                 },
                 // Big type a little heavier and tighter.
-                title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.ExtraBold, letterSpacing = (-0.02).em) },
+                title = {
+                    Text(
+                        stringResource(R.string.main_title),
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = (-0.02).em,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onOpenHelp) {
                         // A solid circle with a ? inside, so help is easy to spot.
@@ -183,8 +195,10 @@ fun MainScreen(
                     }
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = barColor.copy(alpha = 0.94f),
+                    // The page's own color, see-through: blending from plain transparent (black)
+                    // would turn the bar grey halfway through scrolling.
+                    containerColor = barColor.copy(alpha = 0f),
+                    scrolledContainerColor = barColor,
                 ),
                 scrollBehavior = scrollBehavior,
             )
@@ -241,6 +255,7 @@ fun MainScreen(
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = (-0.02).em,
+                textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(6.dp))
             Text(

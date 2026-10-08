@@ -6,7 +6,7 @@ struct WifiConnectApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
-        NavigationBarStyle.apply()
+        NavigationBarStyle.applyAndFollowTextSize()
     }
 
     var body: some Scene {

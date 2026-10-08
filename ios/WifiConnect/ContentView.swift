@@ -91,6 +91,7 @@ struct ContentView: View {
                                 // Big type a little heavier and tighter, like the page title.
                                 .font(.title.weight(.heavy))
                                 .tracking(-0.5)
+                                .multilineTextAlignment(.center)
                             Text(subtitle)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
