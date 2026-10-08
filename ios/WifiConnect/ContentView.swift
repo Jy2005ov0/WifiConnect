@@ -209,14 +209,9 @@ struct ContentView: View {
             .onChange(of: scenePhase, initial: true) {
                 guard scenePhase == .active, !isDemo, !isTest else { return }
                 // A widget or Control Center tap that launched the app before it was listening.
+                // Otherwise opening the app just shows "Tap to Connect": it connects when you tap.
                 if ConnectRequest.pending {
                     connectRequestedElsewhere()
-                    return
-                }
-                // Opening the app on campus signs you in straight away, unless you chose Disconnect.
-                let signedOutByUser = UserDefaults.standard.bool(forKey: SettingsKey.signedOutByUser)
-                if hasCredentials, model.state != .working, model.state != .signedOut, !signedOutByUser {
-                    Task { await model.connect(automatic: true) }
                 }
             }
         }

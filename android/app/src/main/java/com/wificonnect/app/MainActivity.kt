@@ -139,12 +139,8 @@ class MainActivity : FragmentActivity() {
                     } else if (isTest) {
                         // The end-to-end test stands in for tapping the circle.
                         model.connect()
-                    } else if (demo == null && hasCredentials && !showSettings &&
-                        SignInStatus.load(context)?.kind != SignInStatus.Kind.SIGNED_OUT
-                    ) {
-                        // Not after you chose Disconnect: that waits for you to tap Connect.
-                        model.connect(automatic = true)
                     }
+                    // Otherwise opening the app just shows "Tap to Connect": it connects when you tap.
                     onPauseOrDispose { }
                 }
 

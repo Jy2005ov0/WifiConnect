@@ -86,7 +86,7 @@ Until the repository has its own signing key, each GitHub build is signed with a
 | "There was a problem parsing the package" | The download is incomplete, or you opened the `.zip` instead of the `.apk`. Download again and extract it. |
 | "App not installed" | Uninstall the old version first (see [Updating](#updating-on-android)). Also check you have free storage space. |
 | The install button is greyed out | A screen overlay is blocking it, such as a blue-light filter or chat bubbles. Turn the overlay off, then try again. |
-| It doesn't sign in automatically | Check that **Sign In Automatically** is on in the app's Settings, and do [step 3](#3-keep-automatic-sign-in-working). Opening the app always signs in, as a fallback. |
+| It doesn't sign in automatically | Check that **Sign In Automatically** is on in the app's Settings, and do [step 3](#3-keep-automatic-sign-in-working). You can always open the app and tap the circle. |
 | No "Signed in" notification | Go to **Settings › Apps › WiFi Connect › Notifications** and turn them on. |
 
 ---
