@@ -24,7 +24,10 @@ print(next((d for d in phones if d["name"] == "iPhone 16 Pro"), phones[-1])["udi
 ')
 xcrun simctl boot "$UDID" 2>/dev/null || true
 xcrun simctl bootstatus "$UDID" -b > /dev/null
-idb connect "$UDID" > /dev/null
+if ! idb connect "$UDID" > /tmp/idb-connect.log 2>&1; then
+  echo "::error::idb couldn't connect to the simulator: $(tail -5 /tmp/idb-connect.log | tr '\n' ' ')"
+  exit 1
+fi
 
 step=0
 results=""
@@ -37,6 +40,15 @@ fail() {
   results+="FAIL  $1"$'\n'
   shot failed
   screen > "$OUT/ios-failed-screen.json"
+  # What was on screen, readable on the run's page.
+  echo "::error title=On screen when it failed::$(python3 -c '
+import json, sys
+try:
+    data = json.load(open(sys.argv[1]))
+except ValueError:
+    data = []
+print(" | ".join(str(e.get("AXLabel")) + " (" + str(e.get("type")) + ")" for e in data if e.get("AXLabel") or e.get("type") in ("TextField", "SecureTextField", "Button"))[:900])
+' "$OUT/ios-failed-screen.json")"
   finish 1
 }
 finish() {

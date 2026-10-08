@@ -35,15 +35,23 @@ jobs:
 
       - name: Install the tools that tap and type
         run: |
-          brew tap facebook/fb
-          brew tap wix/brew
-          # Newer Homebrew only installs from taps you've said you trust.
-          brew trust facebook/fb 2>/dev/null || true
-          brew trust wix/brew 2>/dev/null || true
-          brew install idb-companion applesimutils
+          export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
+          # applesimutils answers the notifications question like a user tapping Allow.
+          { brew tap wix/brew && brew install wix/brew/applesimutils; } > /tmp/applesimutils.log 2>&1 \
+            || echo "::warning::applesimutils didn't install: $(tail -3 /tmp/applesimutils.log | tr '\n' ' ')"
+          # idb taps and types in the simulator. Homebrew won't build its companion on this
+          # Mac, so use the ready-made one from its releases.
+          curl -fsSL -o /tmp/idb-companion.tar.gz \
+            https://github.com/facebook/idb/releases/download/v1.1.8/idb-companion.universal.tar.gz
+          mkdir -p "$HOME/idb-companion"
+          tar -xzf /tmp/idb-companion.tar.gz -C "$HOME/idb-companion"
+          companion=$(find "$HOME/idb-companion" -name idb_companion -type f | head -1)
+          [[ -n "$companion" ]] || { echo "::error::idb_companion not found in the download"; exit 1; }
+          echo "$(dirname "$companion")" >> "$GITHUB_PATH"
           python3 -m venv "$HOME/idb"
           "$HOME/idb/bin/pip" install --quiet fb-idb
           echo "$HOME/idb/bin" >> "$GITHUB_PATH"
+          "$companion" --version || echo "::warning::idb_companion --version failed"
 
       - name: Start mock login page
         run: nohup python3 scripts/mock_portal.py 8080 > portal.log 2>&1 &
