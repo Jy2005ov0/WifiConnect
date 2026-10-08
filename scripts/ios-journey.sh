@@ -189,18 +189,18 @@ pass "Signing in again works, and so does the internet"
 tap "Settings"
 wait_for "Done" 20 || fail "The gear opens Settings"
 for _ in 1 2 3 4 5 6; do
-  point=$(find_on_screen "Show When Opening the App") && [[ ${point#* } -lt 700 ]] && break
+  point=$(find_on_screen "Show Welcome Page When Opening the App") && [[ ${point#* } -lt 700 ]] && break
   idb ui swipe --udid "$UDID" --duration 0.3 200 650 200 250
   sleep 1
 done
-tap "right:Show When Opening the App"
+tap "right:Show Welcome Page When Opening the App"
 sleep 1
 shot welcome-off
 # The switch itself must now read off.
 switch=$(screen | python3 -c '
 import json, sys
 for e in json.load(sys.stdin):
-    if e.get("AXLabel") == "Show When Opening the App":
+    if e.get("AXLabel") == "Show Welcome Page When Opening the App":
         print(e.get("AXValue")); break
 ')
 echo "Welcome page switch now reads: $switch"
