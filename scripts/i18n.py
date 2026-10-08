@@ -260,6 +260,27 @@ TABLE = [
     ("widget_set_up", "Set Up", "Sediakan", "设置"),
     ("widget_set_up_detail", "Open the app to add your student ID.", "Buka aplikasi untuk menambah ID pelajar anda.",
      "打开应用添加你的学号。"),
+    # The step-by-step guide behind the ? button.
+    ('guide_title', 'How to Use', 'Cara Menggunakan', '使用方法'),
+    ('guide_step', 'Step {0:d} of {1:d}', 'Langkah {0:d} daripada {1:d}', '第 {0:d} 步，共 {1:d} 步'),
+    ('guide_next', 'Next', 'Seterusnya', '下一步'),
+    ('guide_got_it', 'Got It', 'Faham', '知道了'),
+    ('guide_open_settings', 'Open Settings', 'Buka Tetapan', '打开设置'),
+    ('guide_open_wifi', 'Open Wi-Fi Settings', 'Buka Tetapan Wi-Fi', '打开 Wi-Fi 设置'),
+    ('guide_set_up_auto', 'Set Up Auto Sign-In', 'Sediakan Log Masuk Auto', '设置自动登录'),
+    ('guide_account_title', 'Add your student ID', 'Tambah ID pelajar anda', '添加你的学号'),
+    ('guide_account_text', "Tap Open Settings and type your student ID and password. They're saved only on this phone.", 'Ketik Buka Tetapan dan taip ID pelajar serta kata laluan anda. Ia disimpan pada telefon ini sahaja.', '点按“打开设置”，输入你的学号和密码。它们只保存在这部手机上。'),
+    ('guide_join_title', 'Join the campus Wi-Fi', 'Sertai Wi-Fi kampus', '连接校园 Wi-Fi'),
+    ('guide_join_text', "Open your phone's Wi-Fi settings and join {0}. If a login page pops up, you can close it.", 'Buka tetapan Wi-Fi telefon anda dan sertai {0}. Jika halaman log masuk muncul, anda boleh menutupnya.', '打开手机的 Wi-Fi 设置并连接 {0}。如果弹出登录页面，可以直接关闭。'),
+    ('guide_tap_title', 'Tap the blue circle', 'Ketik bulatan biru', '点按蓝色圆圈'),
+    ('guide_tap_text', 'Come back to WiFi Connect and tap the big blue circle. The app finds the login page and signs you in.', 'Kembali ke WiFi Connect dan ketik bulatan biru yang besar. Aplikasi akan mencari halaman log masuk dan melog masuk anda.', '回到 WiFi Connect，点按蓝色大圆圈。应用会找到登录页面并为你登录。'),
+    ('guide_online_title', "Green means you're online", 'Hijau bermakna anda dalam talian', '绿色表示已联网'),
+    ('guide_online_text', 'When the circle turns green, the internet works. Tap the green circle when you want to sign out.', 'Apabila bulatan bertukar hijau, internet berfungsi. Ketik bulatan hijau apabila anda mahu log keluar.', '圆圈变绿后，就可以上网了。想退出登录时，点按绿色圆圈。'),
+    ('guide_auto_title', 'Sign in automatically', 'Log masuk secara automatik', '自动登录'),
+    ('guide_auto_text_android', "WiFi Connect signs in by itself whenever you join {0}. If it stops working, set the app's battery use to Unrestricted.", 'WiFi Connect log masuk sendiri setiap kali anda menyertai {0}. Jika ia berhenti berfungsi, tetapkan penggunaan bateri aplikasi kepada Tanpa Had.', '每次连接 {0} 时，WiFi Connect 都会自动登录。如果不起作用，请把应用的电池用量设为“无限制”。'),
+    ('guide_auto_text_ios', 'Set up a Shortcuts automation once, and your iPhone signs in every time you join {0}.', 'Sediakan automasi Pintasan sekali, dan iPhone anda akan log masuk setiap kali anda menyertai {0}.', '只需设置一次快捷指令自动化，每次连接 {0} 时 iPhone 都会自动登录。'),
+    ('guide_help_title', 'If something goes wrong', 'Jika ada masalah', '如果出现问题'),
+    ('guide_help_text', 'Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.', 'Buka Tetapan › Sejarah Log Masuk untuk melihat apa yang berlaku, dan ketik Salin Diagnostik untuk berkongsi butirannya. Kemudian sertai Wi-Fi sekali lagi dan ketik bulatan.', '打开“设置 › 登录记录”查看发生了什么，点按“拷贝诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。'),
 ]
 
 # Text only the iPhone app shows (Shortcuts guide, Face ID, widget, Siri).
@@ -372,7 +393,7 @@ IOS_PATTERN = re.compile(
     r'|IntentDescription\(|LocalizedStringResource = |dialog: |configurationDisplayName\(|\.description\('
     r'|displayName\(|shortTitle: |accessibilityLabel\(|\.alert\()\s*"((?:[^"\\]|\\.)*)"'
 )
-INT_INTERPOLATIONS = {"pingMilliseconds", "number"}
+INT_INTERPOLATIONS = {"pingMilliseconds", "number", "total"}
 
 
 def ios_key(literal: str) -> str:

@@ -151,4 +151,24 @@
     <string name="widget_signed_in_at">%1$s மணிக்கு உள்நுழைந்தது</string>
     <string name="widget_set_up">அமை</string>
     <string name="widget_set_up_detail">மாணவர் எண்ணைச் சேர்க்க செயலியைத் திறக்கவும்.</string>
+    <string name="guide_title">பயன்படுத்தும் முறை</string>
+    <string name="guide_step">படி %1$d / %2$d</string>
+    <string name="guide_next">அடுத்து</string>
+    <string name="guide_got_it">புரிந்தது</string>
+    <string name="guide_open_settings">அமைப்புகளைத் திற</string>
+    <string name="guide_open_wifi">Wi-Fi அமைப்புகளைத் திற</string>
+    <string name="guide_set_up_auto">தானியங்கு உள்நுழைவை அமை</string>
+    <string name="guide_account_title">உங்கள் மாணவர் எண்ணைச் சேர்க்கவும்</string>
+    <string name="guide_account_text">அமைப்புகளைத் திற என்பதைத் தட்டி, உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் உள்ளிடவும். அவை இந்த ஃபோனில் மட்டுமே சேமிக்கப்படும்.</string>
+    <string name="guide_join_title">வளாக Wi-Fi உடன் இணையவும்</string>
+    <string name="guide_join_text">உங்கள் ஃபோனின் Wi-Fi அமைப்புகளைத் திறந்து %1$s உடன் இணையவும். உள்நுழைவுப் பக்கம் தோன்றினால் அதை மூடலாம்.</string>
+    <string name="guide_tap_title">நீல வட்டத்தைத் தட்டவும்</string>
+    <string name="guide_tap_text">WiFi Connect-க்குத் திரும்பி, பெரிய நீல வட்டத்தைத் தட்டவும். செயலி உள்நுழைவுப் பக்கத்தைக் கண்டுபிடித்து உங்களை உள்நுழைக்கும்.</string>
+    <string name="guide_online_title">பச்சை என்றால் இணையத்தில் உள்ளீர்கள்</string>
+    <string name="guide_online_text">வட்டம் பச்சையாக மாறும்போது இணையம் வேலை செய்யும். வெளியேற விரும்பும்போது பச்சை வட்டத்தைத் தட்டவும்.</string>
+    <string name="guide_auto_title">தானாக உள்நுழையவும்</string>
+    <string name="guide_auto_text_android">நீங்கள் %1$s உடன் இணையும் ஒவ்வொரு முறையும் WiFi Connect தானாக உள்நுழையும். அது வேலை செய்யாவிட்டால், செயலியின் பேட்டரி பயன்பாட்டைக் கட்டுப்பாடற்றது என அமைக்கவும்.</string>
+    <string name="guide_auto_text_ios">ஒருமுறை குறுக்குவழி தானியக்கத்தை அமைத்தால், நீங்கள் %1$s உடன் இணையும் ஒவ்வொரு முறையும் உங்கள் iPhone உள்நுழையும்.</string>
+    <string name="guide_help_title">ஏதாவது தவறு நடந்தால்</string>
+    <string name="guide_help_text">என்ன நடந்தது என்பதைப் பார்க்க அமைப்புகள் › உள்நுழைவு வரலாறு என்பதைத் திறந்து, விவரங்களைப் பகிர கண்டறிதலை நகலெடு என்பதைத் தட்டவும். பிறகு மீண்டும் Wi-Fi உடன் இணைந்து வட்டத்தைத் தட்டவும்.</string>
 </resources>

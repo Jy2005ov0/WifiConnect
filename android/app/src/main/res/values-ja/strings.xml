@@ -151,4 +151,24 @@
     <string name="widget_signed_in_at">%1$s にサインイン</string>
     <string name="widget_set_up">設定する</string>
     <string name="widget_set_up_detail">アプリを開いて学籍番号を追加してください。</string>
+    <string name="guide_title">使い方</string>
+    <string name="guide_step">ステップ %1$d/%2$d</string>
+    <string name="guide_next">次へ</string>
+    <string name="guide_got_it">わかった</string>
+    <string name="guide_open_settings">設定を開く</string>
+    <string name="guide_open_wifi">Wi-Fi 設定を開く</string>
+    <string name="guide_set_up_auto">自動サインインを設定</string>
+    <string name="guide_account_title">学籍番号を追加</string>
+    <string name="guide_account_text">「設定を開く」をタップして、学籍番号とパスワードを入力します。この端末にだけ保存されます。</string>
+    <string name="guide_join_title">キャンパスの Wi-Fi に接続</string>
+    <string name="guide_join_text">端末の Wi-Fi 設定を開いて %1$s に接続します。ログインページが表示されたら閉じてかまいません。</string>
+    <string name="guide_tap_title">青い円をタップ</string>
+    <string name="guide_tap_text">WiFi Connect に戻って大きな青い円をタップします。アプリがログインページを見つけてサインインします。</string>
+    <string name="guide_online_title">緑ならオンライン</string>
+    <string name="guide_online_text">円が緑になればインターネットが使えます。サインアウトしたいときは緑の円をタップします。</string>
+    <string name="guide_auto_title">自動でサインイン</string>
+    <string name="guide_auto_text_android">%1$s に接続するたびに WiFi Connect が自動でサインインします。動かなくなったら、アプリの電池使用量を「制限なし」にしてください。</string>
+    <string name="guide_auto_text_ios">ショートカットのオートメーションを一度設定すれば、%1$s に接続するたびに iPhone がサインインします。</string>
+    <string name="guide_help_title">うまくいかないときは</string>
+    <string name="guide_help_text">「設定 › サインイン履歴」で何が起きたかを確認し、「診断情報をコピー」で詳細を共有できます。その後、もう一度 Wi-Fi に接続して円をタップします。</string>
 </resources>

@@ -29,6 +29,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
@@ -99,6 +100,7 @@ fun MainScreen(
     onSignOut: () -> Unit = {},
     speedSummary: String? = null,
     onOpenSpeedTest: () -> Unit = {},
+    onOpenHelp: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -132,6 +134,15 @@ fun MainScreen(
         topBar = {
             LargeTopAppBar(
                 title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.Bold) },
+                navigationIcon = {
+                    IconButton(onClick = onOpenHelp) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.HelpOutline,
+                            contentDescription = stringResource(R.string.history_help),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                },
                 actions = {
                     AppearanceMenu(appearance, onAppearanceChange)
                     IconButton(onClick = onOpenSettings) {

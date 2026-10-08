@@ -152,4 +152,24 @@
     <string name="widget_signed_in_at">Signed in at %1$s</string>
     <string name="widget_set_up">Set Up</string>
     <string name="widget_set_up_detail">Open the app to add your student ID.</string>
+    <string name="guide_title">How to Use</string>
+    <string name="guide_step">Step %1$d of %2$d</string>
+    <string name="guide_next">Next</string>
+    <string name="guide_got_it">Got It</string>
+    <string name="guide_open_settings">Open Settings</string>
+    <string name="guide_open_wifi">Open Wi-Fi Settings</string>
+    <string name="guide_set_up_auto">Set Up Auto Sign-In</string>
+    <string name="guide_account_title">Add your student ID</string>
+    <string name="guide_account_text">Tap Open Settings and type your student ID and password. They\'re saved only on this phone.</string>
+    <string name="guide_join_title">Join the campus Wi-Fi</string>
+    <string name="guide_join_text">Open your phone\'s Wi-Fi settings and join %1$s. If a login page pops up, you can close it.</string>
+    <string name="guide_tap_title">Tap the blue circle</string>
+    <string name="guide_tap_text">Come back to WiFi Connect and tap the big blue circle. The app finds the login page and signs you in.</string>
+    <string name="guide_online_title">Green means you\'re online</string>
+    <string name="guide_online_text">When the circle turns green, the internet works. Tap the green circle when you want to sign out.</string>
+    <string name="guide_auto_title">Sign in automatically</string>
+    <string name="guide_auto_text_android">WiFi Connect signs in by itself whenever you join %1$s. If it stops working, set the app\'s battery use to Unrestricted.</string>
+    <string name="guide_auto_text_ios">Set up a Shortcuts automation once, and your iPhone signs in every time you join %1$s.</string>
+    <string name="guide_help_title">If something goes wrong</string>
+    <string name="guide_help_text">Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.</string>
 </resources>

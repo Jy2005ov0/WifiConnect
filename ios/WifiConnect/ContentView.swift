@@ -7,6 +7,9 @@ struct ContentView: View {
     @AppStorage(SettingsKey.wifiName) private var wifiName = SettingsKey.defaultWifiName
     @State private var showSettings = false
     @State private var showAutomationGuide = false
+    @State private var showHowTo = false
+    /// Where a How to Use step's button goes, once the guide has closed.
+    @State private var afterHowTo: HowToView.Destination?
     @State private var showDemoHistory = false
     @State private var showDemoShare = false
     @State private var pendingSetup: SharedSetup?
@@ -119,6 +122,14 @@ struct ContentView: View {
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationTitle("Campus Wi-Fi")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showHowTo = true
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                    }
+                    .accessibilityLabel("Help")
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     AppearanceMenu()
                 }
@@ -136,6 +147,19 @@ struct ContentView: View {
                 studentID = Credentials.studentID
             }) {
                 SettingsView()
+                    .presentationCornerRadius(36)
+                    .presentationBackground(.regularMaterial)
+            }
+            .sheet(isPresented: $showHowTo, onDismiss: {
+                // One sheet at a time: open what the step asked for once the guide has gone.
+                switch afterHowTo {
+                case .settings: openSettings()
+                case .autoSignIn: showAutomationGuide = true
+                case nil: break
+                }
+                afterHowTo = nil
+            }) {
+                HowToView(hasCredentials: hasCredentials) { afterHowTo = $0 }
                     .presentationCornerRadius(36)
                     .presentationBackground(.regularMaterial)
             }
@@ -206,6 +230,8 @@ struct ContentView: View {
                     showSettings = false
                     showAutomationGuide = false
                     showSpeedTest = false
+                    showHowTo = false
+                    afterHowTo = nil
                     pendingSetup = setup
                     return
                 }
@@ -290,6 +316,7 @@ struct ContentView: View {
         switch defaults.string(forKey: "demoScreen") {
         case "settings": showSettings = true
         case "guide": showAutomationGuide = true
+        case "howto": showHowTo = true
         case "history":
             History.seedDemo()
             showDemoHistory = true

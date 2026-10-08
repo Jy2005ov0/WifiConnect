@@ -35,6 +35,7 @@ shoot 1-ready     -demoState idle
 shoot 2-connected -demoState connected -demoSpeed "18 ms · 92 Mbps"
 shoot 3-settings  -demoState idle -demoScreen settings
 shoot 4-guide     -demoState idle -demoScreen guide
+shoot 15-howto    -demoState idle -demoScreen howto
 shoot 6-history   -demoState idle -demoScreen history
 shoot 7-share     -demoState idle -demoScreen share
 shoot 8-speedtest -demoState connected -demoScreen speed

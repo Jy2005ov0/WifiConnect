@@ -57,6 +57,34 @@
         }
       }
     },
+    "Add your student ID": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tambah ID pelajar anda"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加你的学号"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "学籍番号を追加"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் மாணவர் எண்ணைச் சேர்க்கவும்"
+          }
+        }
+      }
+    },
     "Add your student ID and password in Settings first.": {
       "localizations": {
         "ms": {
@@ -281,6 +309,34 @@
         }
       }
     },
+    "Back": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kembali"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "返回"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "戻る"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பின்செல்"
+          }
+        }
+      }
+    },
     "Campus Wi-Fi": {
       "localizations": {
         "ms": {
@@ -473,6 +529,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "புதிய மொழியைப் பயன்படுத்த WiFi Connect-ஐ மூடி மீண்டும் திறக்கவும்."
+          }
+        }
+      }
+    },
+    "Come back to WiFi Connect and tap the big blue circle. The app finds the login page and signs you in.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kembali ke WiFi Connect dan ketik bulatan biru yang besar. Aplikasi akan mencari halaman log masuk dan melog masuk anda."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "回到 WiFi Connect，点按蓝色大圆圈。应用会找到登录页面并为你登录。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi Connect に戻って大きな青い円をタップします。アプリがログインページを見つけてサインインします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi Connect-க்குத் திரும்பி, பெரிய நீல வட்டத்தைத் தட்டவும். செயலி உள்நுழைவுப் பக்கத்தைக் கண்டுபிடித்து உங்களை உள்நுழைக்கும்."
           }
         }
       }
@@ -1037,6 +1121,62 @@
         }
       }
     },
+    "Got It": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faham"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "知道了"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "わかった"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "புரிந்தது"
+          }
+        }
+      }
+    },
+    "Green means you're online": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hijau bermakna anda dalam talian"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "绿色表示已联网"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "緑ならオンライン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பச்சை என்றால் இணையத்தில் உள்ளீர்கள்"
+          }
+        }
+      }
+    },
     "Help": {
       "localizations": {
         "ms": {
@@ -1093,6 +1233,34 @@
         }
       }
     },
+    "How to Use": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cara Menggunakan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用方法"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使い方"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "பயன்படுத்தும் முறை"
+          }
+        }
+      }
+    },
     "ID Field": {
       "localizations": {
         "ms": {
@@ -1145,6 +1313,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "உள்நுழைவு வேலை செய்யவில்லை என்றால், இந்த அறிக்கையை நகலெடுத்து செயலிக்கு உதவுபவருக்கு அனுப்பவும். இதில் உள்நுழைவுப் பக்க விவரங்கள் இருக்கும், உங்கள் கடவுச்சொல் ஒருபோதும் இருக்காது."
+          }
+        }
+      }
+    },
+    "If something goes wrong": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jika ada masalah"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "如果出现问题"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "うまくいかないときは"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஏதாவது தவறு நடந்தால்"
           }
         }
       }
@@ -1229,6 +1425,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "முதலில் வளாக Wi-Fi-இல் சேரவும்."
+          }
+        }
+      }
+    },
+    "Join the campus Wi-Fi": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sertai Wi-Fi kampus"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "连接校园 Wi-Fi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンパスの Wi-Fi に接続"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வளாக Wi-Fi உடன் இணையவும்"
           }
         }
       }
@@ -1541,6 +1765,34 @@
         }
       }
     },
+    "Next": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seterusnya"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一步"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次へ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அடுத்து"
+          }
+        }
+      }
+    },
     "No Sign-Ins Yet": {
       "localizations": {
         "ms": {
@@ -1709,6 +1961,62 @@
         }
       }
     },
+    "Open Settings": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka Tetapan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开设置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を開く"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்புகளைத் திற"
+          }
+        }
+      }
+    },
+    "Open Settings › Sign-In History to see what happened, and tap Copy Diagnostics to share the details. Then join the Wi-Fi again and tap the circle.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka Tetapan › Sejarah Log Masuk untuk melihat apa yang berlaku, dan ketik Salin Diagnostik untuk berkongsi butirannya. Kemudian sertai Wi-Fi sekali lagi dan ketik bulatan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开“设置 › 登录记录”查看发生了什么，点按“拷贝诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「設定 › サインイン履歴」で何が起きたかを確認し、「診断情報をコピー」で詳細を共有できます。その後、もう一度 Wi-Fi に接続して円をタップします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "என்ன நடந்தது என்பதைப் பார்க்க அமைப்புகள் › உள்நுழைவு வரலாறு என்பதைத் திறந்து, விவரங்களைப் பகிர கண்டறிதலை நகலெடு என்பதைத் தட்டவும். பிறகு மீண்டும் Wi-Fi உடன் இணைந்து வட்டத்தைத் தட்டவும்."
+          }
+        }
+      }
+    },
     "Open Shortcuts": {
       "localizations": {
         "ms": {
@@ -1733,6 +2041,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shortcuts-ஐத் திற"
+          }
+        }
+      }
+    },
+    "Open your phone's Wi-Fi settings and join %@. If a login page pops up, you can close it.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka tetapan Wi-Fi telefon anda dan sertai %@. Jika halaman log masuk muncul, anda boleh menutupnya."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开手机的 Wi-Fi 设置并连接 %@。如果弹出登录页面，可以直接关闭。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "端末の Wi-Fi 設定を開いて %@ に接続します。ログインページが表示されたら閉じてかまいません。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உங்கள் ஃபோனின் Wi-Fi அமைப்புகளைத் திறந்து %@ உடன் இணையவும். உள்நுழைவுப் பக்கம் தோன்றினால் அதை மூடலாம்."
           }
         }
       }
@@ -2297,6 +2633,62 @@
         }
       }
     },
+    "Set Up Auto Sign-In": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sediakan Log Masuk Auto"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置自动登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動サインインを設定"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானியங்கு உள்நுழைவை அமை"
+          }
+        }
+      }
+    },
+    "Set up a Shortcuts automation once, and your iPhone signs in every time you join %@.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sediakan automasi Pintasan sekali, dan iPhone anda akan log masuk setiap kali anda menyertai %@."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只需设置一次快捷指令自动化，每次连接 %@ 时 iPhone 都会自动登录。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ショートカットのオートメーションを一度設定すれば、%@ に接続するたびに iPhone がサインインします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஒருமுறை குறுக்குவழி தானியக்கத்தை அமைத்தால், நீங்கள் %@ உடன் இணையும் ஒவ்வொரு முறையும் உங்கள் iPhone உள்நுழையும்."
+          }
+        }
+      }
+    },
     "Settings": {
       "localizations": {
         "ms": {
@@ -2573,6 +2965,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "வளாக Wi-Fi-இல் உள்நுழை"
+          }
+        }
+      }
+    },
+    "Sign in automatically": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log masuk secara automatik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動でサインイン"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "தானாக உள்நுழையவும்"
           }
         }
       }
@@ -2941,6 +3361,34 @@
         }
       }
     },
+    "Step %lld of %lld": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langkah %lld daripada %lld"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "第 %lld 步，共 %lld 步"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ステップ %lld/%lld"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "படி %lld / %lld"
+          }
+        }
+      }
+    },
     "Stop": {
       "localizations": {
         "ms": {
@@ -3161,6 +3609,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "**புதிய வெற்றுத் தன்னியக்கம்** என்பதைத் தட்டி, **WiFi Connect** எனத் தேடி **வளாக Wi-Fi-இல் உள்நுழை** என்பதைச் சேர்க்கவும்."
+          }
+        }
+      }
+    },
+    "Tap Open Settings and type your student ID and password. They're saved only on this phone.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik Buka Tetapan dan taip ID pelajar serta kata laluan anda. Ia disimpan pada telefon ini sahaja."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按“打开设置”，输入你的学号和密码。它们只保存在这部手机上。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「設定を開く」をタップして、学籍番号とパスワードを入力します。この端末にだけ保存されます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "அமைப்புகளைத் திற என்பதைத் தட்டி, உங்கள் மாணவர் எண்ணையும் கடவுச்சொல்லையும் உள்ளிடவும். அவை இந்த ஃபோனில் மட்டுமே சேமிக்கப்படும்."
+          }
+        }
+      }
+    },
+    "Tap the blue circle": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik bulatan biru"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点按蓝色圆圈"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "青い円をタップ"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நீல வட்டத்தைத் தட்டவும்"
           }
         }
       }
@@ -3749,6 +4253,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "வரவேற்கிறோம்"
+          }
+        }
+      }
+    },
+    "When the circle turns green, the internet works. Tap the green circle when you want to sign out.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apabila bulatan bertukar hijau, internet berfungsi. Ketik bulatan hijau apabila anda mahu log keluar."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圆圈变绿后，就可以上网了。想退出登录时，点按绿色圆圈。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "円が緑になればインターネットが使えます。サインアウトしたいときは緑の円をタップします。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வட்டம் பச்சையாக மாறும்போது இணையம் வேலை செய்யும். வெளியேற விரும்பும்போது பச்சை வட்டத்தைத் தட்டவும்."
           }
         }
       }

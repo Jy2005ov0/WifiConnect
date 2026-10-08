@@ -109,6 +109,7 @@ class MainActivity : FragmentActivity() {
                 var showHistory by rememberSaveable { mutableStateOf(demo?.showHistory ?: false) }
                 var showShare by rememberSaveable { mutableStateOf(demo?.showShare ?: false) }
                 var showSpeed by rememberSaveable { mutableStateOf(demo?.showSpeed ?: false) }
+                var showHelp by rememberSaveable { mutableStateOf(demo?.showHelp ?: false) }
                 // Bumped when settings change outside the main screen, so it shows the new Wi-Fi name.
                 var settingsVersion by remember { mutableStateOf(0) }
                 // The welcome page shows each time the app opens (not in screenshots or tests unless asked for).
@@ -190,6 +191,7 @@ class MainActivity : FragmentActivity() {
                 AnimatedContent(
                     modifier = Modifier.blur(blur),
                     targetState = when {
+                        showHelp -> 5
                         showSpeed -> 4
                         showSettings && showShare -> 3
                         showSettings && showHistory -> 2
@@ -199,7 +201,26 @@ class MainActivity : FragmentActivity() {
                     transitionSpec = { fadeIn() togetherWith fadeOut() },
                     label = "screen",
                 ) { screen ->
-                    if (screen == 4) {
+                    // Ask for a fingerprint first when the app lock is on.
+                    val openSettings: () -> Unit = {
+                        if (hasCredentials && PortalSettings.load(context).requireUnlock) {
+                            AppLock.authenticate(this@MainActivity, getString(R.string.lock_open_settings)) { ok ->
+                                if (ok) showSettings = true
+                            }
+                        } else {
+                            showSettings = true
+                        }
+                    }
+                    if (screen == 5) {
+                        HowToScreen(
+                            hasCredentials = hasCredentials,
+                            onBack = { showHelp = false },
+                            onOpenSettings = {
+                                showHelp = false
+                                openSettings()
+                            },
+                        )
+                    } else if (screen == 4) {
                         SpeedTestScreen(speedTest, onBack = { showSpeed = false })
                     } else if (screen == 3) {
                         ShareSetupScreen(
@@ -228,21 +249,13 @@ class MainActivity : FragmentActivity() {
                             state = model.state,
                             hasCredentials = hasCredentials,
                             onConnect = { if (hasCredentials) model.connect() else showSettings = true },
-                            onOpenSettings = {
-                                // Ask for a fingerprint first when the app lock is on.
-                                if (hasCredentials && PortalSettings.load(context).requireUnlock) {
-                                    AppLock.authenticate(this@MainActivity, getString(R.string.lock_open_settings)) { ok ->
-                                        if (ok) showSettings = true
-                                    }
-                                } else {
-                                    showSettings = true
-                                }
-                            },
+                            onOpenSettings = openSettings,
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
                             onSignOut = { model.signOut() },
                             speedSummary = speedTest.summary,
                             onOpenSpeedTest = { showSpeed = true },
+                            onOpenHelp = { showHelp = true },
                         )
                         }
                     }
@@ -268,6 +281,7 @@ private class Demo(
     val showHistory: Boolean,
     val showShare: Boolean,
     val showSpeed: Boolean,
+    val showHelp: Boolean,
     val speedResult: Boolean,
     val showWelcome: Boolean,
 ) {
@@ -294,6 +308,7 @@ private class Demo(
                 showHistory = screen == "history",
                 showShare = screen == "share",
                 showSpeed = screen == "speed",
+                showHelp = screen == "howto",
                 speedResult = intent.hasExtra("demoSpeed") || screen == "speed",
                 showWelcome = screen == "welcome",
             )

@@ -151,4 +151,24 @@
     <string name="widget_signed_in_at">%1$s 已登录</string>
     <string name="widget_set_up">设置</string>
     <string name="widget_set_up_detail">打开应用添加你的学号。</string>
+    <string name="guide_title">使用方法</string>
+    <string name="guide_step">第 %1$d 步，共 %2$d 步</string>
+    <string name="guide_next">下一步</string>
+    <string name="guide_got_it">知道了</string>
+    <string name="guide_open_settings">打开设置</string>
+    <string name="guide_open_wifi">打开 Wi-Fi 设置</string>
+    <string name="guide_set_up_auto">设置自动登录</string>
+    <string name="guide_account_title">添加你的学号</string>
+    <string name="guide_account_text">点按“打开设置”，输入你的学号和密码。它们只保存在这部手机上。</string>
+    <string name="guide_join_title">连接校园 Wi-Fi</string>
+    <string name="guide_join_text">打开手机的 Wi-Fi 设置并连接 %1$s。如果弹出登录页面，可以直接关闭。</string>
+    <string name="guide_tap_title">点按蓝色圆圈</string>
+    <string name="guide_tap_text">回到 WiFi Connect，点按蓝色大圆圈。应用会找到登录页面并为你登录。</string>
+    <string name="guide_online_title">绿色表示已联网</string>
+    <string name="guide_online_text">圆圈变绿后，就可以上网了。想退出登录时，点按绿色圆圈。</string>
+    <string name="guide_auto_title">自动登录</string>
+    <string name="guide_auto_text_android">每次连接 %1$s 时，WiFi Connect 都会自动登录。如果不起作用，请把应用的电池用量设为“无限制”。</string>
+    <string name="guide_auto_text_ios">只需设置一次快捷指令自动化，每次连接 %1$s 时 iPhone 都会自动登录。</string>
+    <string name="guide_help_title">如果出现问题</string>
+    <string name="guide_help_text">打开“设置 › 登录记录”查看发生了什么，点按“拷贝诊断信息”即可分享详情。然后重新连接 Wi-Fi 并点按圆圈。</string>
 </resources>

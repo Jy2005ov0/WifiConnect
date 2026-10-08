@@ -151,4 +151,24 @@
     <string name="widget_signed_in_at">Log masuk pada %1$s</string>
     <string name="widget_set_up">Sediakan</string>
     <string name="widget_set_up_detail">Buka aplikasi untuk menambah ID pelajar anda.</string>
+    <string name="guide_title">Cara Menggunakan</string>
+    <string name="guide_step">Langkah %1$d daripada %2$d</string>
+    <string name="guide_next">Seterusnya</string>
+    <string name="guide_got_it">Faham</string>
+    <string name="guide_open_settings">Buka Tetapan</string>
+    <string name="guide_open_wifi">Buka Tetapan Wi-Fi</string>
+    <string name="guide_set_up_auto">Sediakan Log Masuk Auto</string>
+    <string name="guide_account_title">Tambah ID pelajar anda</string>
+    <string name="guide_account_text">Ketik Buka Tetapan dan taip ID pelajar serta kata laluan anda. Ia disimpan pada telefon ini sahaja.</string>
+    <string name="guide_join_title">Sertai Wi-Fi kampus</string>
+    <string name="guide_join_text">Buka tetapan Wi-Fi telefon anda dan sertai %1$s. Jika halaman log masuk muncul, anda boleh menutupnya.</string>
+    <string name="guide_tap_title">Ketik bulatan biru</string>
+    <string name="guide_tap_text">Kembali ke WiFi Connect dan ketik bulatan biru yang besar. Aplikasi akan mencari halaman log masuk dan melog masuk anda.</string>
+    <string name="guide_online_title">Hijau bermakna anda dalam talian</string>
+    <string name="guide_online_text">Apabila bulatan bertukar hijau, internet berfungsi. Ketik bulatan hijau apabila anda mahu log keluar.</string>
+    <string name="guide_auto_title">Log masuk secara automatik</string>
+    <string name="guide_auto_text_android">WiFi Connect log masuk sendiri setiap kali anda menyertai %1$s. Jika ia berhenti berfungsi, tetapkan penggunaan bateri aplikasi kepada Tanpa Had.</string>
+    <string name="guide_auto_text_ios">Sediakan automasi Pintasan sekali, dan iPhone anda akan log masuk setiap kali anda menyertai %1$s.</string>
+    <string name="guide_help_title">Jika ada masalah</string>
+    <string name="guide_help_text">Buka Tetapan › Sejarah Log Masuk untuk melihat apa yang berlaku, dan ketik Salin Diagnostik untuk berkongsi butirannya. Kemudian sertai Wi-Fi sekali lagi dan ketik bulatan.</string>
 </resources>

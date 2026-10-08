@@ -7,6 +7,7 @@ A small app for **iPhone and Android** that signs you in to your school's Wi-Fi 
 Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses too.
 
 - **One tap:** open the app and tap the big Wi-Fi circle to connect. Opening the app shows **Tap to Connect**; nothing happens until you tap.
+- **Step-by-step help:** tap **?** at the top left of the main page for a guide that walks you through setting up and signing in, one step at a time, with buttons that take you straight to the right place.
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
 - **"Connected to utarwifi" notification** when the app signs you in on arrival.
 - **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
@@ -36,6 +37,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | Connected | <img src="screenshots/ios-2-connected.png" width="220"> | <img src="screenshots/android-2-connected.png" width="220"> |
 | Dark mode | <img src="screenshots/ios-5-dark.png" width="220"> | <img src="screenshots/android-5-dark.png" width="220"> |
 | Settings | <img src="screenshots/ios-3-settings.png" width="220"> | <img src="screenshots/android-3-settings.png" width="220"> |
+| How to use (the **?** button) | <img src="screenshots/ios-15-howto.png" width="220"> | <img src="screenshots/android-15-howto.png" width="220"> |
 | Auto sign-in guide | <img src="screenshots/ios-4-guide.png" width="220"> | — |
 | Sign-in history | <img src="screenshots/ios-6-history.png" width="220"> | <img src="screenshots/android-6-history.png" width="220"> |
 | Share with friends | <img src="screenshots/ios-7-share.png" width="220"> | <img src="screenshots/android-7-share.png" width="220"> |
