@@ -99,10 +99,9 @@ shot settings
 pass "Swiping up opens Settings to add the student ID"
 
 # 4. Type the student ID and password, then Done.
-tap "type=TextField#0"; sleep 1
+tap "Student ID"; sleep 1
 type_text 2201234
-point=$(find_on_screen "type=SecureTextField") || point=$(find_on_screen "Password") ||
-  fail "Couldn't find the password box"
+point=$(find_on_screen "Password") || fail "Couldn't find the password box"
 idb ui tap --udid "$UDID" $point; sleep 1
 type_text utar-test
 sleep 1

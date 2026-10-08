@@ -28,7 +28,9 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
+                    // Named for VoiceOver, which otherwise only reads the placeholder until you type.
                     TextField("Student ID", text: $studentID)
+                        .accessibilityLabel("Student ID")
                         .textContentType(.username)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
@@ -44,6 +46,7 @@ struct SettingsView: View {
                         .textContentType(.password)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
+                        .accessibilityLabel("Password")
 
                         Button {
                             showPassword.toggle()
@@ -62,6 +65,7 @@ struct SettingsView: View {
 
                 Section {
                     TextField("Network Name", text: $wifiName)
+                        .accessibilityLabel("Network Name")
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
                 } header: {
@@ -241,6 +245,7 @@ private struct LabeledField: View {
     var body: some View {
         LabeledContent(label) {
             TextField(placeholder, text: $text)
+                .accessibilityLabel(label)
                 .multilineTextAlignment(.trailing)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
