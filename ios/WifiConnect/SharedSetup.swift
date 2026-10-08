@@ -80,9 +80,12 @@ struct SharedSetup: Codable, Identifiable {
     }
 
     private static func staysOnCampus(_ address: String) -> Bool {
-        let trimmed = address.trimmingCharacters(in: .whitespaces)
-        guard !trimmed.isEmpty, let url = URL(string: trimmed), url.scheme != nil || trimmed.hasPrefix("//") else {
-            return true
+        // Trimmed and resolved exactly as sign-in will, against a stand-in campus address:
+        // a path stays on it, anything with its own host must be a private campus address.
+        let trimmed = address.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return true }
+        guard let url = URL(string: trimmed, relativeTo: URL(string: "http://10.0.0.1/"))?.absoluteURL else {
+            return false
         }
         return PortalTrust.isPrivateAddress(url.host ?? "")
     }

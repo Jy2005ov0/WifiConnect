@@ -112,11 +112,14 @@ final class SpeedTest {
             session.invalidateAndCancel()
         }
         counter.onTaskFinished = { [weak counter] error in
-            // Keep the pipes full until the stage ends.
-            if error == nil, counter?.isStopped == false { Self.startStream(session, upload: upload) }
+            // Keep the pipes full until the stage ends (checked under the lock, so never after stop()).
+            guard error == nil else { return }
+            counter?.ifRunning { Self.startStream(session, upload: upload) }
         }
         for _ in 0..<Self.streams { Self.startStream(session, upload: upload) }
 
+        liveMbps = 0
+        progress = 0
         let start = Date()
         var last = (time: start, bytes: Int64(0))
         // The first second ramps up, so the average counts from then.
@@ -173,6 +176,11 @@ private final class TransferCounter: NSObject, URLSessionDataDelegate {
 
     func stop() {
         lock.withLock { stopped = true }
+    }
+
+    /// Runs `body` only while not stopped, holding the lock so stop() can't slip in between.
+    func ifRunning(_ body: () -> Void) {
+        lock.withLock { if !stopped { body() } }
     }
 
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {

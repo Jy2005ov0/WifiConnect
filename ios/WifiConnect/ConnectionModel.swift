@@ -51,12 +51,12 @@ final class ConnectionModel {
     }
 
     /// - Parameter automatic: When the app signs in on its own (e.g. on launch), stay quiet if there's no Wi-Fi.
-    func connect(automatic: Bool = false) async {
+    func connect(automatic: Bool = false, trigger: SignInTrigger? = nil) async {
         guard state != .working else { return }
         state = .working
         failedSigningOut = false
         do {
-            let outcome = try await SignIn.run(automatic ? .automatic : .app)
+            let outcome = try await SignIn.run(trigger ?? (automatic ? .automatic : .app))
             signedInByApp = outcome == .loggedIn
             switch outcome {
             case .alreadyOnline: state = .connected(String(localized: "You're already online."))

@@ -214,7 +214,7 @@ Your password is encrypted with Windows' built-in data protection, tied to your 
 | --- | --- |
 | Nothing happens after joining the Wi-Fi | Open **Task Scheduler**, find **WiFi Connect** in the Task Scheduler Library, right-click it and choose **Run**, then check `log.txt`. |
 | "On 'X', not 'utarwifi'" in the log | You're on another network, or the Wi-Fi name is different. Run `Install.cmd` again and type the exact name. |
-| Signs in on other networks too | Recent Windows versions hide the Wi-Fi name from scripts unless **Settings › Privacy & security › Location** is on. With Location off, the tool can't tell networks apart, so it tries any login page. |
+| Signs in on other networks, or not at all with Location off | Recent Windows versions hide the Wi-Fi name from scripts unless **Settings › Privacy & security › Location** is on. With Location off, the tool can't tell networks apart, so it only fills in login pages on private addresses (10.x, 172.16-31.x, 192.168.x). Turn Location on so it checks the Wi-Fi name instead. |
 | A PowerShell window flashes briefly | That's the tool running. It closes by itself. |
 
 ---

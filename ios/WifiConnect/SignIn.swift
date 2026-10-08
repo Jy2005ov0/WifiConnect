@@ -8,23 +8,25 @@ enum SignInTrigger: String, Codable {
 
 /// The one place every sign-in goes through.
 enum SignIn {
-    /// Runs one sign-in at a time: a second request while one is going waits for its result
-    /// instead of submitting the login form twice.
+    /// Sign-ins and sign-outs run one at a time, in order, so a background sign-in can't
+    /// cross a sign-out, and a second request just finds you already online.
     @discardableResult
     static func run(_ trigger: SignInTrigger) async throws -> LoginOutcome {
-        try await gate.run { try await signIn(trigger) }
+        try await queue.run { try await signIn(trigger) }
     }
 
-    private static let gate = Gate()
+    private static let queue = Queue()
 
-    private actor Gate {
-        private var current: Task<LoginOutcome, Error>?
+    private actor Queue {
+        private var last: Task<Void, Never>?
 
-        func run(_ body: @escaping @Sendable () async throws -> LoginOutcome) async throws -> LoginOutcome {
-            if let current { return try await current.value }
-            let task = Task { try await body() }
-            current = task
-            defer { current = nil }
+        func run<T>(_ body: @escaping @Sendable () async throws -> T) async throws -> T {
+            let previous = last
+            let task = Task<T, Error> {
+                await previous?.value
+                return try await body()
+            }
+            last = Task { _ = try? await task.value }
             return try await task.value
         }
     }
@@ -80,6 +82,10 @@ enum SignIn {
     }
 
     static func signOut() async throws {
+        try await queue.run { try await signOutNow() }
+    }
+
+    private static func signOutNow() async throws {
         let started = Date()
         do {
             try await PortalLogin().signOut()
@@ -88,7 +94,7 @@ enum SignIn {
             History.add(HistoryEntry(date: started, trigger: .app, result: .signedOut,
                                      duration: Date().timeIntervalSince(started)))
         } catch {
-            History.add(HistoryEntry(date: started, trigger: .app, result: .failed,
+            History.add(HistoryEntry(date: started, trigger: .app, result: .signOutFailed,
                                      message: error.localizedDescription,
                                      duration: Date().timeIntervalSince(started)))
             throw error

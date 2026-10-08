@@ -195,9 +195,14 @@ struct ContentView: View {
                 guard url.scheme == "wificonnect" else { return }
                 showWelcome = false
                 if let setup = SharedSetup(url: url) {
+                    // Close anything open, so the "Use a classmate's setup?" question can show.
+                    showSettings = false
+                    showAutomationGuide = false
+                    showSpeedTest = false
                     pendingSetup = setup
                     return
                 }
+                if !hasCredentials { showSettings = true }
                 if url.host == "connect", hasCredentials {
                     Task { await model.connect() }
                 }
@@ -220,7 +225,11 @@ struct ContentView: View {
     private func connectRequestedElsewhere() {
         ConnectRequest.pending = false
         showWelcome = false
-        if hasCredentials, model.state != .working { Task { await model.connect() } }
+        if !hasCredentials {
+            showSettings = true
+        } else if model.state != .working {
+            Task { await model.connect(trigger: .widget) }
+        }
     }
 
     /// Opens Settings, asking for Face ID first when the app lock is on.

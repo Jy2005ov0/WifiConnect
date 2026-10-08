@@ -67,6 +67,12 @@ struct PortalLogin {
     private let session: URLSession
 
     init() {
+        session = Self.sharedSession
+    }
+
+    /// One session for the app's lifetime, so the login page's cookies are still there when
+    /// signing out (and sessions aren't leaked).
+    private static let sharedSession: URLSession = {
         let config = URLSessionConfiguration.ephemeral
         config.timeoutIntervalForRequest = 10
         config.timeoutIntervalForResource = 25
@@ -76,8 +82,8 @@ struct PortalLogin {
         config.httpAdditionalHeaders = [
             "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
         ]
-        session = URLSession(configuration: config, delegate: PortalTrust(), delegateQueue: nil)
-    }
+        return URLSession(configuration: config, delegate: PortalTrust(), delegateQueue: nil)
+    }()
 
     func logIn(
         studentID: String,
@@ -130,7 +136,15 @@ struct PortalLogin {
         trace?.method = submission.method
         trace?.fieldNames = submission.fields.map(\.name)
 
-        let landing = try await submit(submission, referer: page.url)
+        // The page after signing in is often slow or cut off as the network lets you through,
+        // so a failure there isn't the final word: check whether you're online either way.
+        var landing: Page?
+        var submitError: Error?
+        do {
+            landing = try await submit(submission, referer: page.url)
+        } catch {
+            submitError = error
+        }
         rememberSignOutLink(landing: landing, portal: page.url)
 
         // Give the network a moment to let us through, then confirm.
@@ -138,7 +152,7 @@ struct PortalLogin {
             if attempt > 0 { try? await Task.sleep(nanoseconds: 1_500_000_000) }
             if case .online? = try? await probe() { return .loggedIn }
         }
-        throw LoginError.stillOffline
+        throw submitError ?? LoginError.stillOffline
     }
 
     /// Finds the login form on the current network, for filling in the manual settings.
@@ -204,6 +218,9 @@ struct PortalLogin {
         defaults.set(portal.absoluteString, forKey: SettingsKey.lastPortalURL)
         if let landing, let link = HTMLForm.signOutLink(in: landing.html, baseURL: landing.url) {
             defaults.set(link.absoluteString, forKey: SettingsKey.detectedSignOutURL)
+        } else {
+            // Don't keep a link from another building's login page.
+            defaults.removeObject(forKey: SettingsKey.detectedSignOutURL)
         }
     }
 
@@ -215,9 +232,9 @@ struct PortalLogin {
 
         var request: URLRequest
         if submission.method.uppercased() == "GET" {
+            // Like a browser, the form's fields replace the action's own query.
             var components = URLComponents(url: submission.url, resolvingAgainstBaseURL: false)
-            let existing = components?.percentEncodedQuery.map { $0 + "&" } ?? ""
-            components?.percentEncodedQuery = existing + body
+            components?.percentEncodedQuery = body
             request = URLRequest(url: components?.url ?? submission.url)
         } else {
             request = URLRequest(url: submission.url)

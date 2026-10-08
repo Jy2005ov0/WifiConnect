@@ -59,9 +59,16 @@ struct HTMLForm {
                 fields.append(FormField(name: input.name, value: input.value.isEmpty ? "on" : input.value))
             case "radio":
                 if input.checked { fields.append(FormField(name: input.name, value: input.value)) }
-            case "submit", "image":
+            case "submit":
                 if !addedSubmit {
                     fields.append(FormField(name: input.name, value: input.value))
+                    addedSubmit = true
+                }
+            case "image":
+                // Browsers send where an image button was clicked, not its value.
+                if !addedSubmit {
+                    fields.append(FormField(name: input.name + ".x", value: "0"))
+                    fields.append(FormField(name: input.name + ".y", value: "0"))
                     addedSubmit = true
                 }
             case "button", "reset", "file":
@@ -82,7 +89,7 @@ struct HTMLForm {
         for match in clean.regexMatches(#"<form\b([^>]*)>(.*?)</form\s*>"#) {
             let attrs = attributes(match[1] ?? "")
             let body = match[2] ?? ""
-            let inputs = parseInputs(body)
+            let inputs = parseControls(body)
             guard inputs.contains(where: { $0.type == "password" }) else { continue }
 
             let actionString = attrs["action"].map(decodeEntities) ?? ""
@@ -142,16 +149,42 @@ struct HTMLForm {
         return nil
     }
 
-    private static func parseInputs(_ html: String) -> [Input] {
-        html.regexMatches(#"<input\b([^>]*)>"#).compactMap { match in
-            let attrs = attributes(match[1] ?? "")
-            guard let name = attrs["name"], !name.isEmpty else { return nil }
-            return Input(
-                name: decodeEntities(name),
-                type: (attrs["type"] ?? "text").lowercased(),
-                value: decodeEntities(attrs["value"] ?? ""),
-                checked: attrs["checked"] != nil
-            )
+    /// The form's fields in page order: inputs, drop-downs, text areas and named buttons.
+    /// Disabled fields are left out, as browsers do.
+    private static func parseControls(_ html: String) -> [Input] {
+        let pattern = #"<input\b([^>]*)>|<select\b([^>]*)>(.*?)</select\s*>|<textarea\b([^>]*)>(.*?)</textarea\s*>|<button\b([^>]*)>(.*?)</button\s*>"#
+        return html.regexMatches(pattern).compactMap { match in
+            if let tag = match[1] {
+                let attrs = attributes(tag)
+                guard let name = attrs["name"], !name.isEmpty, attrs["disabled"] == nil else { return nil }
+                return Input(name: decodeEntities(name), type: (attrs["type"] ?? "text").lowercased(),
+                             value: decodeEntities(attrs["value"] ?? ""), checked: attrs["checked"] != nil)
+            }
+            if let tag = match[2] {
+                let attrs = attributes(tag)
+                guard let name = attrs["name"], !name.isEmpty, attrs["disabled"] == nil else { return nil }
+                // The selected option, or the first one, like a browser.
+                let options = (match[3] ?? "").regexMatches(#"<option\b([^>]*)>([^<]*)"#).map { option in
+                    (attributes(option[1] ?? ""), option[2] ?? "")
+                }
+                let chosen = options.first { $0.0["selected"] != nil } ?? options.first
+                let value = chosen.map { $0.0["value"] ?? $0.1.trimmingCharacters(in: .whitespacesAndNewlines) } ?? ""
+                return Input(name: decodeEntities(name), type: "select", value: decodeEntities(value), checked: false)
+            }
+            if let tag = match[4] {
+                let attrs = attributes(tag)
+                guard let name = attrs["name"], !name.isEmpty, attrs["disabled"] == nil else { return nil }
+                return Input(name: decodeEntities(name), type: "textarea", value: decodeEntities(match[5] ?? ""), checked: false)
+            }
+            if let tag = match[6] {
+                let attrs = attributes(tag)
+                guard let name = attrs["name"], !name.isEmpty, attrs["disabled"] == nil else { return nil }
+                // A <button> submits unless it says otherwise.
+                let type = (attrs["type"] ?? "submit").lowercased()
+                return Input(name: decodeEntities(name), type: type == "submit" ? "submit" : "button",
+                             value: decodeEntities(attrs["value"] ?? ""), checked: false)
+            }
+            return nil
         }
     }
 
@@ -166,7 +199,8 @@ struct HTMLForm {
     }
 
     private static func stripComments(_ html: String) -> String {
-        html.replacingOccurrences(of: #"<!--.*?-->"#, with: "", options: .regularExpression)
+        // (?s): comments often span several lines.
+        html.replacingOccurrences(of: #"(?s)<!--.*?-->"#, with: "", options: .regularExpression)
     }
 
     static func decodeEntities(_ s: String) -> String {

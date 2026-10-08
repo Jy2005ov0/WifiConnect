@@ -60,7 +60,7 @@
     <string name="wifi_check_title">Only on School Wi-Fi</string>
     <string name="wifi_check_on">Signs in automatically only on %1$s.</string>
     <string name="wifi_check_needs_permission">Allow location access so automatic sign-in only fills in %1$s\'s login page. Android needs it to read the Wi-Fi name; your location isn\'t used or saved.</string>
-    <string name="wifi_check_location_off">Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in fills in any Wi-Fi login page.</string>
+    <string name="wifi_check_location_off">Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in only fills in login pages on private campus-style addresses or the last one you used.</string>
     <string name="wifi_check_needs_background">Choose “Allow all the time” for location so the app can read the Wi-Fi name when it signs in by itself. Your location isn\'t used or saved.</string>
     <string name="wifi_check_allow">Allow</string>
     <string name="wifi_check_turn_on">Turn On</string>

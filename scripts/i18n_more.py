@@ -297,9 +297,9 @@ MORE = {
     "Allow location access so automatic sign-in only fills in {0}'s login page. Android needs it to read the Wi-Fi name; your location isn't used or saved.": (
         "位置情報へのアクセスを許可すると、自動サインインは {0} のログインページにだけ入力します。Android が Wi-Fi 名を読み取るために必要です。位置情報は使用・保存しません。",
         "இருப்பிட அனுமதியை வழங்கினால், தானியங்கு உள்நுழைவு {0} இன் உள்நுழைவுப் பக்கத்தை மட்டுமே நிரப்பும். Wi-Fi பெயரைப் படிக்க Android-க்கு இது தேவை; உங்கள் இருப்பிடம் பயன்படுத்தப்படவோ சேமிக்கப்படவோ மாட்டாது."),
-    "Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in fills in any Wi-Fi login page.": (
-        "Wi-Fi 名を読み取れるよう位置情報をオンにしてください。それまでは、自動サインインはどの Wi-Fi ログインページにも入力します。",
-        "Wi-Fi பெயரைப் படிக்க இருப்பிடத்தை இயக்கவும். அதுவரை, தானியங்கு உள்நுழைவு எந்த Wi-Fi உள்நுழைவுப் பக்கத்தையும் நிரப்பும்."),
+    "Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in only fills in login pages on private campus-style addresses or the last one you used.": (
+        "Wi-Fi 名を読み取れるよう位置情報をオンにしてください。それまでは、自動サインインはキャンパスのようなプライベートアドレス上のログインページか、前回使ったログインページにだけ入力します。",
+        "Wi-Fi பெயரைப் படிக்க இருப்பிடத்தை இயக்கவும். அதுவரை, தானியங்கு உள்நுழைவு வளாகம் போன்ற தனிப்பட்ட முகவரிகளில் உள்ள அல்லது நீங்கள் கடைசியாகப் பயன்படுத்திய உள்நுழைவுப் பக்கங்களை மட்டுமே நிரப்பும்."),
     "Allow": ("許可", "அனுமதி"),
     "Turn On": ("オンにする", "இயக்கு"),
     "On {0}, not your school Wi-Fi, so the app didn't sign in.": (

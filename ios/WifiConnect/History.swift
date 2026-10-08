@@ -11,7 +11,7 @@ final class LoginTrace {
 
 struct HistoryEntry: Codable, Identifiable {
     enum Result: String, Codable {
-        case signedIn, alreadyOnline, failed, signedOut
+        case signedIn, alreadyOnline, failed, signedOut, signOutFailed
     }
 
     var id = UUID()
@@ -36,8 +36,11 @@ enum History {
         return (try? JSONDecoder().decode([HistoryEntry].self, from: data)) ?? []
     }
 
+    private static let lock = NSLock()
+
+    /// Sign-ins can finish at the same time (Shortcuts, background, the app): add one at a time.
     static func add(_ entry: HistoryEntry) {
-        save(Array(([entry] + load()).prefix(limit)))
+        lock.withLock { save(Array(([entry] + load()).prefix(limit))) }
     }
 
     static func save(_ entries: [HistoryEntry]) {

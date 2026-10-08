@@ -87,7 +87,9 @@ if banner_depth(best) == 0:
 Image.open(os.path.join(folder, best)).save(out)
 print("Notification picture:", best, banner_depth(best))
 PY
+  local found=$?
   sleep 6
+  return $found
 }
 if command -v applesimutils > /dev/null; then
   notification_shot || echo "Couldn't take the notification picture"

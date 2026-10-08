@@ -109,14 +109,42 @@ function Find-LoginForm([string]$Html, [Uri]$BaseUrl) {
     $clean = [regex]::Replace($Html, '<!--.*?-->', '', $RegexOptions)
     foreach ($form in [regex]::Matches($clean, '<form\b([^>]*)>(.*?)</form\s*>', $RegexOptions)) {
         $attrs = Get-Attributes $form.Groups[1].Value
+        # The form's fields in page order: inputs, drop-downs, text areas and named buttons.
+        # Disabled fields are left out, as browsers do.
         $inputs = @()
-        foreach ($tag in [regex]::Matches($form.Groups[2].Value, '<input\b([^>]*)>', $RegexOptions)) {
-            $a = Get-Attributes $tag.Groups[1].Value
-            if (-not $a['name']) { continue }
-            $type = if ($a.ContainsKey('type')) { $a['type'].ToLowerInvariant() } else { 'text' }
+        $controls = '<input\b([^>]*)>|<select\b([^>]*)>(.*?)</select\s*>|<textarea\b([^>]*)>(.*?)</textarea\s*>|<button\b([^>]*)>(.*?)</button\s*>'
+        foreach ($tag in [regex]::Matches($form.Groups[2].Value, $controls, $RegexOptions)) {
+            if ($tag.Groups[1].Success) {
+                $a = Get-Attributes $tag.Groups[1].Value
+                $type = if ($a.ContainsKey('type')) { $a['type'].ToLowerInvariant() } else { 'text' }
+                $value = Decode-Html $a['value']
+            } elseif ($tag.Groups[2].Success) {
+                $a = Get-Attributes $tag.Groups[2].Value
+                $type = 'select'
+                # The selected option, or the first one, like a browser.
+                $value = ''
+                $chosen = $null
+                foreach ($option in [regex]::Matches($tag.Groups[3].Value, '<option\b([^>]*)>([^<]*)', $RegexOptions)) {
+                    $o = Get-Attributes $option.Groups[1].Value
+                    $optionValue = if ($o.ContainsKey('value')) { $o['value'] } else { $option.Groups[2].Value.Trim() }
+                    if ($null -eq $chosen) { $chosen = $optionValue }
+                    if ($o.ContainsKey('selected')) { $chosen = $optionValue; break }
+                }
+                if ($null -ne $chosen) { $value = Decode-Html $chosen }
+            } elseif ($tag.Groups[4].Success) {
+                $a = Get-Attributes $tag.Groups[4].Value
+                $type = 'textarea'
+                $value = Decode-Html $tag.Groups[5].Value
+            } else {
+                $a = Get-Attributes $tag.Groups[6].Value
+                # A <button> submits unless it says otherwise.
+                $type = if (-not $a['type'] -or $a['type'].ToLowerInvariant() -eq 'submit') { 'submit' } else { 'button' }
+                $value = Decode-Html $a['value']
+            }
+            if (-not $a['name'] -or $a.ContainsKey('disabled')) { continue }
             $inputs += [pscustomobject]@{
                 Name = Decode-Html $a['name']; Type = $type
-                Value = Decode-Html $a['value']; Checked = $a.ContainsKey('checked')
+                Value = $value; Checked = $a.ContainsKey('checked')
             }
         }
         if (-not ($inputs | Where-Object Type -eq 'password')) { continue }
@@ -214,7 +242,9 @@ public static class WifiConnectPortalTrust {
         if (errors == SslPolicyErrors.None) return true;
         HttpWebRequest request = sender as HttpWebRequest;
         IPAddress address;
-        if (request == null || !IPAddress.TryParse(request.RequestUri.Host, out address)) return false;
+        // Address, not RequestUri: after a redirect (http probe -> https login page) RequestUri
+        // is still the original address.
+        if (request == null || !IPAddress.TryParse(request.Address.Host, out address)) return false;
         byte[] b = address.GetAddressBytes();
         if (b.Length != 4) return false;
         return b[0] == 10 || (b[0] == 172 && b[1] >= 16 && b[1] <= 31) || (b[0] == 192 && b[1] == 168);
@@ -297,9 +327,16 @@ foreach ($field in $form.Inputs) {
         if (-not $value) { $value = 'on' }
     } elseif ($type -eq 'radio') {
         if (-not $field.Checked) { continue }
-    } elseif ($type -eq 'submit' -or $type -eq 'image') {
+    } elseif ($type -eq 'submit') {
         if ($addedSubmit) { continue }
         $addedSubmit = $true
+    } elseif ($type -eq 'image') {
+        # Browsers send where an image button was clicked, not its value.
+        if ($addedSubmit) { continue }
+        $addedSubmit = $true
+        $pairs.Add([Uri]::EscapeDataString($field.Name + '.x') + '=0')
+        $pairs.Add([Uri]::EscapeDataString($field.Name + '.y') + '=0')
+        continue
     } elseif ($type -eq 'button' -or $type -eq 'reset' -or $type -eq 'file') {
         continue
     } elseif ($field.Name -eq $userField) {
@@ -313,8 +350,9 @@ try {
     if ($form.Method -eq 'POST') {
         [void](Invoke-Page $form.Action $session 'POST' $body $page.Url)
     } else {
-        $separator = if ($form.Action.Query) { '&' } else { '?' }
-        [void](Invoke-Page ([Uri]($form.Action.AbsoluteUri + $separator + $body)) $session 'GET' $null $page.Url)
+        # Like a browser, the form's fields replace the action's own query.
+        $target = $form.Action.GetLeftPart([UriPartial]::Path) + '?' + $body
+        [void](Invoke-Page ([Uri]$target) $session 'GET' $null $page.Url)
     }
 } catch {
     Write-Log "The login page didn't respond: $($_.Exception.Message)"
