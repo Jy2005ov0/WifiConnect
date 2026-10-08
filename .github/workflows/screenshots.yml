@@ -5,7 +5,7 @@ name: Screenshots
 on:
   workflow_dispatch:
   # Also when this file changes, so the pictures can be retaken with a push
-  # (for example after a change to how the app looks, like fitting small screens, aligning the details card or adding the ? guide).
+  # (for example after a change to how the app looks, like fitting small screens, aligning the details card, adding the ? guide or the Apple design pass).
   push:
     paths:
       - .github/workflows/screenshots.yml
