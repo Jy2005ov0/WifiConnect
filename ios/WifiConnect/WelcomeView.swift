@@ -6,6 +6,9 @@ struct WelcomeView: View {
     var onFinish: () -> Void
 
     @State private var drag: CGFloat = 0
+    /// With Reduce Motion on, the page fades away instead of sliding.
+    @State private var fading = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     // The big clock grows with the text size setting, like the rest of the page.
     @ScaledMetric(relativeTo: .largeTitle) private var clockSize: CGFloat = 88
 
@@ -57,7 +60,7 @@ struct WelcomeView: View {
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 22)
                     .padding(.vertical, 14)
-                    .offset(y: -3 + 3 * cos(phase * 2 * .pi))
+                    .offset(y: reduceMotion ? 0 : -3 + 3 * cos(phase * 2 * .pi))
                 }
                 .padding(.bottom, 20)
                 .contentShape(Rectangle())
@@ -68,15 +71,23 @@ struct WelcomeView: View {
             // Frosted glass: the app shows through, blurred, behind the welcome.
             .background(Rectangle().fill(.regularMaterial).ignoresSafeArea())
             .offset(y: drag)
-            .opacity(1 - Double(min(-drag / height, 1)) * 0.6)
+            .opacity(fading ? 0 : 1 - Double(min(max(-drag, 0) / height, 1)) * 0.6)
             .gesture(
                 DragGesture()
-                    .onChanged { drag = min(0, $0.translation.height) }
+                    .onChanged { value in
+                        // Up follows the finger 1:1. Down stretches less the further you pull, like
+                        // iOS at the edge of a list, instead of stopping dead.
+                        let y = value.translation.height
+                        drag = y < 0 ? y : Self.rubberBand(y, dimension: height)
+                    }
                     .onEnded { value in
-                        if -value.predictedEndTranslation.height > height * 0.3 || -value.translation.height > height * 0.2 {
-                            finish(height: height)
+                        // Decide by where the flick is heading, not just where the finger let go.
+                        let projected = value.predictedEndTranslation.height
+                        let velocity = value.velocity.height
+                        if velocity < 300, -projected > height * 0.3 || -value.translation.height > height * 0.2 {
+                            finish(height: height, velocity: velocity)
                         } else {
-                            withAnimation(.spring(duration: 0.35)) { drag = 0 }
+                            settle(velocity: velocity)
                         }
                     }
             )
@@ -84,12 +95,37 @@ struct WelcomeView: View {
         }
     }
 
-    private func finish(height: CGFloat) {
-        withAnimation(.spring(duration: 0.45)) {
+    /// Slides the page away, carrying on at the speed of the finger that flicked it.
+    private func finish(height: CGFloat, velocity: CGFloat = 0) {
+        if reduceMotion {
+            withAnimation(.easeOut(duration: 0.25)) { fading = true } completion: { onFinish() }
+            return
+        }
+        withAnimation(.interpolatingSpring(duration: 0.4, bounce: 0,
+                                           initialVelocity: Self.relative(velocity, from: drag, to: -height))) {
             drag = -height
         } completion: {
             onFinish()
         }
+    }
+
+    /// Springs back into place. A little bounce, because a flick put momentum into it.
+    private func settle(velocity: CGFloat) {
+        withAnimation(.interpolatingSpring(duration: 0.35, bounce: reduceMotion ? 0 : 0.2,
+                                           initialVelocity: Self.relative(velocity, from: drag, to: 0))) {
+            drag = 0
+        }
+    }
+
+    /// A spring's starting speed is relative to the distance it still has to go.
+    private static func relative(_ velocity: CGFloat, from current: CGFloat, to target: CGFloat) -> Double {
+        let distance = target - current
+        return abs(distance) < 1 ? 0 : Double(velocity / distance)
+    }
+
+    /// How far the page follows when pulled past its resting place: less and less, never a hard stop.
+    private static func rubberBand(_ overshoot: CGFloat, dimension: CGFloat, constant: CGFloat = 0.55) -> CGFloat {
+        overshoot * dimension * constant / (dimension + constant * abs(overshoot))
     }
 
     /// The README screenshots show 9:41, like Apple's.

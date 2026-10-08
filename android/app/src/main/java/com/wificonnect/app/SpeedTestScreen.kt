@@ -60,6 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.em
 import java.util.Locale
 import androidx.compose.ui.draw.drawBehind
 import kotlin.math.log10
@@ -250,7 +251,7 @@ private fun SpeedGauge(test: SpeedTestViewModel) {
                 modifier = Modifier.widthIn(max = 190.dp),
             )
             // In dp, so a larger font setting can't push the number out of the ring.
-            Text(number, fontSize = with(LocalDensity.current) { 60.dp.toSp() }, fontWeight = FontWeight.Bold, maxLines = 1, softWrap = false)
+            Text(number, fontSize = with(LocalDensity.current) { 60.dp.toSp() }, fontWeight = FontWeight.Bold, letterSpacing = (-0.02).em, maxLines = 1, softWrap = false)
             Text(
                 if (phase == SpeedTestViewModel.Phase.PING) "ms" else "Mbps",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

@@ -303,6 +303,8 @@ private fun StatusBadge(
     description: String,
     onClick: () -> Unit,
 ) {
+    // Still when animations are off: a slow loop like this bothers people sensitive to motion.
+    val reduceMotion = rememberReduceMotion()
     val transition = rememberInfiniteTransition(label = "badge")
     val breathing by transition.animateFloat(
         initialValue = 0.96f,
@@ -339,7 +341,7 @@ private fun StatusBadge(
         Box(
             Modifier
                 .size(188.dp)
-                .scale(breathing)
+                .scale(if (reduceMotion) 1f else breathing)
                 .clip(CircleShape)
                 .background(tint.copy(alpha = 0.10f))
         )

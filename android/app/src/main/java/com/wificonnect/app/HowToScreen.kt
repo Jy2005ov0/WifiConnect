@@ -43,6 +43,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -102,7 +105,12 @@ fun HowToScreen(hasCredentials: Boolean, onBack: () -> Unit, onOpenSettings: () 
     val pager = rememberPagerState { steps.size }
     val scope = rememberCoroutineScope()
     val isLast = pager.currentPage == steps.size - 1
-    LaunchedEffect(pager.currentPage) { view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK) }
+    // A tick when you move to another step, not when the guide opens.
+    var lastPage by remember { mutableStateOf(pager.currentPage) }
+    LaunchedEffect(pager.currentPage) {
+        if (pager.currentPage != lastPage) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+        lastPage = pager.currentPage
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,

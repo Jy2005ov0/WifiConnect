@@ -57,6 +57,7 @@ import java.util.Calendar
 import java.text.SimpleDateFormat
 import kotlinx.coroutines.delay
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -78,10 +79,13 @@ fun WelcomeScreen(onFinish: () -> Unit) {
     val activity = LocalContext.current as? Activity
     BackHandler { activity?.finish() }
 
+    val reduceMotion = rememberReduceMotion()
+
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val height = with(LocalDensity.current) { maxHeight.toPx() }
-        fun finish() = scope.launch {
-            offset.animateTo(-height, spring(stiffness = 300f))
+        // Slides the page away, carrying on at the speed of the finger that flicked it.
+        fun finish(velocity: Float = 0f) = scope.launch {
+            if (!reduceMotion) offset.animateTo(-height, spring(dampingRatio = 1f, stiffness = 300f), initialVelocity = velocity)
             onFinish()
         }
 
@@ -91,19 +95,34 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                 // Before graphicsLayer: the finger is tracked on the screen, not on the moving page.
                 .pointerInput(height) {
                     val velocity = VelocityTracker()
+                    // Where the finger has taken the page, before any stretch is applied.
+                    var pulled = 0f
                     detectVerticalDragGestures(
-                        onDragStart = { velocity.resetTracking() },
+                        onDragStart = {
+                            velocity.resetTracking()
+                            // Grab it where it is, even mid-animation.
+                            pulled = offset.value.coerceAtMost(0f)
+                        },
                         onVerticalDrag = { change, amount ->
                             change.consume()
                             velocity.addPosition(change.uptimeMillis, change.position)
-                            scope.launch { offset.snapTo((offset.value + amount).coerceAtMost(0f)) }
+                            pulled += amount
+                            // Up follows the finger 1:1. Down stretches less the further you pull,
+                            // instead of stopping dead.
+                            val y = if (pulled < 0f) pulled else rubberBand(pulled, height)
+                            scope.launch { offset.snapTo(y) }
                         },
                         onDragEnd = {
-                            val flung = velocity.calculateVelocity().y < -1500f
-                            if (flung || -offset.value > height * 0.2f) {
-                                finish()
+                            val v = velocity.calculateVelocity().y
+                            // Decide by where the flick is heading, not just where the finger let go.
+                            val projected = offset.value + project(v)
+                            if (v < 300f && (projected < -height * 0.3f || offset.value < -height * 0.2f)) {
+                                finish(v)
                             } else {
-                                scope.launch { offset.animateTo(0f, spring()) }
+                                // A little bounce, because a flick put momentum into it.
+                                scope.launch {
+                                    offset.animateTo(0f, spring(dampingRatio = if (reduceMotion) 1f else 0.8f, stiffness = 500f), initialVelocity = v)
+                                }
                             }
                         },
                     )
@@ -145,12 +164,13 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                 )
             }
 
-            val bounce by rememberInfiniteTransition(label = "hint").animateFloat(
+            val bounceAnimation by rememberInfiniteTransition(label = "hint").animateFloat(
                 initialValue = 2f,
                 targetValue = -6f,
                 animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
                 label = "bounce",
             )
+            val bounce = if (reduceMotion) 0f else bounceAnimation
             // A see-through glass pill, like the handle on a lock screen.
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -220,6 +240,8 @@ private fun Clock(modifier: Modifier = Modifier) {
             fontSize = with(density) { 88.dp.toSp() },
             lineHeight = with(density) { 96.dp.toSp() },
             fontWeight = FontWeight.Bold,
+            // Big type reads better a little tighter.
+            letterSpacing = (-0.02).em,
             maxLines = 1,
             softWrap = false,
         )
@@ -238,3 +260,11 @@ private fun clockTime(): Date {
 
 /** Set by the screenshot demo so the clock reads 9:41. */
 internal var demoClock = false
+
+/** How far the page follows when pulled past its resting place: less and less, never a hard stop. */
+private fun rubberBand(overshoot: Float, dimension: Float, constant: Float = 0.55f): Float =
+    overshoot * dimension * constant / (dimension + constant * kotlin.math.abs(overshoot))
+
+/** Where a flick would carry the page, like a scroll slowing down (Apple's deceleration rate). */
+private fun project(velocity: Float, decelerationRate: Float = 0.998f): Float =
+    velocity / 1000f * decelerationRate / (1f - decelerationRate)

@@ -86,3 +86,17 @@ private val RoundShapes = Shapes(
     large = RoundedCornerShape(26.dp),
     extraLarge = RoundedCornerShape(32.dp),
 )
+
+/**
+ * True when animations are switched off (Settings › Accessibility › Remove animations). Looping
+ * motion then stays still and pages fade instead of sliding, like Reduce Motion on iPhone.
+ */
+@Composable
+fun rememberReduceMotion(): Boolean {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    return androidx.compose.runtime.remember {
+        android.provider.Settings.Global.getFloat(
+            context.contentResolver, android.provider.Settings.Global.ANIMATOR_DURATION_SCALE, 1f,
+        ) == 0f
+    }
+}

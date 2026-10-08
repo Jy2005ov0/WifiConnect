@@ -21,6 +21,8 @@ import androidx.activity.result.contract.ActivityResultContracts.RequestPermissi
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -187,6 +189,7 @@ class MainActivity : FragmentActivity() {
                     )
                 }
 
+                val reduceMotion = rememberReduceMotion()
                 // Behind the welcome page the app is blurred, so the page reads as frosted glass.
                 val blur by animateDpAsState(if (showWelcome) 28.dp else 0.dp, label = "blur")
                 // The app's own background, so the phone's light/dark window doesn't flash through
@@ -202,7 +205,17 @@ class MainActivity : FragmentActivity() {
                         showSettings -> 1
                         else -> 0
                     },
-                    transitionSpec = { fadeIn() togetherWith fadeOut() },
+                    // Pages come in from the right and go back out to the right, like iOS. With
+                    // animations off they just fade.
+                    transitionSpec = {
+                        if (reduceMotion) {
+                            fadeIn() togetherWith fadeOut()
+                        } else if (targetState > initialState) {
+                            (slideInHorizontally { it } + fadeIn()) togetherWith (slideOutHorizontally { -it / 4 } + fadeOut())
+                        } else {
+                            (slideInHorizontally { -it / 4 } + fadeIn()) togetherWith (slideOutHorizontally { it } + fadeOut())
+                        }
+                    },
                     label = "screen",
                 ) { screen ->
                     // Ask for a fingerprint first when the app lock is on.

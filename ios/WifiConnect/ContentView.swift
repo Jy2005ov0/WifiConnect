@@ -388,6 +388,7 @@ struct ContentView: View {
 
 private struct StatusBadge: View {
     let state: ConnectionModel.State
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -399,7 +400,8 @@ private struct StatusBadge: View {
                 Circle()
                     .fill(state.tint.opacity(0.10))
                     .frame(width: 188, height: 188)
-                    .scaleEffect(1 - 0.04 * cos(phase * 2 * .pi))
+                    // Still with Reduce Motion: a slow loop like this bothers people sensitive to motion.
+                    .scaleEffect(reduceMotion ? 1 : 1 - 0.04 * cos(phase * 2 * .pi))
             }
             Circle()
                 .fill(state.tint.opacity(0.14))
