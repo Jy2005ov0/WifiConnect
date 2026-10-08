@@ -269,6 +269,7 @@ TABLE = [
     ('guide_title', 'How to Use', 'Cara Menggunakan', '使用方法'),
     ('guide_step', 'Step {0:d} of {1:d}', 'Langkah {0:d} daripada {1:d}', '第 {0:d} 步，共 {1:d} 步'),
     ('guide_next', 'Next', 'Seterusnya', '下一步'),
+    ('close', 'Close', 'Tutup', '关闭'),
     ('guide_completed', 'Completed', 'Selesai', '已完成'),
     ('guide_got_it', 'Got It', 'Faham', '知道了'),
     ('guide_open_settings', 'Open Settings', 'Buka Tetapan', '打开设置'),

@@ -1,6 +1,8 @@
 package com.wificonnect.app
 
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -547,12 +549,15 @@ internal fun Divider() {
 
 @Composable
 private fun SwitchRow(title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    // The whole row is the switch, so tapping the words works and TalkBack reads its name.
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(start = 16.dp, end = 12.dp, top = 6.dp, bottom = 6.dp),
+        modifier = Modifier
+            .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
+            .padding(start = 16.dp, end = 12.dp, top = 6.dp, bottom = 6.dp),
     ) {
         Text(title, modifier = Modifier.weight(1f))
-        Switch(checked = checked, onCheckedChange = onCheckedChange)
+        Switch(checked = checked, onCheckedChange = null)
     }
 }
 

@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.layout.Box
@@ -200,7 +201,8 @@ fun MainScreen(
                 text = hint ?: " ",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
-                color = tint,
+                // Green and orange are too light to read on the pale pill in light mode; darken them.
+                color = if (MaterialTheme.colorScheme.background.luminance() > 0.5f) lerp(tint, Color.Black, 0.35f) else tint,
                 modifier = Modifier
                     .padding(top = 6.dp)
                     .alpha(if (hint == null) 0f else 1f)
@@ -380,7 +382,7 @@ private fun StatusBadge(
                 tint = Color.White,
                 modifier = Modifier
                     .size(52.dp)
-                    .alpha(if (state == ConnectionState.Working) pulse else 1f),
+                    .alpha(if (state == ConnectionState.Working && !reduceMotion) pulse else 1f),
             )
         }
     }

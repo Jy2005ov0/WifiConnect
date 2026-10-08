@@ -10,6 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 
 // Same clean palette as the iPhone app: grouped grey background, white cards, system blue.
@@ -94,9 +96,14 @@ private val RoundShapes = Shapes(
 @Composable
 fun rememberReduceMotion(): Boolean {
     val context = androidx.compose.ui.platform.LocalContext.current
-    return androidx.compose.runtime.remember {
-        android.provider.Settings.Global.getFloat(
-            context.contentResolver, android.provider.Settings.Global.ANIMATOR_DURATION_SCALE, 1f,
-        ) == 0f
+    fun read() = android.provider.Settings.Global.getFloat(
+        context.contentResolver, android.provider.Settings.Global.ANIMATOR_DURATION_SCALE, 1f,
+    ) == 0f
+    var reduce by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(read()) }
+    // Read again on coming back to the app, in case it was changed in Settings meanwhile.
+    androidx.lifecycle.compose.LifecycleResumeEffect(Unit) {
+        reduce = read()
+        onPauseOrDispose { }
     }
+    return reduce
 }

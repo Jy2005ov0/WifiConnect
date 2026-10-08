@@ -8,6 +8,8 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -64,7 +66,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import android.text.format.DateFormat
 import android.os.Build
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.text.style.TextOverflow
@@ -143,10 +144,11 @@ fun WelcomeScreen(onFinish: () -> Unit) {
             // The welcome fills the space above the hint, so a big clock or large text can't overlap it.
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
             // Design A, with the time where the logo was.
+            // Centered, and scrolls if very large text doesn't fit (small phones at 2x).
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.weight(1f).fillMaxWidth()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.weight(1f).fillMaxWidth(),
+                modifier = Modifier.verticalScroll(rememberScrollState()),
             ) {
                 Clock()
                 Spacer(Modifier.height(20.dp))
@@ -162,6 +164,7 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                 )
+            }
             }
 
             val bounceAnimation by rememberInfiniteTransition(label = "hint").animateFloat(

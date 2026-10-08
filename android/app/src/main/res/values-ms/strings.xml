@@ -157,6 +157,7 @@
     <string name="guide_title">Cara Menggunakan</string>
     <string name="guide_step">Langkah %1$d daripada %2$d</string>
     <string name="guide_next">Seterusnya</string>
+    <string name="close">Tutup</string>
     <string name="guide_completed">Selesai</string>
     <string name="guide_got_it">Faham</string>
     <string name="guide_open_settings">Buka Tetapan</string>

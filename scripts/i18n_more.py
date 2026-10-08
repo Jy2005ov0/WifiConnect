@@ -339,4 +339,5 @@ MORE = {
     'The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.': ('時計が表示され、上にスワイプして閉じる画面です。オフにすると Wi-Fi の円がすぐに表示されます。', 'மேலே ஸ்வைப் செய்யும் கடிகாரப் பக்கம். இதை முடக்கினால் நேரடியாக Wi-Fi வட்டத்திற்குச் செல்லலாம்.'),
     'Show Welcome Page When Opening the App': ('アプリを開くときにようこそ画面を表示', 'செயலியைத் திறக்கும்போது வரவேற்புப் பக்கத்தைக் காட்டு'),
     'Completed': ('完了済み', 'முடிந்தது'),
+    'Close': ('閉じる', 'மூடு'),
 }

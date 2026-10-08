@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,11 +23,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.TouchApp
 import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material3.Button
@@ -105,11 +106,15 @@ fun HowToScreen(hasCredentials: Boolean, onBack: () -> Unit, onOpenSettings: () 
     val pager = rememberPagerState { steps.size }
     val scope = rememberCoroutineScope()
     val isLast = pager.currentPage == steps.size - 1
-    // A tick when you move to another step, not when the guide opens.
-    var lastPage by remember { mutableStateOf(pager.currentPage) }
-    LaunchedEffect(pager.currentPage) {
-        if (pager.currentPage != lastPage) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
-        lastPage = pager.currentPage
+    // A tick when you land on another step: not when the guide opens, nor halfway through a swipe.
+    var lastPage by remember { mutableStateOf(pager.settledPage) }
+    LaunchedEffect(pager.settledPage) {
+        if (pager.settledPage != lastPage) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+        lastPage = pager.settledPage
+    }
+    // The back gesture goes to the previous step first, like the Back button.
+    BackHandler(enabled = pager.currentPage > 0) {
+        scope.launch { pager.animateScrollToPage(pager.currentPage - 1) }
     }
 
     Scaffold(
@@ -118,8 +123,9 @@ fun HowToScreen(hasCredentials: Boolean, onBack: () -> Unit, onOpenSettings: () 
             CenterAlignedTopAppBar(
                 title = { Text(stringResource(R.string.guide_title), fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 navigationIcon = {
+                    // Close, not Back: the Back button at the bottom goes to the previous step.
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back))
+                        Icon(Icons.Rounded.Close, contentDescription = stringResource(R.string.close))
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent),
@@ -158,13 +164,16 @@ fun HowToScreen(hasCredentials: Boolean, onBack: () -> Unit, onOpenSettings: () 
                     OutlinedButton(
                         onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage - 1) } },
                         modifier = Modifier.weight(1f).heightIn(min = 50.dp),
-                    ) { Text(stringResource(R.string.back)) }
+                        // Room for long words (Malay, Tamil) at large text sizes.
+                        contentPadding = PaddingValues(horizontal = 8.dp),
+                    ) { Text(stringResource(R.string.back), textAlign = TextAlign.Center) }
                 }
                 Button(
                     onClick = {
                         if (isLast) onBack() else scope.launch { pager.animateScrollToPage(pager.currentPage + 1) }
                     },
                     modifier = Modifier.weight(1f).heightIn(min = 50.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
                 ) {
                     Text(
                         stringResource(if (isLast) R.string.guide_got_it else R.string.guide_next),
@@ -178,7 +187,7 @@ fun HowToScreen(hasCredentials: Boolean, onBack: () -> Unit, onOpenSettings: () 
 
 @Composable
 private fun StepPage(step: GuideStep, number: Int, total: Int) {
-    val doneLabel = stringResource(R.string.done)
+    val doneLabel = stringResource(R.string.guide_completed)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier

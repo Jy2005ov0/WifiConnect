@@ -157,6 +157,7 @@
     <string name="guide_title">使用方法</string>
     <string name="guide_step">第 %1$d 步，共 %2$d 步</string>
     <string name="guide_next">下一步</string>
+    <string name="close">关闭</string>
     <string name="guide_completed">已完成</string>
     <string name="guide_got_it">知道了</string>
     <string name="guide_open_settings">打开设置</string>

@@ -157,6 +157,7 @@
     <string name="guide_title">பயன்படுத்தும் முறை</string>
     <string name="guide_step">படி %1$d / %2$d</string>
     <string name="guide_next">அடுத்து</string>
+    <string name="close">மூடு</string>
     <string name="guide_completed">முடிந்தது</string>
     <string name="guide_got_it">புரிந்தது</string>
     <string name="guide_open_settings">அமைப்புகளைத் திற</string>

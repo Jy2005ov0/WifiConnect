@@ -1,6 +1,7 @@
 package com.wificonnect.app
 
 import androidx.compose.foundation.background
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.material3.MaterialTheme
 import android.Manifest
 import android.content.pm.PackageManager
@@ -196,7 +197,10 @@ class MainActivity : FragmentActivity() {
                 // while screens cross-fade when the app's appearance differs from the phone's.
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                 AnimatedContent(
-                    modifier = Modifier.blur(blur),
+                    // Out of TalkBack's reach while the welcome page covers it.
+                    modifier = Modifier
+                        .blur(blur)
+                        .then(if (showWelcome) Modifier.clearAndSetSemantics {} else Modifier),
                     targetState = when {
                         showHelp -> 5
                         showSpeed -> 4
@@ -210,7 +214,7 @@ class MainActivity : FragmentActivity() {
                     transitionSpec = {
                         if (reduceMotion) {
                             fadeIn() togetherWith fadeOut()
-                        } else if (targetState > initialState) {
+                        } else if (depth(targetState) > depth(initialState)) {
                             (slideInHorizontally { it } + fadeIn()) togetherWith (slideOutHorizontally { -it / 4 } + fadeOut())
                         } else {
                             (slideInHorizontally { -it / 4 } + fadeIn()) togetherWith (slideOutHorizontally { it } + fadeOut())
@@ -218,13 +222,18 @@ class MainActivity : FragmentActivity() {
                     },
                     label = "screen",
                 ) { screen ->
-                    // Ask for a fingerprint first when the app lock is on.
-                    val openSettings: () -> Unit = {
+                    // Ask for a fingerprint first when the app lock is on. `then` runs only once
+                    // Settings really opens, so cancelling the prompt leaves you where you were.
+                    val openSettings: (then: () -> Unit) -> Unit = { then ->
                         if (hasCredentials && PortalSettings.load(context).requireUnlock) {
                             AppLock.authenticate(this@MainActivity, getString(R.string.lock_open_settings)) { ok ->
-                                if (ok) showSettings = true
+                                if (ok) {
+                                    then()
+                                    showSettings = true
+                                }
                             }
                         } else {
+                            then()
                             showSettings = true
                         }
                     }
@@ -232,10 +241,7 @@ class MainActivity : FragmentActivity() {
                         HowToScreen(
                             hasCredentials = hasCredentials,
                             onBack = { showHelp = false },
-                            onOpenSettings = {
-                                showHelp = false
-                                openSettings()
-                            },
+                            onOpenSettings = { openSettings { showHelp = false } },
                         )
                     } else if (screen == 4) {
                         SpeedTestScreen(speedTest, onBack = { showSpeed = false })
@@ -266,7 +272,7 @@ class MainActivity : FragmentActivity() {
                             state = model.state,
                             hasCredentials = hasCredentials,
                             onConnect = { if (hasCredentials) model.connect() else showSettings = true },
-                            onOpenSettings = openSettings,
+                            onOpenSettings = { openSettings {} },
                             appearance = appearance,
                             onAppearanceChange = changeAppearance,
                             onSignOut = { model.signOut() },
@@ -331,4 +337,12 @@ private class Demo(
             )
         }
     }
+}
+
+/** How deep a screen sits, so moving deeper slides in from the right and back slides out to it. */
+private fun depth(screen: Int) = when (screen) {
+    0 -> 0 // Main
+    5 -> 1 // How to Use, which can lead on to Settings
+    1 -> 2 // Settings
+    else -> 3 // History, Share Setup, Speed Test
 }
