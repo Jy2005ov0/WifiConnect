@@ -348,14 +348,19 @@ struct ContentView: View {
 
 private struct StatusBadge: View {
     let state: ConnectionModel.State
-    @State private var breathing = false
 
     var body: some View {
         ZStack {
-            Circle()
-                .fill(state.tint.opacity(0.10))
-                .frame(width: 188, height: 188)
-                .scaleEffect(breathing ? 1.04 : 0.96)
+            // The outer ring breathes in and out every 4 seconds. It follows the clock rather
+            // than starting an animation, so it doesn't jump back to the start (and look like
+            // it's connecting again) after the Notification Center or Control Center is pulled down.
+            TimelineView(.animation) { context in
+                let phase = context.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 4) / 4
+                Circle()
+                    .fill(state.tint.opacity(0.10))
+                    .frame(width: 188, height: 188)
+                    .scaleEffect(1 - 0.04 * cos(phase * 2 * .pi))
+            }
             Circle()
                 .fill(state.tint.opacity(0.14))
                 .frame(width: 148, height: 148)
@@ -376,11 +381,6 @@ private struct StatusBadge: View {
                 .symbolEffect(.variableColor.iterative, isActive: state == .working)
         }
         .animation(.spring(duration: 0.5), value: state)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
-                breathing = true
-            }
-        }
     }
 }
 
