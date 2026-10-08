@@ -81,18 +81,22 @@ struct StatusWidgetView: View {
     private var small: some View {
         VStack(alignment: .leading, spacing: 0) {
             Image(systemName: entry.status.symbol)
-                .font(.system(size: 20, weight: .semibold))
+                .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(width: 40, height: 40)
+                .frame(width: 32, height: 32)
                 .background(entry.status.tint.gradient, in: Circle())
-            Spacer(minLength: 6)
+            Spacer(minLength: 4)
+            // Fits the smallest widget (iPhone SE) and long translations.
             Text(entry.status.title)
                 .font(.headline)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             Text(entry.status.detail)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
-            Spacer(minLength: 6)
+                .minimumScaleFactor(0.8)
+            Spacer(minLength: 4)
             Button(intent: OpenAndConnectIntent()) {
                 Text("Sign In")
                     .font(.caption.weight(.semibold))

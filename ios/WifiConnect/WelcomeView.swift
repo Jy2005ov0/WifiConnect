@@ -6,6 +6,8 @@ struct WelcomeView: View {
     var onFinish: () -> Void
 
     @State private var drag: CGFloat = 0
+    // The big clock grows with the text size setting, like the rest of the page.
+    @ScaledMetric(relativeTo: .largeTitle) private var clockSize: CGFloat = 88
 
     var body: some View {
         GeometryReader { geometry in
@@ -20,9 +22,13 @@ struct WelcomeView: View {
                         Text(now, format: .dateTime.weekday(.wide).day().month(.wide))
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
                         Text(now, format: .dateTime.hour(.defaultDigits(amPM: .omitted)).minute())
-                            .font(.system(size: 88, weight: .bold, design: .rounded))
+                            .font(.system(size: clockSize, weight: .bold, design: .rounded))
                             .monospacedDigit()
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                             .contentTransition(.numericText())
                     }
                 }

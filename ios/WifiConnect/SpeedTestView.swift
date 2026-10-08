@@ -117,15 +117,22 @@ private struct Gauge: View {
                 Label(stageTitle, systemImage: stageSymbol)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(colors.last!)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.6)
                 Text(number)
                     .font(.system(size: 64, weight: .bold, design: .rounded))
                     .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                     .contentTransition(.numericText())
                     .animation(.default, value: number)
                 Text(unit)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            // Keep the words inside the ring.
+            .frame(maxWidth: 190)
         }
         .frame(width: 260, height: 260)
         .accessibilityElement(children: .combine)
@@ -206,6 +213,8 @@ private struct ResultTile: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            .lineLimit(1)
+            .minimumScaleFactor(0.6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)

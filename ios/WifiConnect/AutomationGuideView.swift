@@ -81,13 +81,14 @@ struct AutomationGuideView: View {
 private struct Step: View {
     let number: Int
     let text: LocalizedStringKey
+    @ScaledMetric(relativeTo: .subheadline) private var circle: CGFloat = 26
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
             Text("\(number)")
                 .font(.subheadline.weight(.bold))
                 .foregroundStyle(.white)
-                .frame(width: 26, height: 26)
+                .frame(width: circle, height: circle)
                 .background(Circle().fill(.tint))
             Text(text)
                 .font(.callout)

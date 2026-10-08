@@ -42,71 +42,78 @@ struct ContentView: View {
 
     private var main: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                Spacer(minLength: 8)
+            // Scrolls only when it doesn't fit: a small iPhone (SE), large text or a long translation.
+            GeometryReader { proxy in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 8)
 
-                // The big circle is the button: Connect, or Disconnect once connected.
-                Button(action: primaryAction) {
-                    StatusBadge(state: model.state)
-                }
-                .buttonStyle(PressableStyle())
-                .disabled(model.state == .working)
-                .accessibilityLabel(hint ?? title)
+                        // The big circle is the button: Connect, or Disconnect once connected.
+                        Button(action: primaryAction) {
+                            StatusBadge(state: model.state)
+                        }
+                        .buttonStyle(PressableStyle())
+                        .disabled(model.state == .working)
+                        .accessibilityLabel(hint ?? title)
 
-                Text(hint ?? " ")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(model.state.tint)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 6)
-                    .background(model.state.tint.opacity(0.12), in: Capsule())
-                    .background(.ultraThinMaterial, in: Capsule())
-                    .padding(.top, 6)
-                    .opacity(hint == nil ? 0 : 1)
-                    .contentTransition(.opacity)
-                    .animation(.default, value: hint)
-                    .accessibilityHidden(true)
+                        Text(hint ?? " ")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(model.state.tint)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 6)
+                            .background(model.state.tint.opacity(0.12), in: Capsule())
+                            .background(.ultraThinMaterial, in: Capsule())
+                            .padding(.top, 6)
+                            .opacity(hint == nil ? 0 : 1)
+                            .contentTransition(.opacity)
+                            .animation(.default, value: hint)
+                            .accessibilityHidden(true)
 
-                VStack(spacing: 6) {
-                    Text(title)
-                        .font(.title.weight(.bold))
-                    Text(subtitle)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.top, 14)
-                .padding(.horizontal, 32)
-                .animation(.default, value: model.state)
+                        VStack(spacing: 6) {
+                            Text(title)
+                                .font(.title.weight(.bold))
+                            Text(subtitle)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(.top, 14)
+                        .padding(.horizontal, 32)
+                        .animation(.default, value: model.state)
 
-                Spacer(minLength: 24)
+                        Spacer(minLength: 24)
 
-                DetailsCard {
-                    DetailRow(symbol: "wifi", color: .blue, title: "Network",
-                              value: wifiName.isEmpty ? String(localized: "Not Set") : wifiName)
-                    Divider().padding(.leading, 58)
-                    DetailRow(symbol: "person.text.rectangle.fill", color: .indigo, title: "Student ID",
-                              value: studentID.isEmpty ? String(localized: "Not Set") : studentID)
-                    Divider().padding(.leading, 58)
-                    Button {
-                        showAutomationGuide = true
-                    } label: {
-                        DetailRow(symbol: "bolt.fill", color: .green, title: "Auto Sign-In",
-                                  value: String(localized: "Set Up"), showsChevron: true)
+                        DetailsCard {
+                            DetailRow(symbol: "wifi", color: .blue, title: "Network",
+                                      value: wifiName.isEmpty ? String(localized: "Not Set") : wifiName)
+                            Divider().padding(.leading, 58)
+                            DetailRow(symbol: "person.text.rectangle.fill", color: .indigo, title: "Student ID",
+                                      value: studentID.isEmpty ? String(localized: "Not Set") : studentID)
+                            Divider().padding(.leading, 58)
+                            Button {
+                                showAutomationGuide = true
+                            } label: {
+                                DetailRow(symbol: "bolt.fill", color: .green, title: "Auto Sign-In",
+                                          value: String(localized: "Set Up"), showsChevron: true)
+                            }
+                            .buttonStyle(.plain)
+                            Divider().padding(.leading, 58)
+                            Button {
+                                showSpeedTest = true
+                            } label: {
+                                DetailRow(symbol: "speedometer", color: .orange, title: "Speed",
+                                          value: speedTest.summary ?? String(localized: "Test"),
+                                          showsChevron: true)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 16)
                     }
-                    .buttonStyle(.plain)
-                    Divider().padding(.leading, 58)
-                    Button {
-                        showSpeedTest = true
-                    } label: {
-                        DetailRow(symbol: "speedometer", color: .orange, title: "Speed",
-                                  value: speedTest.summary ?? String(localized: "Test"),
-                                  showsChevron: true)
-                    }
-                    .buttonStyle(.plain)
+                    .frame(minHeight: proxy.size.height)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
+                .scrollBounceBehavior(.basedOnSize)
             }
             .animation(.default, value: isConnected)
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
@@ -426,6 +433,8 @@ private struct DetailRow: View {
             Text(value)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .layoutPriority(1)
             if showsChevron {
                 Image(systemName: "chevron.right")
                     .font(.footnote.weight(.semibold))
