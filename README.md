@@ -100,7 +100,7 @@ In the app, tap **Auto Sign-In › Set Up** for a step-by-step guide. In short:
 
 To stop iOS from showing the login popup as well, go to **Settings › Wi-Fi**, tap **ⓘ** next to the school network and turn off **Auto-Login**.
 
-**Only on the school Wi-Fi:** on iPhone, automatic sign-in only runs for the network you pick in the Shortcuts automation. On Android, tap **Allow** next to **Only on School Wi-Fi** in Settings: the app then reads the Wi-Fi name and never fills in a hotel's or café's login page. Android only shares the Wi-Fi name with location access and Location turned on; the app doesn't use or save your location. Without it, automatic sign-in fills in any Wi-Fi login page that asks for an ID and password. (The Windows tool checks the Wi-Fi name too, except when Windows hides it because Location is off.)
+**Only on the school Wi-Fi:** on iPhone, automatic sign-in only runs for the network you pick in the Shortcuts automation. On Android, tap **Allow** next to **Only on School Wi-Fi** in Settings (twice: first for location, then choose **Allow all the time**, because automatic sign-in runs in the background): the app then reads the Wi-Fi name and never fills in a hotel's or café's login page. Android only shares the Wi-Fi name with location access and Location turned on; the app doesn't use or save your location. Without it, automatic sign-in fills in any Wi-Fi login page that asks for an ID and password. (The Windows tool checks the Wi-Fi name too, except when Windows hides it because Location is off.)
 
 ## If automatic detection doesn't work
 

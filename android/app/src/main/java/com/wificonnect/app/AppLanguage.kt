@@ -54,7 +54,8 @@ enum class AppLanguage(val tag: String, val nativeName: String) {
         fun wrap(base: Context): Context {
             if (Build.VERSION.SDK_INT >= 33) return base
             val tag = prefs(base).getString(KEY, null) ?: return base
-            val config = Configuration(base.resources.configuration)
+            // Only the language: everything else (like dark mode) keeps following the phone.
+            val config = Configuration()
             config.setLocale(Locale.forLanguageTag(tag))
             return base.createConfigurationContext(config)
         }

@@ -30,10 +30,9 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
                 PortalLogin.signOut(getApplication())
                 ConnectionState.SignedOut
             } catch (e: LoginError) {
-                // Already online without the app signing you in (e.g. at home), with no sign-out link
-                // that works here: there's nothing to sign out of, so just go back to Tap to Connect.
-                val nothingToSignOut = !wasSignedInByApp &&
-                    (e is LoginError.NoSignOutLink || e is LoginError.Network || e is LoginError.NotOnWiFi)
+                // Already online without the app signing you in (e.g. at home) and no sign-out link is
+                // known: there's nothing to sign out of, so just go back to Tap to Connect.
+                val nothingToSignOut = !wasSignedInByApp && e is LoginError.NoSignOutLink
                 if (nothingToSignOut) ConnectionState.Idle
                 else ConnectionState.Failed(e.describe(getApplication()), signingOut = true)
             }

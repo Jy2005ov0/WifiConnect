@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.rememberLauncherForActivityResult
 import android.net.Uri
+import android.content.Context
 import android.content.Intent
 import android.app.Activity
 import android.Manifest
@@ -461,17 +462,27 @@ private fun WifiCheckRow(wifiName: String) {
         check = WifiName.check(context)
         onPauseOrDispose { }
     }
-    val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        check = WifiName.check(context)
+    val prefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
+    fun openAppSettings() = context.startActivity(
+        Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
+    )
+    // Android stops showing its permission dialog after you decline twice; then the app's
+    // page in Settings is the only place left to allow it.
+    fun requestOrOpenSettings(launch: () -> Unit, permission: String, key: String) {
         val activity = context as? Activity
-        if (check == WifiName.Check.NEEDS_PERMISSION && activity != null &&
-            !ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)
-        ) {
-            // Android won't ask again: open the app's page in Settings instead.
-            context.startActivity(
-                Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
-            )
+        val askedBefore = prefs.getBoolean(key, false)
+        if (askedBefore && activity != null && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+            openAppSettings()
+        } else {
+            prefs.edit().putBoolean(key, true).apply()
+            launch()
         }
+    }
+    val foreground = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        check = WifiName.check(context)
+    }
+    val background = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        check = WifiName.check(context)
     }
     val name = wifiName.trim().ifEmpty { PortalSettings.DEFAULT_WIFI_NAME }
 
@@ -485,6 +496,7 @@ private fun WifiCheckRow(wifiName: String) {
                 when (check) {
                     WifiName.Check.ON -> stringResource(R.string.wifi_check_on, name)
                     WifiName.Check.NEEDS_PERMISSION -> stringResource(R.string.wifi_check_needs_permission, name)
+                    WifiName.Check.NEEDS_BACKGROUND -> stringResource(R.string.wifi_check_needs_background)
                     WifiName.Check.LOCATION_OFF -> stringResource(R.string.wifi_check_location_off)
                 },
                 style = MaterialTheme.typography.bodySmall,
@@ -499,7 +511,19 @@ private fun WifiCheckRow(wifiName: String) {
                 modifier = Modifier.padding(start = 8.dp),
             )
             WifiName.Check.NEEDS_PERMISSION -> TextButton(onClick = {
-                permission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+                requestOrOpenSettings(
+                    { foreground.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) },
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    "askedLocation",
+                )
+            }) { Text(stringResource(R.string.wifi_check_allow)) }
+            WifiName.Check.NEEDS_BACKGROUND -> TextButton(onClick = {
+                // On Android 11+ this opens the app's location page, where you choose "Allow all the time".
+                requestOrOpenSettings(
+                    { background.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION) },
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    "askedBackgroundLocation",
+                )
             }) { Text(stringResource(R.string.wifi_check_allow)) }
             WifiName.Check.LOCATION_OFF -> TextButton(onClick = {
                 context.startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))

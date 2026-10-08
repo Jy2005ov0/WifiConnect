@@ -28,12 +28,13 @@ final class ConnectionModel {
             state = .signedOut
             signedInByApp = false
         } catch {
-            // Already online without the app signing you in (e.g. at home), with no sign-out link
-            // that works here: there's nothing to sign out of, so just go back to Tap to Connect.
+            // Already online without the app signing you in (e.g. at home) and no sign-out link is
+            // known: there's nothing to sign out of, so just go back to Tap to Connect.
             let nothingToSignOut: Bool
-            switch error as? LoginError {
-            case .noSignOutLink?, .notOnWiFi?, .network?: nothingToSignOut = !wasSignedInByApp
-            default: nothingToSignOut = false
+            if case .noSignOutLink? = error as? LoginError {
+                nothingToSignOut = !wasSignedInByApp
+            } else {
+                nothingToSignOut = false
             }
             if nothingToSignOut {
                 state = .idle

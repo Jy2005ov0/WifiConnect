@@ -64,6 +64,10 @@ object AutoLogin {
         } catch (e: LoginError.OtherNetwork) {
             // Not the school Wi-Fi: nothing to do, and nothing to tell you.
         } catch (e: LoginError.NotSchoolPortal) {
+            // Only when you join the Wi-Fi, not every 15 minutes from Stay Signed In.
+            if (trigger == SignInTrigger.AUTOMATIC) {
+                notify(context, context.getString(R.string.notify_failed_title), e.describe(context))
+            }
             // Not the school Wi-Fi: nothing to do, and nothing to tell you.
         } catch (e: LoginError) {
             notify(context, context.getString(R.string.notify_failed_title), e.describe(context))
@@ -120,7 +124,7 @@ class CaptivePortalReceiver : BroadcastReceiver() {
         val request = OneTimeWorkRequestBuilder<AutoLoginWorker>()
             .setInputData(workDataOf(AutoLoginWorker.NETWORK to (network?.networkHandle ?: -1L)))
             .build()
-        WorkManager.getInstance(context).enqueueUniqueWork(AutoLoginWorker.NAME, ExistingWorkPolicy.REPLACE, request)
+        WorkManager.getInstance(context).enqueueUniqueWork(AutoLoginWorker.NAME, ExistingWorkPolicy.KEEP, request)
     }
 }
 

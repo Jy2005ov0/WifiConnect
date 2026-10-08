@@ -60,6 +60,7 @@
     <string name="wifi_check_on">Log masuk secara automatik hanya pada %1$s.</string>
     <string name="wifi_check_needs_permission">Benarkan akses lokasi supaya log masuk automatik hanya mengisi halaman log masuk %1$s. Android memerlukannya untuk membaca nama Wi-Fi; lokasi anda tidak digunakan atau disimpan.</string>
     <string name="wifi_check_location_off">Hidupkan Lokasi supaya aplikasi boleh membaca nama Wi-Fi. Sehingga itu, log masuk automatik mengisi mana-mana halaman log masuk Wi-Fi.</string>
+    <string name="wifi_check_needs_background">Pilih “Benarkan sepanjang masa” untuk lokasi supaya aplikasi boleh membaca nama Wi-Fi apabila ia log masuk sendiri. Lokasi anda tidak digunakan atau disimpan.</string>
     <string name="wifi_check_allow">Benarkan</string>
     <string name="wifi_check_turn_on">Hidupkan</string>
     <string name="error_not_school_portal">Halaman log masuk Wi-Fi ini tidak kelihatan seperti milik universiti anda, jadi aplikasi tidak log masuk sendiri. Ketik bulatan untuk log masuk juga.</string>

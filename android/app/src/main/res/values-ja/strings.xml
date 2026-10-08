@@ -60,6 +60,7 @@
     <string name="wifi_check_on">%1$s でのみ自動でサインインします。</string>
     <string name="wifi_check_needs_permission">位置情報へのアクセスを許可すると、自動サインインは %1$s のログインページにだけ入力します。Android が Wi-Fi 名を読み取るために必要です。位置情報は使用・保存しません。</string>
     <string name="wifi_check_location_off">Wi-Fi 名を読み取れるよう位置情報をオンにしてください。それまでは、自動サインインはどの Wi-Fi ログインページにも入力します。</string>
+    <string name="wifi_check_needs_background">位置情報で「常に許可」を選ぶと、アプリが自動でサインインするときに Wi-Fi 名を読み取れます。位置情報は使用・保存しません。</string>
     <string name="wifi_check_allow">許可</string>
     <string name="wifi_check_turn_on">オンにする</string>
     <string name="error_not_school_portal">この Wi-Fi のログインページは学校のものではないようなので、自動ではサインインしませんでした。円をタップするとサインインできます。</string>

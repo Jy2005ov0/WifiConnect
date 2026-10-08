@@ -17,14 +17,21 @@ import androidx.core.content.ContextCompat
  * the app doesn't use or store your location.
  */
 object WifiName {
-    enum class Check { ON, NEEDS_PERMISSION, LOCATION_OFF }
+    enum class Check { ON, NEEDS_PERMISSION, NEEDS_BACKGROUND, LOCATION_OFF }
 
     fun hasPermission(context: Context) =
         ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED
 
+    /** Automatic sign-in runs in the background, where Android 10+ needs "Allow all the time". */
+    fun hasBackgroundPermission(context: Context) =
+        Build.VERSION.SDK_INT < 29 || ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+        ) == PackageManager.PERMISSION_GRANTED
+
     fun check(context: Context): Check = when {
         !hasPermission(context) -> Check.NEEDS_PERMISSION
+        !hasBackgroundPermission(context) -> Check.NEEDS_BACKGROUND
         context.getSystemService(LocationManager::class.java)?.isLocationEnabled == false -> Check.LOCATION_OFF
         else -> Check.ON
     }
