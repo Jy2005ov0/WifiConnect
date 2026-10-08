@@ -19,7 +19,8 @@
 [CmdletBinding()]
 param(
     [string]$ConfigPath = (Join-Path $env:APPDATA 'WifiConnect\config.json'),
-    [string]$ProbeUrl = 'http://www.msftconnecttest.com/connecttest.txt',
+    # WIFICONNECT_PROBE_URL lets the user-journey test point it at a mock login page.
+    [string]$ProbeUrl = $(if ($env:WIFICONNECT_PROBE_URL) { $env:WIFICONNECT_PROBE_URL } else { 'http://www.msftconnecttest.com/connecttest.txt' }),
     [switch]$Quiet
 )
 

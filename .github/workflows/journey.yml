@@ -1,0 +1,117 @@
+name: User journey
+
+# Uses each app the way a student would, by tapping and typing on the screen:
+# install, welcome page, type the student ID and password, tap to connect, check the
+# internet works, leave and come back, sign out. Against scripts/mock_portal.py.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - android/**
+      - ios/**
+      - windows/**
+      - scripts/*journey*
+      - scripts/ui_find.py
+      - scripts/mock_portal.py
+      - .github/workflows/journey.yml
+
+jobs:
+  ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build for the simulator
+        working-directory: ios
+        run: |
+          xcodebuild build \
+            -project WifiConnect.xcodeproj \
+            -target WifiConnect \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            SYMROOT="$PWD/build" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Install the tools that tap and type
+        run: |
+          brew tap facebook/fb
+          brew install idb-companion
+          brew tap wix/brew
+          brew install applesimutils
+          python3 -m venv "$HOME/idb"
+          "$HOME/idb/bin/pip" install --quiet fb-idb
+          echo "$HOME/idb/bin" >> "$GITHUB_PATH"
+
+      - name: Start mock login page
+        run: nohup python3 scripts/mock_portal.py 8080 > portal.log 2>&1 &
+
+      - name: Use the app like a student
+        run: bash scripts/ios-journey.sh ios/build/Debug-iphonesimulator/WifiConnect.app
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: journey-ios
+          path: |
+            journey/
+            portal.log
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Debug build
+        working-directory: android
+        run: ./gradlew --no-daemon assembleDebug
+
+      - name: Start mock login page
+        run: nohup python3 scripts/mock_portal.py 8080 > portal.log 2>&1 &
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Use the app like a student
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7
+          disable-animations: true
+          script: bash scripts/android-journey.sh android/app/build/outputs/apk/debug/app-debug.apk
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: journey-android
+          path: |
+            journey/
+            portal.log
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install and use it like a student
+        shell: powershell
+        run: ./scripts/windows-journey.ps1
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: journey-windows
+          path: |
+            portal.log
+            portal-err.log
