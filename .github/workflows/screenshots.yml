@@ -4,7 +4,8 @@ name: Screenshots
 # the screenshots to the screenshots/ folder of the branch it ran on.
 on:
   workflow_dispatch:
-  # Also when this file changes, so the pictures can be retaken with a push.
+  # Also when this file changes, so the pictures can be retaken with a push
+  # (for example after a change to how the app looks).
   push:
     paths:
       - .github/workflows/screenshots.yml

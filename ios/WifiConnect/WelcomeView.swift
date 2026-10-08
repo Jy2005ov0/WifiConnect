@@ -39,7 +39,7 @@ struct WelcomeView: View {
 
                 Spacer()
 
-                // A frosted-glass pill, like the handle on the Lock Screen.
+                // Just the words, like the hint on the Lock Screen.
                 HStack(spacing: 8) {
                     Image(systemName: "chevron.up")
                         .font(.subheadline.weight(.bold))
@@ -49,9 +49,6 @@ struct WelcomeView: View {
                 .foregroundStyle(.secondary)
                 .padding(.horizontal, 22)
                 .padding(.vertical, 14)
-                .background(.ultraThinMaterial, in: Capsule())
-                .overlay(Capsule().strokeBorder(.white.opacity(0.35), lineWidth: 1))
-                .shadow(color: .black.opacity(0.08), radius: 12, y: 6)
                 .offset(y: bounce ? -6 : 0)
                 .padding(.bottom, 20)
                 .contentShape(Rectangle())
