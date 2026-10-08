@@ -126,7 +126,7 @@ pass "Done saves and shows Tap to Connect with the student ID"
 # 4b. Tap the ? and read the How to Use guide, step by step.
 tap "Help"
 wait_for "Step 1 of 6" 20 || fail "The ? button opens the How to Use guide"
-find_on_screen "Done" > /dev/null || fail "The guide ticks off step 1 once the student ID is saved"
+find_on_screen "Completed" > /dev/null || fail "The guide ticks off step 1 once the student ID is saved"
 shot guide-step-1
 for n in 2 3 4 5 6; do
   tap "Next"
