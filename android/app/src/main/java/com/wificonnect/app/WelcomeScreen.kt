@@ -63,6 +63,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import android.text.format.DateFormat
+import androidx.lifecycle.compose.LifecycleResumeEffect
 
 /** The first page when the app opens: the time and a welcome. Swipe it up, like a lock screen. */
 @Composable
@@ -182,6 +183,11 @@ private fun Clock(modifier: Modifier = Modifier) {
             delay(60_000 - System.currentTimeMillis() % 60_000)
             now = clockTime()
         }
+    }
+    // The timer above stops while the phone sleeps, so catch up when you come back to the app.
+    LifecycleResumeEffect(Unit) {
+        now = clockTime()
+        onPauseOrDispose { }
     }
     // The app's own language, which may differ from the phone's.
     val locale = LocalConfiguration.current.locales[0] ?: Locale.getDefault()

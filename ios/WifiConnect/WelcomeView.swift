@@ -6,7 +6,6 @@ struct WelcomeView: View {
     var onFinish: () -> Void
 
     @State private var drag: CGFloat = 0
-    @State private var bounce = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -39,17 +38,21 @@ struct WelcomeView: View {
 
                 Spacer()
 
-                // Just the words, like the hint on the Lock Screen.
-                HStack(spacing: 8) {
-                    Image(systemName: "chevron.up")
-                        .font(.subheadline.weight(.bold))
-                    Text("Swipe up to start")
-                        .font(.subheadline.weight(.semibold))
+                // Just the words, like the hint on the Lock Screen. It bobs up and down with the
+                // clock, so it doesn't jump back to the start after Notification Center is pulled down.
+                TimelineView(.animation) { context in
+                    let phase = context.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 1.8) / 1.8
+                    HStack(spacing: 8) {
+                        Image(systemName: "chevron.up")
+                            .font(.subheadline.weight(.bold))
+                        Text("Swipe up to start")
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 22)
+                    .padding(.vertical, 14)
+                    .offset(y: -3 + 3 * cos(phase * 2 * .pi))
                 }
-                .foregroundStyle(.secondary)
-                .padding(.horizontal, 22)
-                .padding(.vertical, 14)
-                .offset(y: bounce ? -6 : 0)
                 .padding(.bottom, 20)
                 .contentShape(Rectangle())
                 .onTapGesture { finish(height: height) }
@@ -72,9 +75,6 @@ struct WelcomeView: View {
                     }
             )
             .accessibilityAction(named: Text("Swipe up to start")) { onFinish() }
-        }
-        .onAppear {
-            withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) { bounce = true }
         }
     }
 

@@ -72,6 +72,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -99,7 +100,12 @@ fun MainScreen(
     val context = LocalContext.current
     val view = LocalView.current
 
+    // Only buzz when the state changes, not again when the screen is rebuilt
+    // (turning the phone, a dark-mode or language change).
+    var lastState by rememberSaveable { mutableStateOf(state.javaClass.name) }
     LaunchedEffect(state) {
+        if (state.javaClass.name == lastState) return@LaunchedEffect
+        lastState = state.javaClass.name
         val feedback = when {
             state is ConnectionState.Connected && Build.VERSION.SDK_INT >= 30 -> HapticFeedbackConstants.CONFIRM
             state is ConnectionState.Failed && Build.VERSION.SDK_INT >= 30 -> HapticFeedbackConstants.REJECT
