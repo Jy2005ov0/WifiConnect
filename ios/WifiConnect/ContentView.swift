@@ -392,12 +392,9 @@ private struct DetailsCard<Content: View>: View {
         VStack(spacing: 0) {
             content
         }
-        // Frosted glass, with a fine light edge.
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 26, style: .continuous)
-                .strokeBorder(.white.opacity(0.4), lineWidth: 0.5)
-        }
+        // Solid white (dark gray in Dark Mode), like the groups in the Settings app.
+        .background(Color(.secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: 26, style: .continuous))
     }
 }
 

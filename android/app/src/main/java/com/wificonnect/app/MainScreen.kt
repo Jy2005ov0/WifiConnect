@@ -20,7 +20,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.heightIn
@@ -191,9 +190,8 @@ fun MainScreen(
 
             Surface(
                 shape = RoundedCornerShape(26.dp),
-                // See-through glass with a fine light edge.
-                color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.72f),
-                border = BorderStroke(0.5.dp, Color.White.copy(alpha = 0.4f)),
+                // Solid white (dark gray in dark mode).
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column {
