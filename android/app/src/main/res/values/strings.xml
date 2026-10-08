@@ -62,6 +62,7 @@
     <string name="wifi_check_location_off">Turn on Location so the app can read the Wi-Fi name. Until then, automatic sign-in fills in any Wi-Fi login page.</string>
     <string name="wifi_check_allow">Allow</string>
     <string name="wifi_check_turn_on">Turn On</string>
+    <string name="error_not_school_portal">This Wi-Fi\'s login page doesn\'t look like your school\'s, so the app didn\'t sign in by itself. Tap the circle to sign in anyway.</string>
     <string name="error_other_network">On %1$s, not your school Wi-Fi, so the app didn\'t sign in.</string>
     <string name="setting_auto_login">Sign In Automatically</string>
     <string name="setting_stay_signed_in">Stay Signed In</string>

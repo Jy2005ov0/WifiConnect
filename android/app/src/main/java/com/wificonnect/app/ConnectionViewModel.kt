@@ -45,6 +45,8 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
                 }
             } catch (e: LoginError.OtherNetwork) {
                 ConnectionState.Idle
+            } catch (e: LoginError.NotSchoolPortal) {
+                ConnectionState.Idle
             } catch (e: LoginError.NotOnWiFi) {
                 if (automatic) ConnectionState.Idle else ConnectionState.Failed(e.describe(getApplication()))
             } catch (e: LoginError) {

@@ -117,6 +117,9 @@ TABLE = [
      "请打开定位，以便应用读取 Wi-Fi 名称。在此之前，自动登录会填写任何 Wi-Fi 登录页面。"),
     ("wifi_check_allow", "Allow", "Benarkan", "允许"),
     ("wifi_check_turn_on", "Turn On", "Hidupkan", "打开"),
+    ("error_not_school_portal", "This Wi-Fi's login page doesn't look like your school's, so the app didn't sign in by itself. Tap the circle to sign in anyway.",
+     "Halaman log masuk Wi-Fi ini tidak kelihatan seperti milik universiti anda, jadi aplikasi tidak log masuk sendiri. Ketik bulatan untuk log masuk juga.",
+     "这个 Wi-Fi 的登录页面看起来不是学校的，所以应用没有自动登录。点按圆圈仍可登录。"),
     ("error_other_network", "On {0}, not your school Wi-Fi, so the app didn't sign in.",
      "Pada {0}, bukan Wi-Fi universiti anda, jadi aplikasi tidak log masuk.", "当前是 {0}，不是学校的 Wi-Fi，因此没有登录。"),
     ("setting_auto_login", "Sign In Automatically", "Log Masuk Secara Automatik", "自动登录"),
@@ -415,7 +418,33 @@ def write_ios():
     path.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+# iOS system texts from Info.plist (like the Face ID prompt), in each language.
+INFO_PLIST = {
+    "NSFaceIDUsageDescription": {
+        "en": "Use Face ID to protect your saved student ID and password.",
+        "ms": "Guna Face ID untuk melindungi ID pelajar dan kata laluan anda yang disimpan.",
+        "zh-Hans": "使用面容 ID 保护你保存的学号和密码。",
+        "ja": "Face ID を使って、保存した学籍番号とパスワードを保護します。",
+        "ta": "சேமித்த மாணவர் எண்ணையும் கடவுச்சொல்லையும் பாதுகாக்க Face ID-ஐப் பயன்படுத்தவும்.",
+    },
+}
+
+
+def write_info_plist():
+    catalog = {"sourceLanguage": "en", "strings": {}, "version": "1.0"}
+    for key, values in INFO_PLIST.items():
+        catalog["strings"][key] = {
+            "extractionState": "manual",
+            "localizations": {
+                lang: {"stringUnit": {"state": "translated", "value": value}} for lang, value in values.items()
+            },
+        }
+    path = ROOT / "ios/WifiConnect/InfoPlist.xcstrings"
+    path.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 if __name__ == "__main__":
     write_android()
     write_ios()
+    write_info_plist()
     print("Android strings and iOS string catalog written.")

@@ -34,6 +34,8 @@ sealed class LoginError(@StringRes private val messageRes: Int, private val deta
     object StillSignedIn : LoginError(R.string.error_still_signed_in)
     /** Automatic sign-in skipped: this Wi-Fi isn't the school's. */
     class OtherNetwork(name: String) : LoginError(R.string.error_other_network, name)
+    /** Automatic sign-in skipped a login page that doesn't look like the school's. */
+    object NotSchoolPortal : LoginError(R.string.error_not_school_portal)
 
     /** The message in the phone's language. */
     fun describe(context: Context): String =
@@ -60,7 +62,12 @@ class PortalLogin(private val network: Network) {
     /** Cookies by domain, so the portal's session survives from the login page to the form submission. */
     private val cookies = mutableMapOf<String, MutableMap<String, String>>()
 
-    suspend fun logIn(studentId: String, password: String, settings: PortalSettings): LoginOutcome =
+    suspend fun logIn(
+        studentId: String,
+        password: String,
+        settings: PortalSettings,
+        allowPortal: ((URL) -> Boolean)? = null,
+    ): LoginOutcome =
         withContext(Dispatchers.IO) {
             if (studentId.isEmpty() || password.isEmpty()) throw LoginError.MissingCredentials
 
@@ -71,6 +78,7 @@ class PortalLogin(private val network: Network) {
             }
             val page = (result as? ProbeResult.Portal)?.page ?: return@withContext LoginOutcome.ALREADY_ONLINE
             trace.portalUrl = page.url
+            if (allowPortal != null && !allowPortal(page.url)) throw LoginError.NotSchoolPortal
 
             val submission = if (settings.useCustomPortal) {
                 // A path like "/login" is resolved against this building's login page, so one
@@ -101,7 +109,7 @@ class PortalLogin(private val network: Network) {
                 val landing = submit(submission, referer = page.url)
                 trace.signOutUrl = HtmlForm.signOutLink(landing.html, landing.url)
             } catch (e: IOException) {
-                throw LoginError.Network(e.message ?: "no response")
+                throw LoginError.Network(e.message ?: e.javaClass.simpleName)
             }
 
             // Give the network a moment to let us through, then confirm.
@@ -145,7 +153,7 @@ class PortalLogin(private val network: Network) {
         try {
             request(url)
         } catch (e: IOException) {
-            throw LoginError.Network(e.message ?: "no response")
+            throw LoginError.Network(e.message ?: e.javaClass.simpleName)
         }
         repeat(3) { attempt ->
             if (attempt > 0) delay(1_000)
@@ -296,9 +304,15 @@ class PortalLogin(private val network: Network) {
             trigger: SignInTrigger = SignInTrigger.APP,
         ): LoginOutcome {
             // Automatic sign-in only fills in your school's login page, never a hotel's or a café's.
-            if (trigger == SignInTrigger.AUTOMATIC || trigger == SignInTrigger.BACKGROUND) {
-                WifiName.otherNetwork(context, network)?.let { throw LoginError.OtherNetwork(it) }
-            }
+            val automatic = trigger == SignInTrigger.AUTOMATIC || trigger == SignInTrigger.BACKGROUND
+            if (automatic) WifiName.otherNetwork(context, network)?.let { throw LoginError.OtherNetwork(it) }
+            // When Android won't share the Wi-Fi name, automatic sign-in only fills in a login page that
+            // looks like the school's: a private campus address (each building has its own) or the last one used.
+            val allowPortal: ((URL) -> Boolean)? = if (automatic && WifiName.current(context, network) == null) {
+                val last = portalPrefs(context).getString("lastPortal", null)?.let { runCatching { URL(it).host }.getOrNull() }
+                val rule: (URL) -> Boolean = { url -> isPrivateAddress(url.host) || (last != null && url.host == last) }
+                rule
+            } else null
             val started = System.currentTimeMillis()
             var login: PortalLogin? = null
 
@@ -326,6 +340,7 @@ class PortalLogin(private val network: Network) {
                     Credentials.studentId(context),
                     Credentials.password(context),
                     PortalSettings.load(context),
+                    allowPortal,
                 )
                 if (outcome == LoginOutcome.LOGGED_IN) {
                     context.getSystemService(ConnectivityManager::class.java).reportNetworkConnectivity(wifi, true)
@@ -341,6 +356,8 @@ class PortalLogin(private val network: Network) {
                     "",
                 )
                 return outcome
+            } catch (e: LoginError.NotSchoolPortal) {
+                throw e // Skipped on purpose, not a failure worth recording.
             } catch (e: LoginError) {
                 record(HistoryEntry.Result.FAILED, e.describe(context))
                 SignInStatus.save(context, SignInStatus.Kind.FAILED, e.describe(context))

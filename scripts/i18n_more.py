@@ -305,4 +305,7 @@ MORE = {
     "On {0}, not your school Wi-Fi, so the app didn't sign in.": (
         "{0} は学校の Wi-Fi ではないため、サインインしませんでした。",
         "{0} உங்கள் பள்ளி Wi-Fi அல்ல, அதனால் செயலி உள்நுழையவில்லை."),
+    "This Wi-Fi's login page doesn't look like your school's, so the app didn't sign in by itself. Tap the circle to sign in anyway.": (
+        "この Wi-Fi のログインページは学校のものではないようなので、自動ではサインインしませんでした。円をタップするとサインインできます。",
+        "இந்த Wi-Fi-இன் உள்நுழைவுப் பக்கம் உங்கள் பள்ளியுடையது போலத் தெரியவில்லை, அதனால் செயலி தானாக உள்நுழையவில்லை. இருந்தாலும் உள்நுழைய வட்டத்தைத் தட்டவும்."),
 }

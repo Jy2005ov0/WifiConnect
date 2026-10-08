@@ -14,6 +14,8 @@ enum LoginError: LocalizedError {
     case stillOffline
     case noSignOutLink
     case stillSignedIn
+    /// An automatic sign-in skipped a login page that doesn't look like the school's.
+    case notSchoolPortal
 
     var errorDescription: String? {
         switch self {
@@ -33,6 +35,8 @@ enum LoginError: LocalizedError {
             return String(localized: "Your school's login page didn't show a sign-out link. You can add one in Settings › Login Page.")
         case .stillSignedIn:
             return String(localized: "The sign-out link didn't sign you out.")
+        case .notSchoolPortal:
+            return String(localized: "This Wi-Fi's login page doesn't look like your school's, so the app didn't sign in by itself. Tap the circle to sign in anyway.")
         }
     }
 }
@@ -79,7 +83,8 @@ struct PortalLogin {
         studentID: String,
         password: String,
         settings: PortalSettings,
-        trace: LoginTrace? = nil
+        trace: LoginTrace? = nil,
+        allowPortal: ((URL) -> Bool)? = nil
     ) async throws -> LoginOutcome {
         guard !studentID.isEmpty, !password.isEmpty else { throw LoginError.missingCredentials }
 
@@ -91,6 +96,7 @@ struct PortalLogin {
         }
         guard case .portal(let page) = result else { return .alreadyOnline }
         trace?.portalURL = page.url
+        if let allowPortal, !allowPortal(page.url) { throw LoginError.notSchoolPortal }
 
         let submission: FormSubmission
         if settings.useCustomPortal {

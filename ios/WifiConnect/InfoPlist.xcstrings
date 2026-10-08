@@ -1,0 +1,41 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSFaceIDUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Face ID to protect your saved student ID and password."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guna Face ID untuk melindungi ID pelajar dan kata laluan anda yang disimpan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用面容 ID 保护你保存的学号和密码。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID を使って、保存した学籍番号とパスワードを保護します。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சேமித்த மாணவர் எண்ணையும் கடவுச்சொல்லையும் பாதுகாக்க Face ID-ஐப் பயன்படுத்தவும்."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

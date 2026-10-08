@@ -59,11 +59,25 @@ Android signs you in in the background, even when the app is closed. Some phone 
 
 ### Updating on Android
 
-Each GitHub build is signed with a different key. Android therefore refuses to install a new version over the old one, showing **"App not installed"** or **"package conflicts with an existing package"**.
+Until the repository has its own signing key, each GitHub build is signed with a different key. Android then refuses to install a new version over the old one, showing **"App not installed"** or **"package conflicts with an existing package"**:
 
 1. Uninstall WiFi Connect: long-press the icon › **App info** › **Uninstall**.
 2. Install the new APK as above.
 3. Enter your student ID and password again.
+
+**Set up a signing key once, and updates install over the old version** (keeping your settings). On a computer with Java installed:
+
+1. Create a key (keep the file and passwords safe; you need the same key for every future version):
+   ```
+   keytool -genkeypair -v -keystore wificonnect.jks -alias wificonnect -keyalg RSA -keysize 2048 -validity 10000
+   ```
+2. Turn the file into text: `base64 -w0 wificonnect.jks` (on Windows: `certutil -encode wificonnect.jks key.txt`, then copy the text between the BEGIN and END lines, without line breaks).
+3. On GitHub, open the repository's **Settings › Secrets and variables › Actions** and add four secrets:
+   - `ANDROID_KEYSTORE_BASE64`: the text from step 2
+   - `ANDROID_KEYSTORE_PASSWORD`: the keystore password
+   - `ANDROID_KEY_ALIAS`: `wificonnect`
+   - `ANDROID_KEY_PASSWORD`: the key password (the same as the keystore password if you pressed Enter)
+4. Run **Build Android app** again. Uninstall the old app one last time and install this build; from then on, new versions install over it.
 
 ### Android troubleshooting
 

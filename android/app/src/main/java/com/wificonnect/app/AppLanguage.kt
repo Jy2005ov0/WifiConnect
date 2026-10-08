@@ -39,8 +39,15 @@ enum class AppLanguage(val tag: String, val nativeName: String) {
                 activity.getSystemService(LocaleManager::class.java).applicationLocales =
                     LocaleList.forLanguageTags(language.tag)
             } else {
+                // Update the app-wide language now too (notifications, widget, tile), then redraw.
+                val app = activity.applicationContext
+                val config = Configuration(app.resources.configuration)
+                config.setLocale(if (language == SYSTEM) Locale.getDefault() else Locale.forLanguageTag(language.tag))
+                @Suppress("DEPRECATION")
+                app.resources.updateConfiguration(config, app.resources.displayMetrics)
                 activity.recreate()
             }
+            SignInStatus.refreshSurfaces(activity)
         }
 
         /** Before Android 13, the app applies its language to each screen itself. */

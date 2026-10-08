@@ -50,15 +50,32 @@ enum SignIn {
                 studentID: Credentials.studentID,
                 password: Credentials.password,
                 settings: .load(),
-                trace: trace
+                trace: trace,
+                allowPortal: portalRule(for: trigger)
             )
             record(outcome == .loggedIn ? .signedIn : .alreadyOnline, nil)
             UserDefaults.standard.set(false, forKey: SettingsKey.signedOutByUser)
             WidgetCenter.shared.reloadAllTimelines()
             return outcome
+        } catch LoginError.notSchoolPortal {
+            throw LoginError.notSchoolPortal // Not a failure worth recording.
         } catch {
             record(.failed, error.localizedDescription)
             throw error
+        }
+    }
+
+    /// Sign-ins you didn't start yourself only fill in a login page that looks like the school's,
+    /// never a hotel's or a café's. (The Shortcuts automation is already limited to the school Wi-Fi.)
+    private static func portalRule(for trigger: SignInTrigger) -> ((URL) -> Bool)? {
+        let last = UserDefaults.standard.string(forKey: SettingsKey.lastPortalURL)
+            .flatMap(URL.init(string:))?.host
+        switch trigger {
+        case .background, .automatic:
+            // A campus-style private address (each building has its own), or the last login page you used.
+            return { url in PortalTrust.isPrivateAddress(url.host ?? "") || (last != nil && url.host == last) }
+        case .app, .shortcut, .widget:
+            return nil
         }
     }
 

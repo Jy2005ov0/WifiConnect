@@ -42,6 +42,8 @@ final class ConnectionModel {
             }
         } catch LoginError.notOnWiFi where automatic {
             state = .idle
+        } catch LoginError.notSchoolPortal {
+            state = .idle
         } catch {
             state = .failed(error.localizedDescription)
         }

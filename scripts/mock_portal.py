@@ -114,7 +114,10 @@ class Portal(BaseHTTPRequestHandler):
             return self.send(200, b"ok", "text/plain")
 
         if path == "/move":
-            state["building"] = parse_qs(urlparse(self.path).query).get("to", ["A"])[0]
+            building = parse_qs(urlparse(self.path).query).get("to", ["A"])[0]
+            if building not in PORTS:
+                return self.send(400, b"unknown building", "text/plain")
+            state["building"] = building
             return self.send(200, b"ok", "text/plain")
 
         if path == "/cgi-bin/login":

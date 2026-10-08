@@ -61,6 +61,7 @@
     <string name="wifi_check_location_off">请打开定位，以便应用读取 Wi-Fi 名称。在此之前，自动登录会填写任何 Wi-Fi 登录页面。</string>
     <string name="wifi_check_allow">允许</string>
     <string name="wifi_check_turn_on">打开</string>
+    <string name="error_not_school_portal">这个 Wi-Fi 的登录页面看起来不是学校的，所以应用没有自动登录。点按圆圈仍可登录。</string>
     <string name="error_other_network">当前是 %1$s，不是学校的 Wi-Fi，因此没有登录。</string>
     <string name="setting_auto_login">自动登录</string>
     <string name="setting_stay_signed_in">保持登录</string>

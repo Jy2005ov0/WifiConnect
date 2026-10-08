@@ -1,5 +1,11 @@
 package com.wificonnect.app
 
+import androidx.work.workDataOf
+import androidx.work.WorkerParameters
+import androidx.work.WorkManager
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.ExistingWorkPolicy
+import androidx.work.CoroutineWorker
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -15,9 +21,6 @@ import android.net.NetworkRequest
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * Signs in automatically: Android wakes [CaptivePortalReceiver] whenever a Wi-Fi network
@@ -59,6 +62,8 @@ object AutoLogin {
             val outcome = PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), trigger)
             if (outcome == LoginOutcome.LOGGED_IN) notifySignedIn(context)
         } catch (e: LoginError.OtherNetwork) {
+            // Not the school Wi-Fi: nothing to do, and nothing to tell you.
+        } catch (e: LoginError.NotSchoolPortal) {
             // Not the school Wi-Fi: nothing to do, and nothing to tell you.
         } catch (e: LoginError) {
             notify(context, context.getString(R.string.notify_failed_title), e.describe(context))
@@ -110,15 +115,27 @@ class CaptivePortalReceiver : BroadcastReceiver() {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK)
         }
-        val pending = goAsync()
-        val appContext = context.applicationContext
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                AutoLogin.run(appContext, network)
-            } finally {
-                pending.finish()
-            }
-        }
+        // Sign in as background work: a receiver gets only a few seconds, and a slow login page
+        // can take longer than that.
+        val request = OneTimeWorkRequestBuilder<AutoLoginWorker>()
+            .setInputData(workDataOf(AutoLoginWorker.NETWORK to (network?.networkHandle ?: -1L)))
+            .build()
+        WorkManager.getInstance(context).enqueueUniqueWork(AutoLoginWorker.NAME, ExistingWorkPolicy.REPLACE, request)
+    }
+}
+
+/** Signs in on the Wi-Fi that just showed a login page. */
+class AutoLoginWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+    override suspend fun doWork(): Result {
+        val handle = inputData.getLong(NETWORK, -1L)
+        val network = if (handle >= 0) runCatching { Network.fromNetworkHandle(handle) }.getOrNull() else null
+        AutoLogin.run(applicationContext, network)
+        return Result.success()
+    }
+
+    companion object {
+        const val NAME = "auto-login"
+        const val NETWORK = "network"
     }
 }
 

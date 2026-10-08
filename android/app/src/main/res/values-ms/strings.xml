@@ -61,6 +61,7 @@
     <string name="wifi_check_location_off">Hidupkan Lokasi supaya aplikasi boleh membaca nama Wi-Fi. Sehingga itu, log masuk automatik mengisi mana-mana halaman log masuk Wi-Fi.</string>
     <string name="wifi_check_allow">Benarkan</string>
     <string name="wifi_check_turn_on">Hidupkan</string>
+    <string name="error_not_school_portal">Halaman log masuk Wi-Fi ini tidak kelihatan seperti milik universiti anda, jadi aplikasi tidak log masuk sendiri. Ketik bulatan untuk log masuk juga.</string>
     <string name="error_other_network">Pada %1$s, bukan Wi-Fi universiti anda, jadi aplikasi tidak log masuk.</string>
     <string name="setting_auto_login">Log Masuk Secara Automatik</string>
     <string name="setting_stay_signed_in">Kekal Log Masuk</string>

@@ -61,6 +61,7 @@
     <string name="wifi_check_location_off">Wi-Fi பெயரைப் படிக்க இருப்பிடத்தை இயக்கவும். அதுவரை, தானியங்கு உள்நுழைவு எந்த Wi-Fi உள்நுழைவுப் பக்கத்தையும் நிரப்பும்.</string>
     <string name="wifi_check_allow">அனுமதி</string>
     <string name="wifi_check_turn_on">இயக்கு</string>
+    <string name="error_not_school_portal">இந்த Wi-Fi-இன் உள்நுழைவுப் பக்கம் உங்கள் பள்ளியுடையது போலத் தெரியவில்லை, அதனால் செயலி தானாக உள்நுழையவில்லை. இருந்தாலும் உள்நுழைய வட்டத்தைத் தட்டவும்.</string>
     <string name="error_other_network">%1$s உங்கள் பள்ளி Wi-Fi அல்ல, அதனால் செயலி உள்நுழையவில்லை.</string>
     <string name="setting_auto_login">தானாக உள்நுழை</string>
     <string name="setting_stay_signed_in">உள்நுழைந்தே இரு</string>

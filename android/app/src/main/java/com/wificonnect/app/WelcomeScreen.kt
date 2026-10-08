@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.LocalConfiguration
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.ui.draw.clip
@@ -181,7 +182,8 @@ private fun Clock(modifier: Modifier = Modifier) {
             now = clockTime()
         }
     }
-    val locale = Locale.getDefault()
+    // The app's own language, which may differ from the phone's.
+    val locale = LocalConfiguration.current.locales[0] ?: Locale.getDefault()
     val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(locale, "EEEEdMMMM"), locale).format(now)
     val time = SimpleDateFormat(if (DateFormat.is24HourFormat(context)) "H:mm" else "h:mm", locale).format(now)
 

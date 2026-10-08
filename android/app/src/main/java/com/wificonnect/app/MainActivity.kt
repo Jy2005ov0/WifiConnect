@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -41,11 +42,20 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : FragmentActivity() {
+    private companion object {
+        const val PENDING_SETUP = "pendingSetup"
+    }
+
     /** A classmate's setup from a wificonnect://setup link, waiting for confirmation. */
     private val incomingSetup = mutableStateOf<SharedSetup?>(null)
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        incomingSetup.value?.let { outState.putString(PENDING_SETUP, it.toUrl()) }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -55,7 +65,10 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) incomingSetup.value = SharedSetup.fromUrl(intent?.dataString)
+        incomingSetup.value = SharedSetup.fromUrl(
+            // Keep a classmate's setup waiting for confirmation when the screen is recreated (e.g. dark mode).
+            if (savedInstanceState == null) intent?.dataString else savedInstanceState.getString(PENDING_SETUP)
+        )
         enableEdgeToEdge()
         AutoLogin.sync(this)
 
@@ -89,6 +102,8 @@ class MainActivity : FragmentActivity() {
                 var showHistory by rememberSaveable { mutableStateOf(demo?.showHistory ?: false) }
                 var showShare by rememberSaveable { mutableStateOf(demo?.showShare ?: false) }
                 var showSpeed by rememberSaveable { mutableStateOf(demo?.showSpeed ?: false) }
+                // Bumped when settings change outside the main screen, so it shows the new Wi-Fi name.
+                var settingsVersion by remember { mutableStateOf(0) }
                 // The welcome page shows each time the app opens (not in screenshots or tests unless asked for).
                 var showWelcome by rememberSaveable {
                     mutableStateOf(demo?.showWelcome ?: !(BuildConfig.DEBUG && intent.hasExtra("testStudentId")))
@@ -149,6 +164,7 @@ class MainActivity : FragmentActivity() {
                         confirmButton = {
                             TextButton(onClick = {
                                 setup.apply(context)
+                                settingsVersion++
                                 incomingSetup.value = null
                             }) { Text(stringResource(R.string.import_use)) }
                         },
@@ -192,10 +208,12 @@ class MainActivity : FragmentActivity() {
                             onDone = {
                                 hasCredentials = Credentials.isConfigured(context)
                                 showSettings = false
+                                settingsVersion++
                                 if (PortalSettings.load(context).autoLogin) askForNotifications()
                             },
                         )
                     } else {
+                        key(settingsVersion) {
                         MainScreen(
                             state = model.state,
                             hasCredentials = hasCredentials,
@@ -216,6 +234,7 @@ class MainActivity : FragmentActivity() {
                             speedSummary = speedTest.summary,
                             onOpenSpeedTest = { showSpeed = true },
                         )
+                        }
                     }
                 }
                 if (showWelcome) WelcomeScreen(onFinish = { showWelcome = false })

@@ -3473,6 +3473,34 @@
         }
       }
     },
+    "This Wi-Fi's login page doesn't look like your school's, so the app didn't sign in by itself. Tap the circle to sign in anyway.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk Wi-Fi ini tidak kelihatan seperti milik universiti anda, jadi aplikasi tidak log masuk sendiri. Ketik bulatan untuk log masuk juga."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个 Wi-Fi 的登录页面看起来不是学校的，所以应用没有自动登录。点按圆圈仍可登录。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この Wi-Fi のログインページは学校のものではないようなので、自動ではサインインしませんでした。円をタップするとサインインできます。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "இந்த Wi-Fi-இன் உள்நுழைவுப் பக்கம் உங்கள் பள்ளியுடையது போலத் தெரியவில்லை, அதனால் செயலி தானாக உள்நுழையவில்லை. இருந்தாலும் உள்நுழைய வட்டத்தைத் தட்டவும்."
+          }
+        }
+      }
+    },
     "Tip": {
       "localizations": {
         "ms": {

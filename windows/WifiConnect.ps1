@@ -255,6 +255,24 @@ if (-not $page) {
     exit 0
 }
 
+# Windows hides the Wi-Fi name when Location is off. Then only fill in a login page that looks like
+# the school's (a private campus address, or this laptop itself for the test), never a hotel's.
+if (-not $ssid) {
+    $portalHost = $page.Url.Host
+    $campusLike = $false
+    if ($portalHost -match '^\d{1,3}(\.\d{1,3}){3}$') {
+        $o = $portalHost.Split('.') | ForEach-Object { [int]$_ }
+        $campusLike = $o[0] -eq 10 -or $o[0] -eq 127 -or ($o[0] -eq 172 -and $o[1] -ge 16 -and $o[1] -le 31) -or
+            ($o[0] -eq 192 -and $o[1] -eq 168)
+    } elseif ($portalHost -eq 'localhost') {
+        $campusLike = $true
+    }
+    if (-not $campusLike) {
+        Write-Log "Couldn't read the Wi-Fi name and the login page ($portalHost) doesn't look like the school's. Not signing in."
+        exit 0
+    }
+}
+
 Write-Log "Login page: $($page.Url.AbsoluteUri)"
 $form = Find-LoginForm $page.Html $page.Url
 if (-not $form) {

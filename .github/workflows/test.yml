@@ -10,6 +10,13 @@ on:
       - "scripts/**"
       - "windows/**"
       - ".github/workflows/test.yml"
+  pull_request:
+    paths:
+      - "ios/**"
+      - "android/**"
+      - "scripts/**"
+      - "windows/**"
+      - ".github/workflows/test.yml"
   workflow_dispatch:
 
 jobs:
