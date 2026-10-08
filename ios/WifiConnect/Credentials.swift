@@ -46,12 +46,23 @@ enum Credentials {
     }
 
     private static func write(_ value: String, for account: String) {
-        SecItemDelete(query(account) as CFDictionary)
-        guard !value.isEmpty else { return }
-        var q = query(account)
-        q[kSecValueData as String] = Data(value.utf8)
-        // Readable after the first unlock so the Shortcuts automation works with the phone in your pocket.
-        q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        SecItemAdd(q as CFDictionary, nil)
+        guard !value.isEmpty else {
+            SecItemDelete(query(account) as CFDictionary)
+            return
+        }
+        // Update in place rather than delete and re-add: with a save on every keystroke, a re-add
+        // that failed left the previous value behind (the last digit of the ID went missing).
+        let data = Data(value.utf8)
+        var status = SecItemUpdate(query(account) as CFDictionary, [kSecValueData as String: data] as CFDictionary)
+        if status == errSecItemNotFound {
+            var q = query(account)
+            q[kSecValueData as String] = data
+            // Readable after the first unlock so the Shortcuts automation works with the phone in your pocket.
+            q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+            status = SecItemAdd(q as CFDictionary, nil)
+        }
+        if status != errSecSuccess {
+            print("WifiConnect: couldn't save \(account) to the Keychain (\(status))")
+        }
     }
 }

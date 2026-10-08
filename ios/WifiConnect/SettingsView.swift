@@ -198,7 +198,7 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("Done") { saveAndClose() }
                         .fontWeight(.semibold)
                 }
             }
@@ -208,6 +208,23 @@ struct SettingsView: View {
             .onChange(of: password) {
                 Credentials.password = password
             }
+            // Also when the sheet is swiped down.
+            .onDisappear(perform: saveAccount)
+        }
+    }
+
+    /// Saves what's in the boxes, so nothing typed is lost however Settings closes.
+    private func saveAccount() {
+        Credentials.studentID = studentID.trimmingCharacters(in: .whitespacesAndNewlines)
+        Credentials.password = password
+    }
+
+    private func saveAndClose() {
+        // Finish typing first, so the last character reaches the box's value, then save it.
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        DispatchQueue.main.async {
+            saveAccount()
+            dismiss()
         }
     }
 
