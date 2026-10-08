@@ -88,6 +88,9 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.draw.drawWithContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,8 +136,27 @@ fun MainScreen(
             .drawBehind { drawRect(background) }
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+            // Scrolled: a solid glass-like bar that fades softly into the content below, rather than
+            // ending in a hard edge (Apple's design guidance, via the apple-design skill).
+            val scrolled = scrollBehavior.state.collapsedFraction
+            val barColor = MaterialTheme.colorScheme.background
             LargeTopAppBar(
-                title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.Bold) },
+                modifier = Modifier.drawWithContent {
+                    drawContent()
+                    if (scrolled > 0f) {
+                        val fade = 12.dp.toPx()
+                        drawRect(
+                            Brush.verticalGradient(
+                                listOf(Color.Black.copy(alpha = 0.06f * scrolled), Color.Transparent),
+                                startY = size.height, endY = size.height + fade,
+                            ),
+                            topLeft = Offset(0f, size.height),
+                            size = Size(size.width, fade),
+                        )
+                    }
+                },
+                // Big type a little heavier and tighter.
+                title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.ExtraBold, letterSpacing = (-0.02).em) },
                 navigationIcon = {
                     IconButton(onClick = onOpenHelp) {
                         // A solid circle with a ? inside, so help is easy to spot.
@@ -162,7 +184,7 @@ fun MainScreen(
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
+                    scrolledContainerColor = barColor.copy(alpha = 0.94f),
                 ),
                 scrollBehavior = scrollBehavior,
             )
@@ -217,7 +239,8 @@ fun MainScreen(
             Text(
                 text = title(state, hasCredentials),
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = (-0.02).em,
             )
             Spacer(Modifier.height(6.dp))
             Text(

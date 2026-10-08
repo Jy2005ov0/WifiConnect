@@ -88,7 +88,9 @@ struct ContentView: View {
 
                         VStack(spacing: 6) {
                             Text(title)
-                                .font(.title.weight(.bold))
+                                // Big type a little heavier and tighter, like the page title.
+                                .font(.title.weight(.heavy))
+                                .tracking(-0.5)
                             Text(subtitle)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
