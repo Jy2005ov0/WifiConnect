@@ -196,8 +196,18 @@ done
 tap "right:Show When Opening the App"
 sleep 1
 shot welcome-off
+# The switch itself must now read off.
+switch=$(screen | python3 -c '
+import json, sys
+for e in json.load(sys.stdin):
+    if e.get("AXLabel") == "Show When Opening the App":
+        print(e.get("AXValue")); break
+')
+echo "Welcome page switch now reads: $switch"
+[[ "$switch" == "0" || "$switch" == "off" ]] || fail "Tapping the switch turns the welcome page off (it reads \"$switch\")"
 tap "Done"
 wait_for "Tap to Disconnect" 20 || fail "Done goes back to the main page"
+sleep 3
 xcrun simctl terminate "$UDID" "$BUNDLE_ID"
 xcrun simctl launch "$UDID" "$BUNDLE_ID" -testProbeURL "$PORTAL/hotspot-detect.html" > /dev/null
 sleep 3
