@@ -52,4 +52,20 @@ Post '/move?to=B'
 Run-Case 'other-building' 'utar-test' 0 $true
 
 Stop-Process -Id $server.Id -ErrorAction SilentlyContinue
+
+# ---- A campus of buildings, each with its own login page address and style (scripts/mock_campus.py) ----
+# Windows answers on every 127.x address, so each building really is at a different IP.
+$env:CAMPUS_HOSTS = 'A=127.0.0.2,B=127.0.0.3,C=127.0.0.4,D=127.0.0.5,E=127.0.0.6,AUTH=127.0.0.7'
+$campus = Start-Process python -ArgumentList 'scripts/mock_campus.py', '9000' -PassThru `
+    -RedirectStandardOutput campus.log -RedirectStandardError campus-err.log
+$portal = 'http://127.0.0.1:9000'
+for ($i = 0; $i -lt 30; $i++) {
+    try { Invoke-WebRequest "$portal/status" -UseBasicParsing | Out-Null; break } catch { Start-Sleep -Seconds 1 }
+}
+Post '/reset'
+foreach ($building in 'A', 'B', 'C', 'D', 'E') {
+    Post "/move?to=$building"
+    Run-Case "campus-$building" 'utar-test' 0 $true
+}
+Stop-Process -Id $campus.Id -ErrorAction SilentlyContinue
 exit $failures

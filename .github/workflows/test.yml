@@ -49,6 +49,7 @@ jobs:
           path: |
             e2e/
             portal.log
+            campus.log
 
   android:
     runs-on: ubuntu-latest
@@ -92,6 +93,7 @@ jobs:
           path: |
             e2e/
             portal.log
+            campus.log
 
   windows:
     runs-on: windows-latest
@@ -110,3 +112,5 @@ jobs:
           path: |
             portal.log
             portal-err.log
+            campus.log
+            campus-err.log

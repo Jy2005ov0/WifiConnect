@@ -64,4 +64,24 @@ curl -s -X POST "$PORTAL/reset" > /dev/null
 curl -s -X POST "$PORTAL/move?to=B" > /dev/null
 run_case other-building utar-test "signed in" true
 
+# ---- A campus of buildings, each with its own login page address and style (scripts/mock_campus.py) ----
+# The emulator reaches this computer at 10.0.2.2 and at the computer's own network addresses,
+# so the buildings are spread over all of them.
+IPS=($(hostname -I))
+IP1=${IPS[0]:-10.0.2.2}
+IP2=${IPS[1]:-$IP1}
+CAMPUS_HOSTS="A=10.0.2.2,B=$IP1,C=$IP2,D=10.0.2.2,E=$IP1,AUTH=$IP2" \
+  nohup python3 scripts/mock_campus.py 9000 > campus.log 2>&1 &
+for _ in $(seq 1 30); do curl -s http://127.0.0.1:9000/status > /dev/null && break; sleep 1; done
+head -1 campus.log
+PORTAL=http://127.0.0.1:9000
+PORTAL_FROM_EMULATOR=http://10.0.2.2:9000
+curl -s -X POST "$PORTAL/reset" > /dev/null
+# Walk from building to building: each one logs you out, so sign in again, then sign out.
+for building in A B C D E; do
+  curl -s -X POST "$PORTAL/move?to=$building" > /dev/null
+  run_case "campus-$building" utar-test "signed in" true
+  run_case "campus-$building-sign-out" utar-test "SignedOut" false --es testAction signOut
+done
+
 exit $failures
