@@ -3,7 +3,7 @@
 WiFi Connect isn't on the App Store or Google Play, so you install it yourself. GitHub builds both versions automatically. You download the file and put it on your phone.
 
 - [Android](#android): about 5 minutes, nothing else needed.
-- [iPhone](#iphone): about 15 minutes the first time, using a Windows PC (or a Mac) and a USB cable.
+- [iPhone](#iphone): about 15 minutes the first time. **No Mac needed**: a Windows PC and a USB cable are enough.
 - [Windows laptop](#windows-laptop): about 2 minutes. Signs your laptop in to campus Wi-Fi too.
 
 After installing, follow [First-time setup](#first-time-setup).
@@ -12,7 +12,16 @@ After installing, follow [First-time setup](#first-time-setup).
 
 ## Download the app file from GitHub
 
-Both platforms start here. You need to be signed in to GitHub.
+Both platforms start here.
+
+**The easy way (no GitHub account needed):** open the **[Latest build](https://github.com/Jy2005ov0/WifiConnect/releases/tag/latest)** release and download:
+
+- **[WifiConnect.apk](https://github.com/Jy2005ov0/WifiConnect/releases/download/latest/WifiConnect.apk)** for Android, or
+- **[WifiConnect.ipa](https://github.com/Jy2005ov0/WifiConnect/releases/download/latest/WifiConnect.ipa)** for iPhone.
+
+GitHub updates these files every time the app changes.
+
+**From the build page instead** (you need to be signed in to GitHub):
 
 1. Open this repository on GitHub and click the **Actions** tab at the top.
 2. In the left sidebar, click **Build Android app** or **Build iPhone app**.
@@ -96,10 +105,18 @@ Until the repository has its own signing key, each GitHub build is signed with a
 **You need:**
 
 - An iPhone on **iOS 17 or later**.
-- A **Windows 10/11 PC** and a **USB cable** for your iPhone. A Mac also works; see [With a Mac](#with-a-mac-instead).
+- A **Windows 10/11 PC** and a **USB cable** for your iPhone. **You don't need a Mac.** (A Mac also works; see [With a Mac](#with-a-mac-instead).)
 - An **Apple ID**. A free one works. Some people use a second Apple ID just for sideloading, but your normal one is fine.
 
-Apple only allows App Store apps unless you sign the app yourself. **Sideloadly** does that for you using your Apple ID.
+Apple only allows App Store apps unless you sign the app yourself with your Apple ID. On Windows there are two free tools that do this:
+
+| | [Sideloadly](#1-install-the-tools-on-your-pc-first-time-only) (steps 1–5 below) | [AltStore](#no-mac-option-2-altstore) |
+| --- | --- | --- |
+| **Best for** | The simplest first install | Installing and renewing from the iPhone itself |
+| **How** | Drag `WifiConnect.ipa` into Sideloadly on the PC | Open `WifiConnect.ipa` in the AltStore app on the iPhone |
+| **Renewing every 7 days** | From the PC (or automatically over Wi-Fi) | In AltStore on the iPhone, while AltServer runs on your PC on the same Wi-Fi |
+
+> **About iTunes:** both tools need iTunes installed, but only so Windows can talk to the iPhone. iTunes itself can't install `.ipa` files any more (Apple removed that in 2017), so don't try to drag the app into iTunes.
 
 ### 1. Install the tools on your PC (first time only)
 
@@ -150,7 +167,23 @@ With a free Apple ID, Apple lets sideloaded apps run for **7 days**. After that 
 
 ### Updating on iPhone
 
-Install the new `WifiConnect.ipa` with Sideloadly using the **same Apple ID**. It replaces the old version and keeps your settings.
+Download the new `WifiConnect.ipa` from the [Latest build](https://github.com/Jy2005ov0/WifiConnect/releases/tag/latest) release and install it with Sideloadly (or AltStore › **My Apps** › **+**) using the **same Apple ID**. It replaces the old version and keeps your settings.
+
+### No-Mac option 2: AltStore
+
+AltStore is a small app store on your iPhone that installs and renews apps you sign with your Apple ID. A helper, **AltServer**, runs on your Windows PC.
+
+1. Do [step 1](#1-install-the-tools-on-your-pc-first-time-only) parts 1–3 (iTunes and iCloud from Apple's website, not the Microsoft Store). You don't need Sideloadly.
+2. Download **AltServer for Windows** from [altstore.io](https://altstore.io), install it and start it. It runs as an icon in the system tray (bottom right, next to the clock).
+3. Plug in your iPhone, unlock it and tap **Trust** if asked.
+4. Click the AltServer tray icon › **Install AltStore** › choose your iPhone, then sign in with your Apple ID.
+5. On the iPhone, do [step 4](#4-allow-the-app-on-your-iphone-first-time-only) (Developer Mode and trusting your Apple ID), then open **AltStore**.
+6. On the iPhone, open the **[WifiConnect.ipa](https://github.com/Jy2005ov0/WifiConnect/releases/download/latest/WifiConnect.ipa)** link in Safari and download it. It goes to the **Files** app.
+7. In AltStore, go to **My Apps**, tap **+** at the top left and choose `WifiConnect.ipa` from Files. AltStore signs and installs it.
+
+**Renewing:** keep AltServer running on your PC. When your iPhone is on the same Wi-Fi, open AltStore › **My Apps** › **Refresh All**, or let it refresh by itself in the background. The same free Apple ID limits apply (3 apps, 7 days).
+
+AltStore changes from time to time. If a step looks different, follow the current guide at [faq.altstore.io](https://faq.altstore.io).
 
 ### With a Mac instead
 
@@ -169,6 +202,7 @@ The same 7-day limit applies with a free Apple ID. Press **Run** again to renew.
 | Problem | Fix |
 | --- | --- |
 | Sideloadly doesn't see the iPhone | Use a data cable (not charge-only). Unlock the phone and tap **Trust**. Reinstall iTunes from apple.com, not the Microsoft Store. |
+| AltServer doesn't see the iPhone, or AltStore can't refresh | Same as above, and in iTunes (with the iPhone plugged in) turn on **Sync with this iPhone over Wi-Fi** so refreshing works without the cable. The PC and iPhone must be on the same Wi-Fi. |
 | "Guru Meditation" or "Your session has expired" | Apple's sign-in timed out. Click **Start** again. |
 | "Maximum number of apps" or "You have reached the limit" | Free Apple IDs allow 3 sideloaded apps. Delete one you don't use, or use another Apple ID. |
 | "Untrusted Developer" when opening the app | Do [step 4](#4-allow-the-app-on-your-iphone-first-time-only), part 2. |

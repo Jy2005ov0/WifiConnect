@@ -59,8 +59,8 @@ The short version:
 
 | | Android | iPhone |
 | --- | --- | --- |
-| **Get the file** | **Actions › Build Android app ›** newest ✅ run **› WifiConnect-apk** | **Actions › Build iPhone app ›** newest ✅ run **› WifiConnect-ipa** |
-| **Install** | Open `WifiConnect.apk` on the phone and allow **Install unknown apps** | Use [Sideloadly](https://sideloadly.io) on Windows (or Xcode on a Mac) with your Apple ID |
+| **Get the file** | [**WifiConnect.apk**](https://github.com/Jy2005ov0/WifiConnect/releases/download/latest/WifiConnect.apk) from the [Latest build](https://github.com/Jy2005ov0/WifiConnect/releases/tag/latest) release | [**WifiConnect.ipa**](https://github.com/Jy2005ov0/WifiConnect/releases/download/latest/WifiConnect.ipa) from the [Latest build](https://github.com/Jy2005ov0/WifiConnect/releases/tag/latest) release |
+| **Install** | Open `WifiConnect.apk` on the phone and allow **Install unknown apps** | **No Mac needed:** [Sideloadly](https://sideloadly.io) or [AltStore](https://altstore.io) on a Windows PC, with your Apple ID (or Xcode on a Mac). iTunes must be installed for both, but can't install the app by itself. |
 | **First time** | Set battery to **Unrestricted** so auto sign-in keeps working | Turn on **Developer Mode** and trust your Apple ID under **VPN & Device Management** |
 | **Keep it working** | Nothing to do | Renew every 7 days with a free Apple ID |
 | **Auto sign-in** | Built in, on by default | A Shortcuts automation for `utarwifi` |
