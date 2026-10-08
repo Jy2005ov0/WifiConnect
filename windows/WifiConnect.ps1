@@ -196,21 +196,21 @@ function Invoke-Page([Uri]$Url, $Session, [string]$Method = 'GET', $Body = $null
     } catch [System.Net.WebException] {
         # Windows PowerShell throws on any error status, but login pages often answer with one
         # (511 Network Authentication Required, 403...). Read the page anyway.
-        $errorResponse = $_.Exception.Response
+        $failure = $_
+        $errorResponse = $failure.Exception.Response
         if (-not $errorResponse) { throw }
-        # Windows PowerShell has usually read the page already and keeps it in ErrorDetails;
-        # otherwise read it from the response.
-        $html = if ($_.ErrorDetails -and $_.ErrorDetails.Message) { $_.ErrorDetails.Message } else { '' }
-        if (-not $html) {
-            try {
-                $stream = $errorResponse.GetResponseStream()
-                # Windows PowerShell has already read this stream once: rewind it first.
-                if ($stream.CanSeek) { $stream.Position = 0 }
-                $reader = New-Object System.IO.StreamReader($stream)
-                $html = $reader.ReadToEnd()
-                $reader.Close()
-            } catch { $html = '' }
-        }
+        # Read the page from the response (Windows PowerShell has already read it once, so rewind).
+        # ErrorDetails is only a fallback: Windows PowerShell strips the HTML tags there, which
+        # removes the <meta refresh> and <form> the script needs.
+        $html = ''
+        try {
+            $stream = $errorResponse.GetResponseStream()
+            if ($stream.CanSeek) { $stream.Position = 0 }
+            $reader = New-Object System.IO.StreamReader($stream)
+            $html = $reader.ReadToEnd()
+            $reader.Close()
+        } catch { $html = '' }
+        if (-not $html -and $failure.ErrorDetails -and $failure.ErrorDetails.Message) { $html = $failure.ErrorDetails.Message }
         if (-not $html) { Write-Log "The page at $Url answered $([int]$errorResponse.StatusCode) with no content." }
         return [pscustomobject]@{ Url = [Uri]$errorResponse.ResponseUri; Html = $html; Status = [int]$errorResponse.StatusCode }
     }
