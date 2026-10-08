@@ -7,9 +7,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /** Home Screen widget: shows the last sign-in and has a Sign In button. */
 class StatusWidget : AppWidgetProvider() {
@@ -21,16 +18,8 @@ class StatusWidget : AppWidgetProvider() {
         super.onReceive(context, intent)
         if (intent.action != ACTION_SIGN_IN) return
         updateAll(context, working = true)
-        val pending = goAsync()
-        val appContext = context.applicationContext
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                runCatching { PortalLogin.logIn(appContext, trigger = SignInTrigger.WIDGET) }
-            } finally {
-                updateAll(appContext)
-                pending.finish()
-            }
-        }
+        // As background work: a receiver only gets a few seconds, and a login page can be slower.
+        AutoLoginWorker.enqueue(context, null, SignInTrigger.WIDGET)
     }
 
     companion object {

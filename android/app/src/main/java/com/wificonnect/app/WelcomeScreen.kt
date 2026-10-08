@@ -83,12 +83,7 @@ fun WelcomeScreen(onFinish: () -> Unit) {
         Box(
             Modifier
                 .fillMaxSize()
-                .graphicsLayer {
-                    translationY = offset.value
-                    alpha = 1f - (-offset.value / height).coerceIn(0f, 1f) * 0.6f
-                }
-                // Frosted glass: the app shows through, blurred (Android 12+), behind the welcome.
-                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.78f))
+                // Before graphicsLayer: the finger is tracked on the screen, not on the moving page.
                 .pointerInput(height) {
                     val velocity = VelocityTracker()
                     detectVerticalDragGestures(
@@ -108,6 +103,12 @@ fun WelcomeScreen(onFinish: () -> Unit) {
                         },
                     )
                 }
+                .graphicsLayer {
+                    translationY = offset.value
+                    alpha = 1f - (-offset.value / height).coerceIn(0f, 1f) * 0.6f
+                }
+                // Frosted glass: the app shows through, blurred (Android 12+), behind the welcome.
+                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.78f))
                 .semantics {
                     customActions = listOf(CustomAccessibilityAction(swipeLabel) { onFinish(); true })
                 }

@@ -43,8 +43,14 @@ data class HtmlForm(
                 // Usually "I agree to the terms" or "remember me": tick it.
                 "checkbox" -> fields += FormField(input.name, input.value.ifEmpty { "on" })
                 "radio" -> if (input.checked) fields += FormField(input.name, input.value)
-                "submit", "image" -> if (!addedSubmit) {
+                "submit" -> if (!addedSubmit) {
                     fields += FormField(input.name, input.value)
+                    addedSubmit = true
+                }
+                // Browsers send where an image button was clicked, not its value.
+                "image" -> if (!addedSubmit) {
+                    fields += FormField(input.name + ".x", "0")
+                    fields += FormField(input.name + ".y", "0")
                     addedSubmit = true
                 }
                 "button", "reset", "file" -> Unit
@@ -61,7 +67,11 @@ data class HtmlForm(
 
         private val OPTIONS = setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
         private val FORM = Regex("""<form\b([^>]*)>(.*?)</form\s*>""", OPTIONS)
-        private val INPUT = Regex("""<input\b([^>]*)>""", OPTIONS)
+        private val CONTROL = Regex(
+            """<input\b([^>]*)>|<select\b([^>]*)>(.*?)</select\s*>|<textarea\b([^>]*)>(.*?)</textarea\s*>|<button\b([^>]*)>(.*?)</button\s*>""",
+            OPTIONS,
+        )
+        private val OPTION = Regex("""<option\b([^>]*)>([^<]*)""", OPTIONS)
         private val META = Regex("""<meta\b([^>]*)>""", OPTIONS)
         private val META_URL = Regex("""url\s*=\s*['"]?([^'"]+)""", OPTIONS)
         private val JS_REDIRECTS = listOf(
@@ -81,7 +91,7 @@ data class HtmlForm(
             val clean = COMMENT.replace(html, "")
             for (match in FORM.findAll(clean)) {
                 val attrs = attributes(match.groupValues[1])
-                val inputs = parseInputs(match.groupValues[2])
+                val inputs = parseControls(match.groupValues[2])
                 if (inputs.none { it.type == "password" }) continue
 
                 val actionString = attrs["action"]?.let(::decodeEntities)?.trim().orEmpty()
@@ -125,22 +135,42 @@ data class HtmlForm(
         fun signOutLink(html: String, baseUrl: URL): URL? {
             val clean = COMMENT.replace(html, "")
             for (pattern in SIGN_OUT_PATTERNS) {
-                val link = pattern.find(clean)?.groupValues?.get(1) ?: continue
-                return resolve(baseUrl, decodeEntities(link))
+                for (match in pattern.findAll(clean)) {
+                    // Skip links that only run JavaScript ("javascript:logout()") or don't resolve.
+                    val url = resolve(baseUrl, decodeEntities(match.groupValues[1])) ?: continue
+                    if (url.protocol == "http" || url.protocol == "https") return url
+                }
             }
             return null
         }
 
-        private fun parseInputs(html: String): List<Input> =
-            INPUT.findAll(html).mapNotNull { match ->
-                val attrs = attributes(match.groupValues[1])
+        /**
+         * The form's fields in page order: inputs, drop-downs, text areas and named buttons.
+         * Disabled fields are left out, as browsers do.
+         */
+        private fun parseControls(html: String): List<Input> =
+            CONTROL.findAll(html).mapNotNull { match ->
+                val g = match.groups
+                val tag = g[1] ?: g[2] ?: g[4] ?: g[6] ?: return@mapNotNull null
+                val attrs = attributes(tag.value)
                 val name = attrs["name"]?.takeIf { it.isNotEmpty() } ?: return@mapNotNull null
-                Input(
-                    name = decodeEntities(name),
-                    type = (attrs["type"] ?: "text").lowercase(),
-                    value = decodeEntities(attrs["value"].orEmpty()),
-                    checked = "checked" in attrs,
-                )
+                if ("disabled" in attrs) return@mapNotNull null
+                val (type, value) = when {
+                    g[1] != null -> (attrs["type"] ?: "text").lowercase() to attrs["value"].orEmpty()
+                    g[2] != null -> {
+                        // The selected option, or the first one, like a browser.
+                        val options = OPTION.findAll(g[3]?.value.orEmpty()).map {
+                            attributes(it.groupValues[1]) to it.groupValues[2]
+                        }.toList()
+                        val chosen = options.firstOrNull { "selected" in it.first } ?: options.firstOrNull()
+                        "select" to (chosen?.let { it.first["value"] ?: it.second.trim() } ?: "")
+                    }
+                    g[4] != null -> "textarea" to g[5]?.value.orEmpty()
+                    // A <button> submits unless it says otherwise.
+                    else -> (if ((attrs["type"] ?: "submit").equals("submit", true)) "submit" else "button") to
+                        attrs["value"].orEmpty()
+                }
+                Input(name = decodeEntities(name), type = type, value = decodeEntities(value), checked = "checked" in attrs)
             }.toList()
 
         fun attributes(tagBody: String): Map<String, String> {

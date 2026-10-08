@@ -67,6 +67,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
     implementation("androidx.biometric:biometric:1.1.0")
+    // Biometric brings an old Fragment that rejects the request codes of today's permission
+    // prompts ("Can only use lower 16 bits for requestCode"): use a current one.
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation("com.google.zxing:core:3.5.3")
 
     debugImplementation("androidx.compose.ui:ui-tooling")

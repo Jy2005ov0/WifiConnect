@@ -41,6 +41,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+/** Lives as long as the app's process. */
+private object AppSession {
+    var started = false
+}
+
 class MainActivity : FragmentActivity() {
     private companion object {
         const val PENDING_SETUP = "pendingSetup"
@@ -112,11 +117,16 @@ class MainActivity : FragmentActivity() {
                 // With the app lock on, never reopen Settings (and the password) without unlocking,
                 // e.g. when Android restores the app after closing it in the background.
                 LaunchedEffect(Unit) {
-                    if (demo == null && hasCredentials && PortalSettings.load(context).requireUnlock) {
+                    // Only when the app process starts (e.g. Android restoring it), not when the
+                    // screen is redrawn for a language or dark-mode change after you unlocked.
+                    if (!AppSession.started && demo == null && hasCredentials &&
+                        PortalSettings.load(context).requireUnlock
+                    ) {
                         showSettings = false
                         showHistory = false
                         showShare = false
                     }
+                    AppSession.started = true
                 }
 
                 // Lets automatic sign-in tell you when it has signed you in.

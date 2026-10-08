@@ -8,6 +8,8 @@ import android.net.NetworkCapabilities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -105,11 +107,14 @@ class PortalLogin(private val network: Network) {
             trace.method = submission.method
             trace.fieldNames = submission.fields.map { it.name }
 
+            // The page after signing in is often slow or cut off as the network lets you through,
+            // so a failure there isn't the final word: check whether you're online either way.
+            var submitError: LoginError? = null
             try {
                 val landing = submit(submission, referer = page.url)
                 trace.signOutUrl = HtmlForm.signOutLink(landing.html, landing.url)
             } catch (e: IOException) {
-                throw LoginError.Network(e.message ?: e.javaClass.simpleName)
+                submitError = LoginError.Network(e.message ?: e.javaClass.simpleName)
             }
 
             // Give the network a moment to let us through, then confirm.
@@ -117,7 +122,7 @@ class PortalLogin(private val network: Network) {
                 if (attempt > 0) delay(1_500)
                 if (runCatching { probe() }.getOrNull() == ProbeResult.Online) return@withContext LoginOutcome.LOGGED_IN
             }
-            throw LoginError.StillOffline
+            throw submitError ?: LoginError.StillOffline
         }
 
     /** True when this network is showing a login page, i.e. you've been signed out. */
@@ -151,7 +156,8 @@ class PortalLogin(private val network: Network) {
     /** Opens the sign-out link, then checks the login page is back. */
     suspend fun signOut(url: URL) = withContext(Dispatchers.IO) {
         try {
-            request(url)
+            // Some sign-out links are forms that only accept POST.
+            if (request(url).status == 405) request(url, method = "POST", body = "")
         } catch (e: IOException) {
             throw LoginError.Network(e.message ?: e.javaClass.simpleName)
         }
@@ -166,9 +172,9 @@ class PortalLogin(private val network: Network) {
     private fun submit(submission: FormSubmission, referer: URL): Page {
         val body = submission.fields.joinToString("&") { "${encode(it.name)}=${encode(it.value)}" }
         if (submission.method.equals("GET", ignoreCase = true)) {
-            val base = submission.url.toString()
-            val separator = if (submission.url.query.isNullOrEmpty()) "?" else "&"
-            return request(URL(base + separator + body), referer = referer)
+            // Like a browser, the form's fields replace the action's own query.
+            val base = submission.url.toString().substringBefore('?').substringBefore('#')
+            return request(URL("$base?$body"), referer = referer)
         }
         return request(submission.url, method = "POST", body = body, referer = referer)
     }
@@ -289,8 +295,11 @@ class PortalLogin(private val network: Network) {
         @Suppress("DEPRECATION")
         fun wifiNetwork(context: Context): Network? {
             val cm = context.getSystemService(ConnectivityManager::class.java)
+            // Not a VPN: it reports the Wi-Fi under it, but its traffic goes through the tunnel.
             return cm.allNetworks.firstOrNull {
-                cm.getNetworkCapabilities(it)?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+                val caps = cm.getNetworkCapabilities(it)
+                caps?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true &&
+                    !caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
             }
         }
 
@@ -298,11 +307,16 @@ class PortalLogin(private val network: Network) {
          * Signs in on the Wi-Fi network, then asks Android to re-check it so the "Sign in" notice goes away.
          * Every attempt is recorded for the widget, the tile and the history.
          */
+        /** One sign-in or sign-out at a time; a second sign-in then just finds you online. */
+        private val oneAtATime = Mutex()
+
         suspend fun logIn(
             context: Context,
             network: Network? = wifiNetwork(context),
             trigger: SignInTrigger = SignInTrigger.APP,
-        ): LoginOutcome {
+        ): LoginOutcome = oneAtATime.withLock { logInNow(context, network, trigger) }
+
+        private suspend fun logInNow(context: Context, network: Network?, trigger: SignInTrigger): LoginOutcome {
             // Automatic sign-in only fills in your school's login page, never a hotel's or a café's.
             val automatic = trigger == SignInTrigger.AUTOMATIC || trigger == SignInTrigger.BACKGROUND
             if (automatic) WifiName.otherNetwork(context, network)?.let { throw LoginError.OtherNetwork(it) }
@@ -370,12 +384,15 @@ class PortalLogin(private val network: Network) {
         private fun rememberSignOutLink(context: Context, trace: LoginTrace?) {
             val edit = portalPrefs(context).edit()
             trace?.portalUrl?.let { edit.putString("lastPortal", it.toString()) }
-            trace?.signOutUrl?.let { edit.putString("signOut", it.toString()) }
+            // Don't keep a link from another building's login page.
+            trace?.signOutUrl?.let { edit.putString("signOut", it.toString()) } ?: edit.remove("signOut")
             edit.apply()
         }
 
         /** Signs out using the link found after signing in, or the one set in Settings. */
-        suspend fun signOut(context: Context) {
+        suspend fun signOut(context: Context) = oneAtATime.withLock { signOutNow(context) }
+
+        private suspend fun signOutNow(context: Context) {
             val started = System.currentTimeMillis()
             try {
                 val prefs = portalPrefs(context)
@@ -393,7 +410,7 @@ class PortalLogin(private val network: Network) {
                     HistoryEntry(started, SignInTrigger.APP, HistoryEntry.Result.SIGNED_OUT,
                         durationMs = System.currentTimeMillis() - started),
                 )
-                SignInStatus.save(context, SignInStatus.Kind.SIGNED_OUT, "")
+                SignInStatus.save(context, SignInStatus.Kind.SIGNED_OUT, "", wifi)
             } catch (e: LoginError) {
                 History.add(
                     context,

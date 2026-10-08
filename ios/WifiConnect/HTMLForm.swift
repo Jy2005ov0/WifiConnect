@@ -142,8 +142,12 @@ struct HTMLForm {
         ]
         let clean = stripComments(html)
         for pattern in patterns {
-            if let link = clean.regexMatches(pattern).first?[1] {
-                return URL(string: decodeEntities(link), relativeTo: baseURL)?.absoluteURL
+            for match in clean.regexMatches(pattern) {
+                // Skip links that only run JavaScript ("javascript:logout()") or don't resolve.
+                guard let link = match[1],
+                      let url = URL(string: decodeEntities(link), relativeTo: baseURL)?.absoluteURL,
+                      url.scheme == "http" || url.scheme == "https" else { continue }
+                return url
             }
         }
         return nil

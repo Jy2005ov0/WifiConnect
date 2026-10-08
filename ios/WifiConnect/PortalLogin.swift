@@ -202,7 +202,13 @@ struct PortalLogin {
         guard let url, url.host != nil else { throw LoginError.noSignOutLink }
 
         do {
-            _ = try await fetch(url)
+            let (_, response) = try await session.data(from: url)
+            // Some sign-out links are forms that only accept POST.
+            if (response as? HTTPURLResponse)?.statusCode == 405 {
+                var request = URLRequest(url: url)
+                request.httpMethod = "POST"
+                _ = try await session.data(for: request)
+            }
         } catch {
             throw LoginError.network(error.localizedDescription)
         }

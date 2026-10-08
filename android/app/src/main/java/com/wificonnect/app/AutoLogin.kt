@@ -56,10 +56,12 @@ object AutoLogin {
 
     suspend fun run(context: Context, network: Network?, trigger: SignInTrigger = SignInTrigger.AUTOMATIC) {
         if (!Credentials.isConfigured(context)) return
-        // You chose Disconnect: don't sign straight back in on your behalf.
-        if (trigger == SignInTrigger.AUTOMATIC && SignInStatus.load(context)?.kind == SignInStatus.Kind.SIGNED_OUT) return
+        val wifi = network ?: PortalLogin.wifiNetwork(context)
+        // You chose Disconnect on this connection: don't sign straight back in on your behalf.
+        if (trigger != SignInTrigger.WIDGET && SignInStatus.signedOutOn(context, wifi)) return
+        val before = SignInStatus.load(context)
         try {
-            val outcome = PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), trigger)
+            val outcome = PortalLogin.logIn(context, wifi, trigger)
             if (outcome == LoginOutcome.LOGGED_IN) notifySignedIn(context)
         } catch (e: LoginError.OtherNetwork) {
             // Not the school Wi-Fi: nothing to do, and nothing to tell you.
@@ -70,7 +72,10 @@ object AutoLogin {
             }
             // Not the school Wi-Fi: nothing to do, and nothing to tell you.
         } catch (e: LoginError) {
-            notify(context, context.getString(R.string.notify_failed_title), e.describe(context))
+            // Stay Signed In tries every 15 minutes: only tell you when something new goes wrong.
+            val repeat = trigger == SignInTrigger.BACKGROUND && before?.kind == SignInStatus.Kind.FAILED &&
+                before.message == e.describe(context)
+            if (!repeat) notify(context, context.getString(R.string.notify_failed_title), e.describe(context))
         }
     }
 
@@ -121,10 +126,7 @@ class CaptivePortalReceiver : BroadcastReceiver() {
         }
         // Sign in as background work: a receiver gets only a few seconds, and a slow login page
         // can take longer than that.
-        val request = OneTimeWorkRequestBuilder<AutoLoginWorker>()
-            .setInputData(workDataOf(AutoLoginWorker.NETWORK to (network?.networkHandle ?: -1L)))
-            .build()
-        WorkManager.getInstance(context).enqueueUniqueWork(AutoLoginWorker.NAME, ExistingWorkPolicy.KEEP, request)
+        AutoLoginWorker.enqueue(context, network, SignInTrigger.AUTOMATIC)
     }
 }
 
@@ -133,13 +135,29 @@ class AutoLoginWorker(context: Context, params: WorkerParameters) : CoroutineWor
     override suspend fun doWork(): Result {
         val handle = inputData.getLong(NETWORK, -1L)
         val network = if (handle >= 0) runCatching { Network.fromNetworkHandle(handle) }.getOrNull() else null
-        AutoLogin.run(applicationContext, network)
+        val trigger = runCatching { SignInTrigger.valueOf(inputData.getString(TRIGGER).orEmpty()) }
+            .getOrDefault(SignInTrigger.AUTOMATIC)
+        AutoLogin.run(applicationContext, network, trigger)
+        if (trigger == SignInTrigger.WIDGET) StatusWidget.updateAll(applicationContext)
         return Result.success()
     }
 
     companion object {
-        const val NAME = "auto-login"
-        const val NETWORK = "network"
+        private const val NETWORK = "network"
+        private const val TRIGGER = "trigger"
+
+        /**
+         * One sign-in per Wi-Fi connection: a repeat event for the same connection doesn't cancel
+         * the one in progress, and a new building's Wi-Fi gets its own.
+         */
+        fun enqueue(context: Context, network: Network?, trigger: SignInTrigger) {
+            val request = OneTimeWorkRequestBuilder<AutoLoginWorker>()
+                .setInputData(workDataOf(NETWORK to (network?.networkHandle ?: -1L), TRIGGER to trigger.name))
+                .build()
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                "sign-in-${trigger.name}-${network?.networkHandle ?: "wifi"}", ExistingWorkPolicy.KEEP, request,
+            )
+        }
     }
 }
 
