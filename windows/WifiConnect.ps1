@@ -198,9 +198,16 @@ function Invoke-Page([Uri]$Url, $Session, [string]$Method = 'GET', $Body = $null
         # (511 Network Authentication Required, 403...). Read the page anyway.
         $errorResponse = $_.Exception.Response
         if (-not $errorResponse) { throw }
-        $reader = New-Object System.IO.StreamReader($errorResponse.GetResponseStream())
-        $html = $reader.ReadToEnd()
-        $reader.Close()
+        # Windows PowerShell has usually read the page already and keeps it in ErrorDetails;
+        # otherwise read it from the response.
+        $html = if ($_.ErrorDetails -and $_.ErrorDetails.Message) { $_.ErrorDetails.Message } else { '' }
+        if (-not $html) {
+            try {
+                $reader = New-Object System.IO.StreamReader($errorResponse.GetResponseStream())
+                $html = $reader.ReadToEnd()
+                $reader.Close()
+            } catch { $html = '' }
+        }
         return [pscustomobject]@{ Url = [Uri]$errorResponse.ResponseUri; Html = $html; Status = [int]$errorResponse.StatusCode }
     }
     # Where the redirects ended up (Windows PowerShell vs PowerShell 7).
