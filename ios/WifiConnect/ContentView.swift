@@ -126,7 +126,12 @@ struct ContentView: View {
                     Button {
                         showHowTo = true
                     } label: {
-                        Image(systemName: "questionmark.circle")
+                        // A solid circle with a ? inside, so help is easy to spot.
+                        Image(systemName: "questionmark")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundStyle(.white)
+                            .frame(width: 28, height: 28)
+                            .background(Circle().fill(.tint))
                     }
                     .accessibilityLabel("Help")
                 }

@@ -29,7 +29,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
+import androidx.compose.material.icons.rounded.QuestionMark
 import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
@@ -136,11 +136,21 @@ fun MainScreen(
                 title = { Text(stringResource(R.string.main_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onOpenHelp) {
-                        Icon(
-                            Icons.AutoMirrored.Rounded.HelpOutline,
-                            contentDescription = stringResource(R.string.history_help),
-                            tint = MaterialTheme.colorScheme.primary,
-                        )
+                        // A solid circle with a ? inside, so help is easy to spot.
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary),
+                        ) {
+                            Icon(
+                                Icons.Rounded.QuestionMark,
+                                contentDescription = stringResource(R.string.history_help),
+                                tint = Color.White,
+                                modifier = Modifier.size(18.dp),
+                            )
+                        }
                     }
                 },
                 actions = {
