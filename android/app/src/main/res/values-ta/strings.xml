@@ -37,6 +37,7 @@
     <string name="status_signing_in_detail">உங்கள் பள்ளியின் உள்நுழைவுப் பக்கத்துடன் தொடர்புகொள்கிறது.</string>
     <string name="status_connected">இணைக்கப்பட்டது</string>
     <string name="status_failed">உள்நுழைய முடியவில்லை</string>
+    <string name="status_sign_out_failed">வெளியேற முடியவில்லை</string>
     <string name="status_signed_out">வெளியேறிவிட்டீர்கள்</string>
     <string name="status_signed_out_detail">வளாக Wi-Fi-இலிருந்து வெளியேறிவிட்டீர்கள்.</string>
     <string name="result_signed_in">நீங்கள் உள்நுழைந்துவிட்டீர்கள், பயன்படுத்தத் தயார்.</string>

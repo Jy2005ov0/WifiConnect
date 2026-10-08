@@ -13,15 +13,34 @@ final class ConnectionModel {
     }
 
     var state: State = .idle
+    /// Whether the app itself signed you in (not just "you're already online").
+    private(set) var signedInByApp = false
+    /// Whether the last failure was signing out, so the screen says "Couldn't Sign Out".
+    private(set) var failedSigningOut = false
 
     func signOut() async {
         guard state != .working else { return }
+        let wasSignedInByApp = signedInByApp
         state = .working
+        failedSigningOut = false
         do {
             try await SignIn.signOut()
             state = .signedOut
+            signedInByApp = false
         } catch {
-            state = .failed(error.localizedDescription)
+            // Already online without the app signing you in (e.g. at home), with no sign-out link
+            // that works here: there's nothing to sign out of, so just go back to Tap to Connect.
+            let nothingToSignOut: Bool
+            switch error as? LoginError {
+            case .noSignOutLink?, .notOnWiFi?, .network?: nothingToSignOut = !wasSignedInByApp
+            default: nothingToSignOut = false
+            }
+            if nothingToSignOut {
+                state = .idle
+            } else {
+                state = .failed(error.localizedDescription)
+                failedSigningOut = true
+            }
         }
         #if DEBUG
         let run = UserDefaults.standard.string(forKey: "testRun") ?? ""
@@ -34,8 +53,10 @@ final class ConnectionModel {
     func connect(automatic: Bool = false) async {
         guard state != .working else { return }
         state = .working
+        failedSigningOut = false
         do {
             let outcome = try await SignIn.run(automatic ? .automatic : .app)
+            signedInByApp = outcome == .loggedIn
             switch outcome {
             case .alreadyOnline: state = .connected(String(localized: "You're already online."))
             case .loggedIn: state = .connected(String(localized: "You're signed in and ready to go."))

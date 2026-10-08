@@ -645,6 +645,34 @@
         }
       }
     },
+    "Couldn't Sign Out": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak Dapat Log Keluar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法退出登录"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サインアウトできませんでした"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "வெளியேற முடியவில்லை"
+          }
+        }
+      }
+    },
     "Couldn't Test": {
       "localizations": {
         "ms": {

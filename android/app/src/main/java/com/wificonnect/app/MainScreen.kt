@@ -155,7 +155,8 @@ fun MainScreen(
                 state, tint,
                 enabled = state != ConnectionState.Working,
                 description = hint ?: title(state, hasCredentials),
-                onClick = if (connected) onSignOut else onConnect,
+                // Disconnect, or try disconnecting again after it failed.
+                onClick = if (connected || (state as? ConnectionState.Failed)?.signingOut == true) onSignOut else onConnect,
             )
 
             Text(
@@ -411,7 +412,7 @@ private fun title(state: ConnectionState, hasCredentials: Boolean) = stringResou
         ConnectionState.Idle -> if (hasCredentials) R.string.status_ready else R.string.status_welcome
         ConnectionState.Working -> R.string.status_signing_in
         is ConnectionState.Connected -> R.string.status_connected
-        is ConnectionState.Failed -> R.string.status_failed
+        is ConnectionState.Failed -> if (state.signingOut) R.string.status_sign_out_failed else R.string.status_failed
         ConnectionState.SignedOut -> R.string.status_signed_out
     }
 )

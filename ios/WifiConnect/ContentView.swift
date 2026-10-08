@@ -293,7 +293,7 @@ struct ContentView: View {
         case .idle: return hasCredentials ? String(localized: "Ready") : String(localized: "Welcome")
         case .working: return String(localized: "Signing In…")
         case .connected: return String(localized: "Connected")
-        case .failed: return String(localized: "Couldn't Sign In")
+        case .failed: return model.failedSigningOut ? String(localized: "Couldn't Sign Out") : String(localized: "Couldn't Sign In")
         case .signedOut: return String(localized: "Signed Out")
         }
     }
@@ -328,7 +328,8 @@ struct ContentView: View {
     private func primaryAction() {
         if !hasCredentials {
             showSettings = true
-        } else if isConnected {
+        } else if isConnected || (model.failedSigningOut && model.state != .idle) {
+            // Disconnect, or try disconnecting again after it failed.
             Task { await model.signOut() }
         } else {
             Task { await model.connect() }

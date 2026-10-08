@@ -37,6 +37,7 @@
     <string name="status_signing_in_detail">学校のログインページと通信しています。</string>
     <string name="status_connected">接続済み</string>
     <string name="status_failed">サインインできませんでした</string>
+    <string name="status_sign_out_failed">サインアウトできませんでした</string>
     <string name="status_signed_out">サインアウトしました</string>
     <string name="status_signed_out_detail">キャンパス Wi-Fi からサインアウトしました。</string>
     <string name="result_signed_in">サインインしました。インターネットを使えます。</string>

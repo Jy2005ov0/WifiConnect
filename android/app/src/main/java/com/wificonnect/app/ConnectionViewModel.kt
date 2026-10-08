@@ -11,8 +11,10 @@ import kotlinx.coroutines.launch
 sealed interface ConnectionState {
     object Idle : ConnectionState
     object Working : ConnectionState
-    data class Connected(val message: String) : ConnectionState
-    data class Failed(val message: String) : ConnectionState
+    /** [signedInByApp]: the app signed you in, rather than you being online already. */
+    data class Connected(val message: String, val signedInByApp: Boolean = false) : ConnectionState
+    /** [signingOut]: it was signing out that failed, so the screen says "Couldn't Sign Out". */
+    data class Failed(val message: String, val signingOut: Boolean = false) : ConnectionState
     object SignedOut : ConnectionState
 }
 
@@ -21,13 +23,19 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
 
     fun signOut() {
         if (state == ConnectionState.Working) return
+        val wasSignedInByApp = (state as? ConnectionState.Connected)?.signedInByApp == true
         state = ConnectionState.Working
         viewModelScope.launch {
             state = try {
                 PortalLogin.signOut(getApplication())
                 ConnectionState.SignedOut
             } catch (e: LoginError) {
-                ConnectionState.Failed(e.describe(getApplication()))
+                // Already online without the app signing you in (e.g. at home), with no sign-out link
+                // that works here: there's nothing to sign out of, so just go back to Tap to Connect.
+                val nothingToSignOut = !wasSignedInByApp &&
+                    (e is LoginError.NoSignOutLink || e is LoginError.Network || e is LoginError.NotOnWiFi)
+                if (nothingToSignOut) ConnectionState.Idle
+                else ConnectionState.Failed(e.describe(getApplication()), signingOut = true)
             }
             if (BuildConfig.DEBUG) android.util.Log.i("WifiConnect", "Result: $state")
         }
@@ -41,7 +49,10 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
             state = try {
                 when (PortalLogin.logIn(getApplication(), trigger = if (automatic) SignInTrigger.AUTOMATIC else SignInTrigger.APP)) {
                     LoginOutcome.ALREADY_ONLINE -> ConnectionState.Connected(getApplication<Application>().getString(R.string.result_already_online))
-                    LoginOutcome.LOGGED_IN -> ConnectionState.Connected(getApplication<Application>().getString(R.string.result_signed_in))
+                    LoginOutcome.LOGGED_IN -> ConnectionState.Connected(
+                        getApplication<Application>().getString(R.string.result_signed_in),
+                        signedInByApp = true,
+                    )
                 }
             } catch (e: LoginError.OtherNetwork) {
                 ConnectionState.Idle

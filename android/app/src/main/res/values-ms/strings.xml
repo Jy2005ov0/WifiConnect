@@ -37,6 +37,7 @@
     <string name="status_signing_in_detail">Sedang berhubung dengan halaman log masuk universiti anda.</string>
     <string name="status_connected">Bersambung</string>
     <string name="status_failed">Tidak Dapat Log Masuk</string>
+    <string name="status_sign_out_failed">Tidak Dapat Log Keluar</string>
     <string name="status_signed_out">Telah Log Keluar</string>
     <string name="status_signed_out_detail">Anda telah log keluar daripada Wi-Fi kampus.</string>
     <string name="result_signed_in">Anda telah log masuk dan sedia untuk digunakan.</string>

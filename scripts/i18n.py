@@ -63,6 +63,7 @@ TABLE = [
      "Sedang berhubung dengan halaman log masuk universiti anda.", "正在与学校的登录页面通信。"),
     ("status_connected", "Connected", "Bersambung", "已连接"),
     ("status_failed", "Couldn't Sign In", "Tidak Dapat Log Masuk", "无法登录"),
+    ("status_sign_out_failed", "Couldn't Sign Out", "Tidak Dapat Log Keluar", "无法退出登录"),
     ("status_signed_out", "Signed Out", "Telah Log Keluar", "已退出登录"),
     ("status_signed_out_detail", "You've signed out of the campus Wi-Fi.",
      "Anda telah log keluar daripada Wi-Fi kampus.", "你已退出校园 Wi-Fi。"),

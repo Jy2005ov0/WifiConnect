@@ -38,6 +38,7 @@
     <string name="status_signing_in_detail">Talking to your school\'s login page.</string>
     <string name="status_connected">Connected</string>
     <string name="status_failed">Couldn\'t Sign In</string>
+    <string name="status_sign_out_failed">Couldn\'t Sign Out</string>
     <string name="status_signed_out">Signed Out</string>
     <string name="status_signed_out_detail">You\'ve signed out of the campus Wi-Fi.</string>
     <string name="result_signed_in">You\'re signed in and ready to go.</string>
