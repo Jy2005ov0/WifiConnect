@@ -76,7 +76,9 @@ authorized() { curl -s "$PORTAL/status" | python3 -c 'import json,sys; print(str
 internet_works() { [[ "$(curl -s -o /dev/null -w '%{http_code}' "$PORTAL/hotspot-detect.html")" == 200 ]] &&
   curl -s "$PORTAL/hotspot-detect.html" | grep -q Success; }
 
-curl -s -X POST "$PORTAL/reset" > /dev/null
+# The mock login page starts in the step before; wait until it answers.
+for _ in $(seq 1 30); do curl -s "$PORTAL/status" > /dev/null && break; sleep 1; done
+curl -s -X POST "$PORTAL/reset" > /dev/null || fail "The mock login page is running"
 internet_works && fail "The mock campus should start signed out"
 
 # 1. Install, as if from the download.

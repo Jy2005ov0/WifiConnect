@@ -29,6 +29,15 @@ fail() {
   results+="FAIL  $1"$'\n'
   shot failed
   screen > "$OUT/android-failed-screen.xml"
+  # What was on screen, and any crash, readable on the run's page.
+  echo "::error title=On screen when it failed::$(python3 -c '
+import re, sys
+xml = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+words = [w for w in re.findall(r"(?:text|content-desc)=\"([^\"]+)\"", xml) if w.strip()]
+print((" | ".join(words) or "(nothing readable: " + xml[:200].replace("\n", " ") + ")")[:900])
+' "$OUT/android-failed-screen.xml")"
+  crash=$(adb logcat -d -b crash 2>/dev/null | tail -20 | tr '\n' ' ' | cut -c1-900)
+  [[ -n "$crash" ]] && echo "::error title=App crash::$crash"
   finish 1
 }
 finish() {
@@ -69,7 +78,9 @@ internet_works() { [[ "$(curl -s -o /dev/null -w '%{http_code}' "$PORTAL/generat
 read -r WIDTH HEIGHT < <(adb shell wm size | grep -o '[0-9]*x[0-9]*' | tail -1 | tr x ' ')
 adb shell settings put global hide_error_dialogs 1
 adb shell svc wifi enable
-curl -s -X POST "$PORTAL/reset" > /dev/null
+# The mock login page starts in the step before; wait until it answers.
+for _ in $(seq 1 30); do curl -s "$PORTAL/status" > /dev/null && break; sleep 1; done
+curl -s -X POST "$PORTAL/reset" > /dev/null || fail "The mock login page is running"
 internet_works && fail "The mock campus should start signed out"
 
 # 1. Install, as if from the APK download.
