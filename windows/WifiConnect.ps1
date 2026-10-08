@@ -163,7 +163,18 @@ function Invoke-Page([Uri]$Url, $Session, [string]$Method = 'GET', $Body = $null
     # Windows PowerShell 5.1 doesn't allow setting Referer as a plain header.
     if ($Referer -and $PSVersionTable.PSVersion.Major -ge 6) { $params.Headers = @{ Referer = $Referer.AbsoluteUri } }
     if ($null -ne $Body) { $params.Body = $Body; $params.ContentType = 'application/x-www-form-urlencoded' }
-    $response = Invoke-WebRequest @params
+    try {
+        $response = Invoke-WebRequest @params
+    } catch [System.Net.WebException] {
+        # Windows PowerShell throws on any error status, but login pages often answer with one
+        # (511 Network Authentication Required, 403...). Read the page anyway.
+        $errorResponse = $_.Exception.Response
+        if (-not $errorResponse) { throw }
+        $reader = New-Object System.IO.StreamReader($errorResponse.GetResponseStream())
+        $html = $reader.ReadToEnd()
+        $reader.Close()
+        return [pscustomobject]@{ Url = [Uri]$errorResponse.ResponseUri; Html = $html; Status = [int]$errorResponse.StatusCode }
+    }
     # Where the redirects ended up (Windows PowerShell vs PowerShell 7).
     $final = $null
     if ($response.BaseResponse.ResponseUri) { $final = $response.BaseResponse.ResponseUri }
@@ -186,6 +197,36 @@ function Get-Probe($Session) {
     }
     return $page
 }
+
+# Windows PowerShell only offers old TLS versions unless asked. Campus login pages in each
+# building often sit on a bare private IP with a certificate that can't match it: accept those,
+# and only those (10.x, 172.16-31.x, 192.168.x). Other sites are checked as usual.
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor
+    [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls
+if (-not ('WifiConnectPortalTrust' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+
+public static class WifiConnectPortalTrust {
+    public static bool Check(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) {
+        if (errors == SslPolicyErrors.None) return true;
+        HttpWebRequest request = sender as HttpWebRequest;
+        IPAddress address;
+        if (request == null || !IPAddress.TryParse(request.RequestUri.Host, out address)) return false;
+        byte[] b = address.GetAddressBytes();
+        if (b.Length != 4) return false;
+        return b[0] == 10 || (b[0] == 172 && b[1] >= 16 && b[1] <= 31) || (b[0] == 192 && b[1] == 168);
+    }
+
+    public static void Install() {
+        ServicePointManager.ServerCertificateValidationCallback = Check;
+    }
+}
+'@
+}
+[WifiConnectPortalTrust]::Install()
 
 # ---- Main ----
 

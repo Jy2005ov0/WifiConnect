@@ -67,9 +67,9 @@ final class SpeedTest {
             upload = try await measureTransfer(upload: true)
             liveMbps = 0
             phase = .done
-        } catch is CancellationError {
-            return
         } catch {
+            // Stopping cancels the requests too, which isn't a failure.
+            if Task.isCancelled || (error as? URLError)?.code == .cancelled { return }
             liveMbps = 0
             phase = .failed(String(localized: "Couldn't reach the test server. Make sure you're connected to the Wi-Fi and online."))
         }

@@ -52,7 +52,7 @@ struct SettingsView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel(showPassword ? "Hide Password" : "Show Password")
+                        .accessibilityLabel(showPassword ? String(localized: "Hide password") : String(localized: "Show password"))
                     }
                 } header: {
                     Text("Account")
@@ -151,13 +151,14 @@ struct SettingsView: View {
                         }
                         LabeledField("ID Field", text: $usernameField, placeholder: "username")
                         LabeledField("Password Field", text: $passwordField, placeholder: "password")
-                        LabeledField("Sign-Out URL", text: $signOutURL, placeholder: "/logout")
                         TextField("Extra fields, one name=value per line", text: $extraFields, axis: .vertical)
                             .lineLimit(2...5)
                             .font(.callout.monospaced())
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
                     }
+
+                    LabeledField("Sign-Out URL", text: $signOutURL, placeholder: "/logout")
 
                     Button {
                         Task { await detect() }

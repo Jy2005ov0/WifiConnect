@@ -72,7 +72,9 @@ struct SpeedTestView: View {
                 .fontWeight(.semibold)
             }
         }
-        .sensoryFeedback(.success, trigger: test.phase == .done)
+        .sensoryFeedback(trigger: test.phase) { _, new in new == .done ? .success : nil }
+        // Swiping the sheet away stops the test too, so it doesn't keep using data.
+        .onDisappear { test.stop() }
     }
 
     private var glow: Color {

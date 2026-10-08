@@ -73,7 +73,18 @@ struct SharedSetup: Codable, Identifiable {
         base64 += String(repeating: "=", count: (4 - base64.count % 4) % 4)
         guard let data = Data(base64Encoded: base64),
               let setup = try? JSONDecoder().decode(SharedSetup.self, from: data) else { return nil }
+        // Only a path (resolved against the campus login page) or a private campus address,
+        // so a link can never send your password to an outside server.
+        guard Self.staysOnCampus(setup.loginURL), Self.staysOnCampus(setup.signOutURL) else { return nil }
         self = setup
+    }
+
+    private static func staysOnCampus(_ address: String) -> Bool {
+        let trimmed = address.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, let url = URL(string: trimmed), url.scheme != nil || trimmed.hasPrefix("//") else {
+            return true
+        }
+        return PortalTrust.isPrivateAddress(url.host ?? "")
     }
 
     func qrCode() -> UIImage? {

@@ -1,6 +1,13 @@
 import AppIntents
 import Foundation
 
+/// Set when a widget or Control Center tap asks to sign in, in case the app wasn't
+/// running yet to hear the notification below.
+@MainActor
+enum ConnectRequest {
+    static var pending = false
+}
+
 extension Notification.Name {
     /// Posted when a widget or Control Center button asks the app to sign in.
     static let connectRequested = Notification.Name("WifiConnect.connectRequested")
@@ -15,6 +22,7 @@ struct OpenAndConnectIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
+        ConnectRequest.pending = true
         NotificationCenter.default.post(name: .connectRequested, object: nil)
         return .result()
     }

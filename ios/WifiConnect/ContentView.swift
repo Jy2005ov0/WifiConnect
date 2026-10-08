@@ -203,17 +203,29 @@ struct ContentView: View {
                 }
             }
             .onReceive(NotificationCenter.default.publisher(for: .connectRequested)) { _ in
-                // From the widget or the Control Center button.
-                showWelcome = false
-                if hasCredentials { Task { await model.connect() } }
+                // From the widget or the Control Center button, while the app is running.
+                connectRequestedElsewhere()
             }
-            .onChange(of: scenePhase) {
-                // Opening the app on campus signs you in straight away.
-                if scenePhase == .active, hasCredentials, model.state != .working, !isDemo, !isTest {
+            .onChange(of: scenePhase, initial: true) {
+                guard scenePhase == .active, !isDemo, !isTest else { return }
+                // A widget or Control Center tap that launched the app before it was listening.
+                if ConnectRequest.pending {
+                    connectRequestedElsewhere()
+                    return
+                }
+                // Opening the app on campus signs you in straight away, unless you chose Disconnect.
+                let signedOutByUser = UserDefaults.standard.bool(forKey: SettingsKey.signedOutByUser)
+                if hasCredentials, model.state != .working, model.state != .signedOut, !signedOutByUser {
                     Task { await model.connect(automatic: true) }
                 }
             }
         }
+    }
+
+    private func connectRequestedElsewhere() {
+        ConnectRequest.pending = false
+        showWelcome = false
+        if hasCredentials, model.state != .working { Task { await model.connect() } }
     }
 
     /// Opens Settings, asking for Face ID first when the app lock is on.

@@ -14,7 +14,7 @@ struct HistoryView: View {
                     UIPasteboard.general.string = Diagnostics.report()
                     withAnimation { copied = true }
                 } label: {
-                    Label(copied ? "Copied" : "Copy Diagnostics",
+                    Label(copied ? String(localized: "Copied") : String(localized: "Copy Diagnostics"),
                           systemImage: copied ? "checkmark.circle.fill" : "doc.on.doc")
                         .contentTransition(.symbolEffect(.replace))
                 }

@@ -1,4 +1,5 @@
 import Foundation
+import WidgetKit
 
 /// What started a sign-in, for the history.
 enum SignInTrigger: String, Codable {
@@ -7,8 +8,28 @@ enum SignInTrigger: String, Codable {
 
 /// The one place every sign-in goes through.
 enum SignIn {
+    /// Runs one sign-in at a time: a second request while one is going waits for its result
+    /// instead of submitting the login form twice.
     @discardableResult
     static func run(_ trigger: SignInTrigger) async throws -> LoginOutcome {
+        try await gate.run { try await signIn(trigger) }
+    }
+
+    private static let gate = Gate()
+
+    private actor Gate {
+        private var current: Task<LoginOutcome, Error>?
+
+        func run(_ body: @escaping @Sendable () async throws -> LoginOutcome) async throws -> LoginOutcome {
+            if let current { return try await current.value }
+            let task = Task { try await body() }
+            current = task
+            defer { current = nil }
+            return try await task.value
+        }
+    }
+
+    private static func signIn(_ trigger: SignInTrigger) async throws -> LoginOutcome {
         let started = Date()
         let trace = LoginTrace()
         func record(_ result: HistoryEntry.Result, _ message: String?) {
@@ -33,6 +54,7 @@ enum SignIn {
             )
             record(outcome == .loggedIn ? .signedIn : .alreadyOnline, nil)
             UserDefaults.standard.set(false, forKey: SettingsKey.signedOutByUser)
+            WidgetCenter.shared.reloadAllTimelines()
             return outcome
         } catch {
             record(.failed, error.localizedDescription)
@@ -45,6 +67,7 @@ enum SignIn {
         do {
             try await PortalLogin().signOut()
             UserDefaults.standard.set(true, forKey: SettingsKey.signedOutByUser)
+            WidgetCenter.shared.reloadAllTimelines()
             History.add(HistoryEntry(date: started, trigger: .app, result: .signedOut,
                                      duration: Date().timeIntervalSince(started)))
         } catch {

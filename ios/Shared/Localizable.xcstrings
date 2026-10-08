@@ -561,6 +561,62 @@
         }
       }
     },
+    "Copied": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disalin"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已复制"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コピーしました"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "நகலெடுக்கப்பட்டது"
+          }
+        }
+      }
+    },
+    "Copy Diagnostics": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salin Diagnostik"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制诊断信息"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "診断情報をコピー"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கண்டறிதல் தகவலை நகலெடு"
+          }
+        }
+      }
+    },
     "Couldn't Sign In": {
       "localizations": {
         "ms": {
@@ -977,6 +1033,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "உதவி"
+          }
+        }
+      }
+    },
+    "Hide password": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sembunyi kata laluan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐藏密码"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスワードを隠す"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கடவுச்சொல்லை மறை"
           }
         }
       }
@@ -2321,6 +2405,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shortcuts தன்னியக்கம்"
+          }
+        }
+      }
+    },
+    "Show password": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tunjuk kata laluan"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示密码"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスワードを表示"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "கடவுச்சொல்லைக் காட்டு"
           }
         }
       }

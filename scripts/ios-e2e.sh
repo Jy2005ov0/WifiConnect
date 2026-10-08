@@ -21,6 +21,7 @@ xcrun simctl bootstatus "$UDID" -b
 for attempt in 1 2 3; do
   xcrun simctl install "$UDID" "$APP" && break
   echo "Install attempt $attempt failed; retrying."
+  [[ $attempt == 3 ]] && { echo "Couldn't install the app."; exit 1; }
   sleep 15
 done
 PREFS="$(xcrun simctl get_app_container "$UDID" "$BUNDLE_ID" data)/Library/Preferences/$BUNDLE_ID.plist"
