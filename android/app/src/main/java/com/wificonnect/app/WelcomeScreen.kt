@@ -43,6 +43,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.shape.CircleShape
@@ -67,6 +69,8 @@ fun WelcomeScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
     val offset = remember { Animatable(0f) }
     val swipeLabel = stringResource(R.string.welcome_swipe)
+    val activity = LocalContext.current as? Activity
+    BackHandler { activity?.finish() }
 
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val height = with(LocalDensity.current) { maxHeight.toPx() }

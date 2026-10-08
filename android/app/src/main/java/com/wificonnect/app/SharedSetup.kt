@@ -86,7 +86,18 @@ data class SharedSetup(
                     extraFields = json.optString("extraFields"),
                     signOutUrl = json.optString("signOutURL"),
                 )
-            }.getOrNull()
+            }.getOrNull()?.takeIf { staysOnCampus(it.loginUrl) && staysOnCampus(it.signOutUrl) }
+        }
+
+        /**
+         * Only a path (resolved against the campus login page) or a private campus address,
+         * so a link can never send your password to an outside server.
+         */
+        private fun staysOnCampus(address: String): Boolean {
+            val trimmed = address.trim()
+            if (trimmed.isEmpty() || (!trimmed.contains("://") && !trimmed.startsWith("//"))) return true
+            val host = runCatching { Uri.parse(trimmed).host }.getOrNull() ?: return false
+            return PortalLogin.isPrivateAddress(host)
         }
     }
 }

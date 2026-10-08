@@ -10,7 +10,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
 - **"Connected to utarwifi" notification** when the app signs you in on arrival.
 - **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
-- **Private:** your student ID and password are stored encrypted on your phone and are only sent to your school's login page.
+- **Private:** your student ID and password are stored encrypted on your phone and are only sent to the Wi-Fi login page the app signs in to (see **Other Wi-Fi with a login page** below).
 - **Apple-style design:** a clean layout on both phones, with Light, Dark or System appearance (☀️ / 🌙 button), and an icon that follows Dark Mode.
 - **Your language:** English, Bahasa Melayu, 简体中文 (Simplified Chinese), 日本語 (Japanese) and தமிழ் (Tamil), chosen in Settings › Language.
 - **Tested:** every change is checked by signing in through both apps and the Windows tool against a mock campus login page.
@@ -19,7 +19,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 
 | Feature | iPhone | Android |
 | --- | --- | --- |
-| **Sign in without opening the app** | Home Screen / Lock Screen widget, and a Control Center button (iOS 18) | Quick Settings tile and a Home Screen widget |
+| **Quick sign-in** | Home Screen / Lock Screen widget and a Control Center button (iOS 18) open the app and sign in; the Shortcuts action signs in without opening it | Quick Settings tile and a Home Screen widget |
 | **Stay signed in** | Background check, timed by iOS | Checks every 15 minutes |
 | **Laptop sign-in** | `windows/Install.cmd` signs your Windows laptop in to `utarwifi` too | |
 | **Sign-in history** | Settings › Sign-In History, with **Copy Diagnostics** to send if something goes wrong | Same |
@@ -92,7 +92,7 @@ If you'd rather not install anything, the Shortcuts app can send the login form 
 
 ### Sign in automatically
 
-In the app, tap **Set Up Auto-Connect** for a step-by-step guide. In short:
+In the app, tap **Auto Sign-In › Set Up** for a step-by-step guide. In short:
 
 1. Open **Shortcuts** › **Automation** › **+**.
 2. Choose **Wi-Fi** and pick your school network, then select **Run Immediately**.
@@ -100,9 +100,11 @@ In the app, tap **Set Up Auto-Connect** for a step-by-step guide. In short:
 
 To stop iOS from showing the login popup as well, go to **Settings › Wi-Fi**, tap **ⓘ** next to the school network and turn off **Auto-Login**.
 
+**Other Wi-Fi with a login page:** on Android (and on Windows when Location is off), automatic sign-in fills in any Wi-Fi login page that asks for an ID and password, not only the campus one, because reading the Wi-Fi name needs location permission. On a hotel or café Wi-Fi, tap the circle to disconnect and the app won't sign in again until you tap it. On iPhone, automatic sign-in only runs for the network you pick in the Shortcuts automation.
+
 ## If automatic detection doesn't work
 
-The app finds your school's login form the same way iOS does: it loads `captive.apple.com`, follows the redirect to the login page and fills in the form. Some portals build their login page entirely in JavaScript, and those need to be set up by hand:
+The app finds your school's login form the same way iOS does: it loads the phone's own connectivity check (`captive.apple.com` on iPhone, `connectivitycheck.gstatic.com` on Android), follows the redirect to the login page and fills in the form. Some portals build their login page entirely in JavaScript, and those need to be set up by hand:
 
 1. Join the school Wi-Fi (don't sign in yet), open **Settings** in the app and tap **Detect Login Page**. If the form is found, the details are filled in for you.
 2. Otherwise, turn on **Set Login Page Manually** and fill in:
@@ -129,7 +131,7 @@ That's a WPA2/WPA3-Enterprise (802.1X) network, such as eduroam. iOS saves those
 | `android/` | Android app (Kotlin + Jetpack Compose). `PortalLogin.kt` signs in, `HtmlForm.kt` reads the login page, and `AutoLogin.kt` signs in automatically when you join a network. |
 | `windows/` | Auto sign-in for a Windows laptop (PowerShell): `Install.cmd`, `Uninstall.cmd` and `WifiConnect.ps1`. |
 | `.github/workflows/` | Builds the iPhone `.ipa` and Android `.apk`, runs the tests and takes the screenshots. |
-| `scripts/mock_portal.py` | A mock campus login page with two buildings, used by the **Test** workflow (`scripts/*-e2e.sh`). |
+| `scripts/mock_portal.py` | A mock campus login page with two buildings, used by the **Test** workflow (`scripts/*-e2e.sh` and `scripts/windows-e2e.ps1`). |
 | `scripts/i18n.py` | All translations (English, Malay, Chinese; Japanese and Tamil in `i18n_more.py`) for both apps. Edit the tables, then run it to regenerate the string files. |
 | `scripts/make_app_icon.py` | Draws the app icon (light, dark and tinted) for both apps. |
 | `screenshots/` | Screenshots of both apps, taken automatically in the iOS simulator and Android emulator. |

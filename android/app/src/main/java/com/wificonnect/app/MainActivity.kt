@@ -93,6 +93,15 @@ class MainActivity : FragmentActivity() {
                     mutableStateOf(demo?.showWelcome ?: !(BuildConfig.DEBUG && intent.hasExtra("testStudentId")))
                 }
                 LaunchedEffect(Unit) { if (demo?.speedResult == true) speedTest.showDemoResult() }
+                // With the app lock on, never reopen Settings (and the password) without unlocking,
+                // e.g. when Android restores the app after closing it in the background.
+                LaunchedEffect(Unit) {
+                    if (demo == null && hasCredentials && PortalSettings.load(context).requireUnlock) {
+                        showSettings = false
+                        showHistory = false
+                        showShare = false
+                    }
+                }
 
                 // Lets automatic sign-in tell you when it has signed you in.
                 val notificationPermission = rememberLauncherForActivityResult(RequestPermission()) { }
@@ -111,7 +120,10 @@ class MainActivity : FragmentActivity() {
                 LifecycleResumeEffect(Unit) {
                     if (testAction == "signOut") {
                         model.signOut()
-                    } else if (demo == null && hasCredentials && !showSettings) {
+                    } else if (demo == null && hasCredentials && !showSettings &&
+                        SignInStatus.load(context)?.kind != SignInStatus.Kind.SIGNED_OUT
+                    ) {
+                        // Not after you chose Disconnect: that waits for you to tap Connect.
                         model.connect(automatic = true)
                     }
                     onPauseOrDispose { }

@@ -10,13 +10,14 @@ import android.service.quicksettings.TileService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 /** A Quick Settings tile: tap it to sign in without opening the app. */
 class WifiTileService : TileService() {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-    private var working = false
+    companion object {
+        private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        @Volatile private var working = false
+    }
 
     override fun onStartListening() {
         render()
@@ -30,16 +31,14 @@ class WifiTileService : TileService() {
         }
         working = true
         render()
-        scope.launch {
-            runCatching { PortalLogin.logIn(applicationContext, trigger = SignInTrigger.TILE) }
+        // In the app's own scope: Android unbinds the tile soon after the shade closes,
+        // which would cancel a sign-in started in the tile's scope.
+        val context = applicationContext
+        appScope.launch {
+            runCatching { PortalLogin.logIn(context, trigger = SignInTrigger.TILE) }
             working = false
-            render()
+            SignInStatus.refreshSurfaces(context)
         }
-    }
-
-    override fun onDestroy() {
-        scope.cancel()
-        super.onDestroy()
     }
 
     private fun render() {

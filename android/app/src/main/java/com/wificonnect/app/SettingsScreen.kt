@@ -90,6 +90,7 @@ fun SettingsScreen(
         Credentials.setPassword(context, password)
         settings.save(context)
         AutoLogin.sync(context)
+        SignInStatus.refreshSurfaces(context)
     }
 
     fun saveAndClose() {

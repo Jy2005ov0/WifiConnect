@@ -170,7 +170,8 @@ class PortalLogin(private val network: Network) {
         var currentBody = body
 
         for (hop in 0 until MAX_REDIRECTS) {
-            val conn = network.openConnection(current) as HttpURLConnection
+            val conn = network.openConnection(current) as? HttpURLConnection
+                ?: throw IOException("Not a web address: ${current.protocol}")
             if (conn is HttpsURLConnection && isPrivateAddress(current.host)) trustPortalCertificate(conn)
             try {
                 conn.instanceFollowRedirects = false

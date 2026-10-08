@@ -53,6 +53,8 @@ object AutoLogin {
 
     suspend fun run(context: Context, network: Network?, trigger: SignInTrigger = SignInTrigger.AUTOMATIC) {
         if (!Credentials.isConfigured(context)) return
+        // You chose Disconnect: don't sign straight back in on your behalf.
+        if (trigger == SignInTrigger.AUTOMATIC && SignInStatus.load(context)?.kind == SignInStatus.Kind.SIGNED_OUT) return
         try {
             val outcome = PortalLogin.logIn(context, network ?: PortalLogin.wifiNetwork(context), trigger)
             if (outcome == LoginOutcome.LOGGED_IN) notifySignedIn(context)

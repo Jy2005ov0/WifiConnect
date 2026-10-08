@@ -186,7 +186,7 @@ You'll see a "Connected to utarwifi" notification when it signs you in.
 
 ### How it keeps your password safe
 
-Your password is encrypted with Windows' built-in data protection, tied to your Windows account. Only you, signed in to this laptop, can decrypt it. It's stored in `%APPDATA%\WifiConnect\config.json` and only ever sent to the campus login page.
+Your password is encrypted with Windows' built-in data protection, tied to your Windows account. Only you, signed in to this laptop, can decrypt it. It's stored in `%APPDATA%\WifiConnect\config.json` and only sent to the Wi-Fi login page the tool signs in to.
 
 ### Change your password or remove it
 
@@ -210,7 +210,7 @@ Your password is encrypted with Windows' built-in data protection, tied to your 
 These steps are the same on both phones.
 
 1. Open **WiFi Connect**.
-2. Enter your **Student ID** and **Password**. They're stored encrypted on your phone (Keychain on iPhone, Android Keystore on Android) and are only sent to your school's login page.
+2. Enter your **Student ID** and **Password**. They're stored encrypted on your phone (Keychain on iPhone, Android Keystore on Android) and are only sent to the Wi-Fi login page the app signs in to. Automatic sign-in fills in any Wi-Fi login page that asks for an ID and password, so turn it off (or use Disconnect) on other Wi-Fi with a login page, such as hotels.
 3. Check that **School Wi-Fi** says `utarwifi` (it's the default).
 4. Android only: allow **notifications** when asked, so it can tell you when it has signed you in.
 5. On campus, join `utarwifi` and tap the big Wi-Fi circle (**Tap to Connect**). You should see **Connected**. Tap the circle again to disconnect.
