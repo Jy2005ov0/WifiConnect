@@ -25,7 +25,7 @@ CAMPUS_HOSTS, e.g. "A=127.0.0.2,B=127.0.0.3,AUTH=127.0.0.7"; the default is 127.
 
 Test endpoints on the probe port: GET /status (JSON), POST /reset, POST /move?to=C.
 
-Usage: mock_campus.py [probe port]   (student ID 2201234, password utar-test)
+Usage: mock_campus.py [probe port, default 9000]   (student ID 2201234, password utar-test)
 """
 import html
 import json

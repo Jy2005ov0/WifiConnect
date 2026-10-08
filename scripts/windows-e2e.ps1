@@ -59,9 +59,9 @@ Stop-Process -Id $server.Id -ErrorAction SilentlyContinue
 # ---- A campus of buildings, each with its own login page address and style (scripts/mock_campus.py) ----
 # Windows answers on every 127.x address, so each building really is at a different IP.
 $env:CAMPUS_HOSTS = 'A=127.0.0.2,B=127.0.0.3,C=127.0.0.4,D=127.0.0.5,E=127.0.0.6,AUTH=127.0.0.7'
-$campus = Start-Process python -ArgumentList 'scripts/mock_campus.py', '9000' -PassThru `
+$campus = Start-Process python -ArgumentList 'scripts/mock_campus.py', '18000' -PassThru `
     -RedirectStandardOutput campus.log -RedirectStandardError campus-err.log
-$portal = 'http://127.0.0.1:9000'
+$portal = 'http://127.0.0.1:18000'
 for ($i = 0; $i -lt 30; $i++) {
     try { Invoke-WebRequest "$portal/status" -UseBasicParsing | Out-Null; break } catch { Start-Sleep -Seconds 1 }
 }

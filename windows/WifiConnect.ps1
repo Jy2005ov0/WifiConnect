@@ -203,11 +203,15 @@ function Invoke-Page([Uri]$Url, $Session, [string]$Method = 'GET', $Body = $null
         $html = if ($_.ErrorDetails -and $_.ErrorDetails.Message) { $_.ErrorDetails.Message } else { '' }
         if (-not $html) {
             try {
-                $reader = New-Object System.IO.StreamReader($errorResponse.GetResponseStream())
+                $stream = $errorResponse.GetResponseStream()
+                # Windows PowerShell has already read this stream once: rewind it first.
+                if ($stream.CanSeek) { $stream.Position = 0 }
+                $reader = New-Object System.IO.StreamReader($stream)
                 $html = $reader.ReadToEnd()
                 $reader.Close()
             } catch { $html = '' }
         }
+        if (-not $html) { Write-Log "The page at $Url answered $([int]$errorResponse.StatusCode) with no content." }
         return [pscustomobject]@{ Url = [Uri]$errorResponse.ResponseUri; Html = $html; Status = [int]$errorResponse.StatusCode }
     }
     # Where the redirects ended up (Windows PowerShell vs PowerShell 7).

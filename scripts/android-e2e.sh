@@ -75,11 +75,12 @@ IPS=($(hostname -I))
 IP1=${IPS[0]:-10.0.2.2}
 IP2=${IPS[1]:-$IP1}
 CAMPUS_HOSTS="A=10.0.2.2,B=$IP1,C=$IP2,D=10.0.2.2,E=$IP1,AUTH=$IP2" \
-  nohup python3 scripts/mock_campus.py 9000 > campus.log 2>&1 &
-for _ in $(seq 1 30); do curl -s http://127.0.0.1:9000/status > /dev/null && break; sleep 1; done
+  nohup python3 scripts/mock_campus.py 18000 > campus.log 2>&1 &
+for _ in $(seq 1 30); do curl -s http://127.0.0.1:18000/status > /dev/null && break; sleep 1; done
+curl -sf http://127.0.0.1:18000/status > /dev/null || { echo "::error::The mock campus didn't start:"; cat campus.log; exit 1; }
 head -1 campus.log
-PORTAL=http://127.0.0.1:9000
-PORTAL_FROM_EMULATOR=http://10.0.2.2:9000
+PORTAL=http://127.0.0.1:18000
+PORTAL_FROM_EMULATOR=http://10.0.2.2:18000
 curl -s -X POST "$PORTAL/reset" > /dev/null
 # Walk from building to building: each one logs you out, so sign in again, then sign out.
 for building in A B C D E; do

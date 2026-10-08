@@ -84,9 +84,10 @@ run_case manual-path utar-test "signed in" true \
 # Give the Mac extra loopback addresses, so every building really is at a different IP.
 for i in 2 3 4 5 6 7; do sudo ifconfig lo0 alias "127.0.0.$i" up; done
 CAMPUS_HOSTS="A=127.0.0.2,B=127.0.0.3,C=127.0.0.4,D=127.0.0.5,E=127.0.0.6,AUTH=127.0.0.7" \
-  nohup python3 scripts/mock_campus.py 9000 > campus.log 2>&1 &
-for _ in $(seq 1 30); do curl -s http://127.0.0.1:9000/status > /dev/null && break; sleep 1; done
-PORTAL=http://127.0.0.1:9000
+  nohup python3 scripts/mock_campus.py 18000 > campus.log 2>&1 &
+for _ in $(seq 1 30); do curl -s http://127.0.0.1:18000/status > /dev/null && break; sleep 1; done
+curl -sf http://127.0.0.1:18000/status > /dev/null || { echo "::error::The mock campus didn't start:"; cat campus.log; exit 1; }
+PORTAL=http://127.0.0.1:18000
 curl -s -X POST "$PORTAL/reset" > /dev/null
 # Walk from building to building: each one logs you out, so sign in again, then sign out.
 for building in A B C D E; do
