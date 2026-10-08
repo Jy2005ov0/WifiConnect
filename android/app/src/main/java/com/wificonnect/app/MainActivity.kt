@@ -61,6 +61,7 @@ class MainActivity : FragmentActivity() {
 
         val demo = if (BuildConfig.DEBUG) Demo.from(intent, this) else null
         val testAction = if (BuildConfig.DEBUG) intent.getStringExtra("testAction") else null
+        val isTest = BuildConfig.DEBUG && intent.hasExtra("testStudentId")
         if (BuildConfig.DEBUG) applyTestExtras()
 
         setContent {
@@ -120,6 +121,9 @@ class MainActivity : FragmentActivity() {
                 LifecycleResumeEffect(Unit) {
                     if (testAction == "signOut") {
                         model.signOut()
+                    } else if (isTest) {
+                        // The end-to-end test stands in for tapping the circle.
+                        model.connect()
                     } else if (demo == null && hasCredentials && !showSettings &&
                         SignInStatus.load(context)?.kind != SignInStatus.Kind.SIGNED_OUT
                     ) {
