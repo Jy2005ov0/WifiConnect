@@ -193,18 +193,27 @@ for _ in 1 2 3 4 5 6; do
   idb ui swipe --udid "$UDID" --duration 0.3 200 650 200 250
   sleep 1
 done
-tap "right:Show Welcome Page When Opening the App"
-sleep 1
-shot welcome-off
-# The switch itself must now read off.
-switch=$(screen | python3 -c '
+# Tap the switch, checking after each try that it now reads off.
+switch_value() {
+  screen | python3 -c '
 import json, sys
 for e in json.load(sys.stdin):
     if e.get("AXLabel") == "Show Welcome Page When Opening the App":
-        print(e.get("AXValue")); break
-')
+        f = e["frame"]
+        print(e.get("AXValue"), round(f["x"]), round(f["y"]), round(f["width"]), round(f["height"])); break
+'
+}
+read -r switch sx sy sw sh < <(switch_value)
+echo "Welcome page switch: value $switch, frame $sx,$sy ${sw}x$sh"
+for x in $((sx + sw - 40)) $((sx + sw - 30)) $((sx + sw / 2)) $((sx + sw - 60)); do
+  idb ui tap --udid "$UDID" "$x" $((sy + sh / 2))
+  sleep 1
+  read -r switch _ < <(switch_value)
+  [[ "$switch" == "0" ]] && break
+done
+shot welcome-off
 echo "Welcome page switch now reads: $switch"
-[[ "$switch" == "0" || "$switch" == "off" ]] || fail "Tapping the switch turns the welcome page off (it reads \"$switch\")"
+[[ "$switch" == "0" ]] || fail "Tapping the switch turns the welcome page off (it reads \"$switch\")"
 tap "Done"
 wait_for "Tap to Disconnect" 20 || fail "Done goes back to the main page"
 sleep 3
