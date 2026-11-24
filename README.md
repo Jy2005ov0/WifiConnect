@@ -59,6 +59,8 @@ Requires iOS 17 or later on iPhone, iPadOS 17 or later on iPad, or Android 9 or 
 
 **📖 Full step-by-step guide, with troubleshooting: [docs/INSTALL.md](docs/INSTALL.md)**
 
+**🎬 Video tutorial (about a minute): [docs/WiFi-Connect-Tutorial.mp4](docs/WiFi-Connect-Tutorial.mp4)**, with a [narration script](docs/tutorial-script.md) for adding a voice-over.
+
 The short version:
 
 | | Android | iPhone |
