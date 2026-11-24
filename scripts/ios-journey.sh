@@ -227,9 +227,10 @@ sleep 3
 xcrun simctl terminate "$UDID" "$BUNDLE_ID"
 xcrun simctl launch "$UDID" "$BUNDLE_ID" -testProbeURL "$PORTAL/hotspot-detect.html" > /dev/null
 sleep 3
-wait_for "Tap to Connect" 20 || fail "With the welcome page off, the app opens straight to the circle"
+# Still signed in from step 8, so the app should open straight to the green Connected page.
+wait_for "Tap to Disconnect" 30 || fail "Reopening the app while signed in shows Connected, with the welcome page off"
 find_on_screen "Swipe up to start" > /dev/null && fail "With the welcome page off, the welcome page doesn't show"
 shot opens-without-welcome
-pass "Turning off the welcome page in Settings opens the app straight to the circle"
+pass "Welcome page off: the app reopens straight to the circle, already showing Connected"
 
 finish 0
