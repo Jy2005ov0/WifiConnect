@@ -71,7 +71,9 @@ final class SpeedTest {
             // Stopping cancels the requests too, which isn't a failure.
             if Task.isCancelled || (error as? URLError)?.code == .cancelled { return }
             liveMbps = 0
-            phase = .failed(String(localized: "Couldn't reach the test server. Make sure you're connected to the Wi-Fi and online."))
+            phase = .failed(error is NoDataError
+                ? String(localized: "No test data came through. This network may block or hold back speed tests, so try again later or on another Wi-Fi.")
+                : String(localized: "Couldn't reach the test server. Make sure you're connected to the Wi-Fi and online."))
         }
     }
 
@@ -111,12 +113,14 @@ final class SpeedTest {
             counter.stop()
             session.invalidateAndCancel()
         }
-        counter.onTaskFinished = { [weak counter] error in
-            // Keep the pipes full until the stage ends (checked under the lock, so never after stop()).
+        counter.onTaskFinished = { [weak counter] task, error in
+            // Keep the pipes full until the stage ends (checked under the lock, so never after stop()),
+            // each stream asking for a bigger piece than last time.
             guard error == nil else { return }
-            counter?.ifRunning { Self.startStream(session, upload: upload) }
+            let size = min((Int(task.taskDescription ?? "") ?? Self.firstChunk) * 2, Self.largestChunk)
+            counter?.ifRunning { Self.startStream(session, upload: upload, size: size) }
         }
-        for _ in 0..<Self.streams { Self.startStream(session, upload: upload) }
+        for _ in 0..<Self.streams { Self.startStream(session, upload: upload, size: Self.firstChunk) }
 
         liveMbps = 0
         progress = 0
@@ -137,19 +141,29 @@ final class SpeedTest {
             if counter.failed, bytes == 0 { throw URLError(.cannotConnectToHost) }
             if elapsed >= Self.stageSeconds { break }
         }
+        // Nothing at all came through: say so, rather than show 0.
+        if counter.total == 0 { throw NoDataError() }
         guard let warm, last.time > warm.time else { return liveMbps }
         return Double(last.bytes - warm.bytes) * 8 / last.time.timeIntervalSince(warm.time) / 1_000_000
     }
 
-    nonisolated private static func startStream(_ session: URLSession, upload: Bool) {
+    /// Each transfer starts small and doubles. Many campus networks hold a download back until all
+    /// of it has arrived (to check it), so one huge download showed nothing within the test time.
+    nonisolated private static let firstChunk = 1_000_000
+    nonisolated private static let largestChunk = 25_000_000
+
+    nonisolated private static func startStream(_ session: URLSession, upload: Bool, size: Int) {
+        let task: URLSessionTask
         if upload {
             var request = URLRequest(url: URL(string: "\(server)/__up")!)
             request.httpMethod = "POST"
             request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-            session.uploadTask(with: request, from: Data(count: 25_000_000)).resume()
+            task = session.uploadTask(with: request, from: Data(count: size))
         } else {
-            session.dataTask(with: URL(string: "\(server)/__down?bytes=100000000")!).resume()
+            task = session.dataTask(with: URL(string: "\(server)/__down?bytes=\(size)")!)
         }
+        task.taskDescription = String(size)
+        task.resume()
     }
 
     #if DEBUG
@@ -162,13 +176,16 @@ final class SpeedTest {
     #endif
 }
 
+/// Nothing came through during a transfer stage.
+private struct NoDataError: Error {}
+
 /// Counts bytes received and sent by every task in a session.
 private final class TransferCounter: NSObject, URLSessionDataDelegate {
     private let lock = NSLock()
     private var bytes: Int64 = 0
     private var anyFailed = false
     private var stopped = false
-    var onTaskFinished: ((Error?) -> Void)?
+    var onTaskFinished: ((URLSessionTask, Error?) -> Void)?
 
     var total: Int64 { lock.withLock { bytes } }
     var failed: Bool { lock.withLock { anyFailed } }
@@ -181,6 +198,18 @@ private final class TransferCounter: NSObject, URLSessionDataDelegate {
     /// Runs `body` only while not stopped, holding the lock so stop() can't slip in between.
     func ifRunning(_ body: () -> Void) {
         lock.withLock { if !stopped { body() } }
+    }
+
+    /// A refusal (like 403 or a network's block page) isn't test data: stop that request.
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse,
+                    completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 200
+        if (200..<300).contains(status) {
+            completionHandler(.allow)
+        } else {
+            lock.withLock { anyFailed = true }
+            completionHandler(.cancel)
+        }
     }
 
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
@@ -196,6 +225,6 @@ private final class TransferCounter: NSObject, URLSessionDataDelegate {
         if let error, (error as? URLError)?.code != .cancelled {
             lock.withLock { anyFailed = true }
         }
-        onTaskFinished?(error)
+        onTaskFinished?(task, error)
     }
 }

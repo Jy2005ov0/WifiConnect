@@ -76,4 +76,24 @@ final class ConnectionModel {
         UserDefaults.standard.synchronize()
         #endif
     }
+
+    /// Brings the screen up to date when the app opens or comes back: shows Connected when the
+    /// Shortcuts automation, a widget or Stay Signed In signed you in meanwhile, and goes back to
+    /// Tap to Connect when a Connected screen is out of date (you've left the Wi-Fi).
+    func catchUp() async {
+        switch state {
+        case .idle:
+            guard let last = History.load().first, last.result == .signedIn,
+                  Date().timeIntervalSince(last.date) < 12 * 60 * 60 else { return }
+            guard await WifiStatus.check() == .online, state == .idle else { return }
+            signedInByApp = true
+            state = .connected(String(localized: "You're signed in and ready to go."))
+        case .connected:
+            guard await WifiStatus.check() != .online, case .connected = state else { return }
+            signedInByApp = false
+            state = .idle
+        default:
+            return
+        }
+    }
 }

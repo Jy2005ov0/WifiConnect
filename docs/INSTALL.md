@@ -104,7 +104,7 @@ Until the repository has its own signing key, each GitHub build is signed with a
 
 **You need:**
 
-- An iPhone on **iOS 17 or later**.
+- An iPhone on **iOS 17 or later**, or an **iPad** on **iPadOS 17 or later**. The steps are the same for both.
 - A **Windows 10/11 PC** and a **USB cable** for your iPhone. **You don't need a Mac.** (A Mac also works; see [With a Mac](#with-a-mac-instead).)
 - An **Apple ID**. A free one works. Some people use a second Apple ID just for sideloading, but your normal one is fine.
 

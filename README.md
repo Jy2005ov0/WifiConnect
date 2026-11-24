@@ -49,7 +49,11 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 | 日本語 | <img src="screenshots/ios-9-japanese.png" width="220"> | <img src="screenshots/android-9-japanese.png" width="220"> |
 | தமிழ் | <img src="screenshots/ios-10-tamil.png" width="220"> | <img src="screenshots/android-10-tamil.png" width="220"> |
 
-Requires iOS 17 or later, or Android 9 or later.
+**iPad:**
+
+<img src="screenshots/ipad-1-connected.png" width="440"> <img src="screenshots/ipad-2-howto.png" width="440">
+
+Requires iOS 17 or later on iPhone, iPadOS 17 or later on iPad, or Android 9 or later.
 
 ## Install
 

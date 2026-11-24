@@ -1,6 +1,8 @@
 package com.wificonnect.app
 
 import android.app.Application
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -64,6 +66,29 @@ class ConnectionViewModel(application: Application) : AndroidViewModel(applicati
             }
             // The end-to-end test reads this from logcat.
             if (BuildConfig.DEBUG) android.util.Log.i("WifiConnect", "Result: $state")
+        }
+    }
+
+    /**
+     * Brings the screen up to date when the app opens or comes back: shows Connected when automatic
+     * sign-in (or the widget or tile) signed you in meanwhile and the Wi-Fi has internet, and goes back
+     * to Tap to Connect when a Connected screen is out of date because you've left the Wi-Fi.
+     */
+    fun catchUp() {
+        val app = getApplication<Application>()
+        val wifi = PortalLogin.wifiNetwork(app)
+        when (state) {
+            ConnectionState.Idle -> {
+                val last = SignInStatus.load(app) ?: return
+                val recent = System.currentTimeMillis() - last.time < 12 * 60 * 60 * 1000L
+                if (last.kind != SignInStatus.Kind.SIGNED_IN || !recent || wifi == null) return
+                val caps = app.getSystemService(ConnectivityManager::class.java)?.getNetworkCapabilities(wifi) ?: return
+                val online = caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) &&
+                    !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL)
+                if (online) state = ConnectionState.Connected(app.getString(R.string.result_signed_in), signedInByApp = true)
+            }
+            is ConnectionState.Connected -> if (wifi == null) state = ConnectionState.Idle
+            else -> Unit
         }
     }
 }

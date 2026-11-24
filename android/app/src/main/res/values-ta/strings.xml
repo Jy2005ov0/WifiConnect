@@ -125,6 +125,7 @@
     <string name="speedtest_ping">பிங்</string>
     <string name="speedtest_jitter">ஜிட்டர்</string>
     <string name="speedtest_failed_title">சோதிக்க முடியவில்லை</string>
+    <string name="speedtest_no_data">சோதனைத் தரவு எதுவும் வரவில்லை. இந்த நெட்வொர்க் வேகச் சோதனைகளைத் தடுக்கலாம் அல்லது தாமதப்படுத்தலாம், எனவே பின்னர் மீண்டும் அல்லது வேறு Wi-Fi இல் முயற்சிக்கவும்.</string>
     <string name="speedtest_failed">சோதனைச் சேவையகத்தை அடைய முடியவில்லை. Wi-Fi-உடன் இணைந்து இணையத்தில் உள்ளீர்களா எனச் சரிபார்க்கவும்.</string>
     <string name="speedtest_footer">Cloudflare வேகச் சோதனைச் சேவையகங்களைப் பயன்படுத்தி Wi-Fi-இல் மட்டுமே சோதிக்கப்படுகிறது. வேகமான Wi-Fi-இல் ஒரு சோதனை 100 MB-க்கு மேல் தரவைப் பயன்படுத்தலாம்.</string>
     <string name="tile_label">வளாக Wi-Fi</string>

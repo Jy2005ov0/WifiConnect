@@ -97,3 +97,26 @@ if command -v applesimutils > /dev/null; then
 fi
 xcrun simctl ui "$UDID" appearance dark
 shoot 5-dark      -demoState connected -demoSpeed "18 ms · 92 Mbps"
+
+# iPad: the same app, laid out for the bigger screen (landscape and portrait).
+IPAD=$(xcrun simctl list devices available -j | python3 -c '
+import json, sys
+devices = [d for runtime, ds in json.load(sys.stdin)["devices"].items() if "iOS" in runtime for d in ds]
+pads = [d for d in devices if d["name"].startswith("iPad")]
+print(next((d["udid"] for d in pads if "Air" in d["name"]), pads[-1]["udid"] if pads else ""))
+')
+if [[ -n "$IPAD" ]]; then
+  xcrun simctl boot "$IPAD" 2>/dev/null || true
+  xcrun simctl bootstatus "$IPAD" -b
+  xcrun simctl status_bar "$IPAD" override --time "9:41" --batteryState charged --batteryLevel 100 --wifiBars 3
+  xcrun simctl install "$IPAD" "$APP"
+  xcrun simctl launch "$IPAD" "$BUNDLE_ID" -demoStudentID A0123456X -demoState connected -demoSpeed "18 ms · 92 Mbps"
+  sleep 6
+  xcrun simctl io "$IPAD" screenshot "$OUT/ipad-1-connected.png"
+  xcrun simctl terminate "$IPAD" "$BUNDLE_ID" || true
+  xcrun simctl launch "$IPAD" "$BUNDLE_ID" -demoStudentID A0123456X -demoState idle -demoScreen howto
+  sleep 6
+  xcrun simctl io "$IPAD" screenshot "$OUT/ipad-2-howto.png"
+else
+  echo "No iPad simulator available; skipping the iPad pictures."
+fi

@@ -125,6 +125,7 @@
     <string name="speedtest_ping">Ping</string>
     <string name="speedtest_jitter">ジッター</string>
     <string name="speedtest_failed_title">測定できませんでした</string>
+    <string name="speedtest_no_data">テストデータが届きませんでした。このネットワークは速度テストをブロックまたは遅延させている可能性があります。後でもう一度試すか、別の Wi-Fi で試してください。</string>
     <string name="speedtest_failed">テストサーバーに接続できませんでした。Wi-Fi に接続してオンラインになっているか確認してください。</string>
     <string name="speedtest_footer">Cloudflare の速度テストサーバーを使い、Wi-Fi のみで測定します。高速な Wi-Fi では 1 回で 100 MB 以上のデータを使うことがあります。</string>
     <string name="tile_label">キャンパス Wi-Fi</string>

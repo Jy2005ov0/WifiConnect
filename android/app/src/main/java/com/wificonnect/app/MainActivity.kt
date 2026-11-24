@@ -159,8 +159,11 @@ class MainActivity : FragmentActivity() {
                     } else if (isTest) {
                         // The end-to-end test stands in for tapping the circle.
                         model.connect()
+                    } else if (demo == null) {
+                        // Opening the app doesn't sign in by itself, but it does show Connected when
+                        // automatic sign-in already did, and Tap to Connect once you've left the Wi-Fi.
+                        model.catchUp()
                     }
-                    // Otherwise opening the app just shows "Tap to Connect": it connects when you tap.
                     onPauseOrDispose { }
                 }
 

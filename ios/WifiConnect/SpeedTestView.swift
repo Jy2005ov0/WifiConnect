@@ -52,6 +52,9 @@ struct SpeedTestView: View {
                     .multilineTextAlignment(.center)
             }
             .padding(20)
+            // A phone-like width on iPad, centered.
+            .frame(maxWidth: 520)
+            .frame(maxWidth: .infinity)
             .animation(.default, value: test.phase)
         }
         .background {

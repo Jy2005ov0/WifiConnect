@@ -147,7 +147,10 @@ fun SpeedTestScreen(test: SpeedTestViewModel, onBack: () -> Unit) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Rounded.Warning, contentDescription = null, tint = Orange, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text(stringResource(R.string.speedtest_failed), color = Orange, style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        stringResource(if (test.noData) R.string.speedtest_no_data else R.string.speedtest_failed),
+                        color = Orange, style = MaterialTheme.typography.bodyMedium,
+                    )
                 }
             }
 

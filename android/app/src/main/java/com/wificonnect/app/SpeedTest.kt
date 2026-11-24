@@ -47,6 +47,9 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
         private set
     var upload by mutableStateOf<Double?>(null)
         private set
+    /** The last test failed because nothing came through (rather than no connection at all). */
+    var noData by mutableStateOf(false)
+        private set
 
     val isRunning: Boolean get() = phase == Phase.PING || phase == Phase.DOWNLOAD || phase == Phase.UPLOAD
 
@@ -63,7 +66,7 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
     fun start() {
         job?.cancel()
         ping = null; jitter = null; download = null; upload = null
-        liveMbps = 0.0; progress = 0f
+        liveMbps = 0.0; progress = 0f; noData = false
         job = viewModelScope.launch {
             try {
                 val wifi = PortalLogin.wifiNetwork(getApplication()) ?: throw IOException("Not on Wi-Fi")
@@ -79,6 +82,7 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
                 throw e
             } catch (e: Exception) {
                 liveMbps = 0.0
+                noData = e is NoDataException
                 phase = Phase.FAILED
             }
         }
@@ -119,9 +123,13 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
         val running = AtomicBoolean(true)
         val workers = List(STREAMS) {
             viewModelScope.launch(Dispatchers.IO) {
+                // Each transfer starts small and doubles. Many campus networks hold a download back
+                // until all of it has arrived (to check it), so one huge download showed nothing.
+                var size = FIRST_CHUNK
                 while (running.get() && isActive) {
                     try {
-                        if (upload) uploadOnce(wifi, bytes, running) else downloadOnce(wifi, bytes, running)
+                        if (upload) uploadOnce(wifi, bytes, running, size) else downloadOnce(wifi, bytes, running, size)
+                        size = minOf(size * 2, LARGEST_CHUNK)
                     } catch (e: IOException) {
                         if (!running.get()) break
                         failures.incrementAndGet()
@@ -154,6 +162,8 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
                 if (total == 0L && failures.get() >= STREAMS) throw IOException("Test server unreachable")
                 if (elapsed >= STAGE_SECONDS) break
             }
+            // Nothing at all came through: say so, rather than show 0.
+            if (bytes.get() == 0L) throw NoDataException()
             if (warmTime == 0L || lastTime <= warmTime) return liveMbps
             return (lastBytes - warmBytes) * 8 / ((lastTime - warmTime) / 1e9) / 1e6
         } finally {
@@ -165,9 +175,9 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
     companion object {
         private const val SERVER = "https://speed.cloudflare.com"
         private val PING_URL = URL("$SERVER/__down?bytes=0")
-        private val DOWNLOAD_URL = URL("$SERVER/__down?bytes=100000000")
         private val UPLOAD_URL = URL("$SERVER/__up")
-        private const val UPLOAD_SIZE = 25_000_000
+        private const val FIRST_CHUNK = 1_000_000
+        private const val LARGEST_CHUNK = 25_000_000
         private const val STAGE_SECONDS = 8.0
         private const val STREAMS = 4
 
@@ -191,9 +201,11 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
 
-        private fun downloadOnce(wifi: Network, bytes: AtomicLong, running: AtomicBoolean) {
-            val conn = open(wifi, DOWNLOAD_URL)
+        private fun downloadOnce(wifi: Network, bytes: AtomicLong, running: AtomicBoolean, size: Int) {
+            val conn = open(wifi, URL("$SERVER/__down?bytes=$size"))
             try {
+                // A refusal (like 403 or a network's block page) isn't test data.
+                if (conn.responseCode !in 200..299) throw IOException("HTTP ${conn.responseCode}")
                 conn.inputStream.use { input ->
                     val buffer = ByteArray(64 * 1024)
                     while (running.get()) {
@@ -207,22 +219,22 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
 
-        private fun uploadOnce(wifi: Network, bytes: AtomicLong, running: AtomicBoolean) {
+        private fun uploadOnce(wifi: Network, bytes: AtomicLong, running: AtomicBoolean, size: Int) {
             val conn = open(wifi, UPLOAD_URL)
             try {
                 conn.requestMethod = "POST"
                 conn.doOutput = true
-                conn.setFixedLengthStreamingMode(UPLOAD_SIZE)
+                conn.setFixedLengthStreamingMode(size)
                 conn.setRequestProperty("Content-Type", "application/octet-stream")
                 val chunk = ByteArray(64 * 1024)
                 var sent = 0
                 conn.outputStream.use { output ->
-                    while (sent < UPLOAD_SIZE) {
+                    while (sent < size) {
                         if (!running.get()) return
-                        val size = minOf(chunk.size, UPLOAD_SIZE - sent)
-                        output.write(chunk, 0, size)
-                        sent += size
-                        bytes.addAndGet(size.toLong())
+                        val part = minOf(chunk.size, size - sent)
+                        output.write(chunk, 0, part)
+                        sent += part
+                        bytes.addAndGet(part.toLong())
                     }
                 }
                 conn.responseCode
@@ -232,3 +244,6 @@ class SpeedTestViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 }
+
+/** Nothing came through during a transfer stage. */
+private class NoDataException : IOException("No test data came through")

@@ -1877,6 +1877,34 @@
         }
       }
     },
+    "No test data came through. This network may block or hold back speed tests, so try again later or on another Wi-Fi.": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiada data ujian diterima. Rangkaian ini mungkin menyekat atau menahan ujian kelajuan, jadi cuba lagi nanti atau di Wi-Fi lain."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有收到测试数据。这个网络可能会阻止或延迟测速，请稍后再试或换一个 Wi-Fi。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テストデータが届きませんでした。このネットワークは速度テストをブロックまたは遅延させている可能性があります。後でもう一度試すか、別の Wi-Fi で試してください。"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "சோதனைத் தரவு எதுவும் வரவில்லை. இந்த நெட்வொர்க் வேகச் சோதனைகளைத் தடுக்கலாம் அல்லது தாமதப்படுத்தலாம், எனவே பின்னர் மீண்டும் அல்லது வேறு Wi-Fi இல் முயற்சிக்கவும்."
+          }
+        }
+      }
+    },
     "Not Set": {
       "localizations": {
         "ms": {

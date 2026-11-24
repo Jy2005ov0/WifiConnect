@@ -131,7 +131,9 @@ struct ContentView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 16)
                     }
-                    .frame(minHeight: proxy.size.height)
+                    // A phone-like width on iPad, centered, so the card doesn't stretch across the screen.
+                    .frame(maxWidth: 520)
+                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
                 }
                 .scrollBounceBehavior(.basedOnSize)
             }
@@ -274,6 +276,9 @@ struct ContentView: View {
                 // Otherwise opening the app just shows "Tap to Connect": it connects when you tap.
                 if ConnectRequest.pending {
                     connectRequestedElsewhere()
+                } else {
+                    // Signed in by the Shortcuts automation or a widget while the app was away?
+                    Task { await model.catchUp() }
                 }
             }
         }
