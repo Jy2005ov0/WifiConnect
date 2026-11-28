@@ -53,7 +53,9 @@ enum SignIn {
                 password: Credentials.password,
                 settings: .load(),
                 trace: trace,
-                allowPortal: portalRule(for: trigger)
+                allowPortal: portalRule(for: trigger),
+                // The Shortcuts automation and background sign-ins start as the Wi-Fi joins.
+                waitForWiFi: trigger != .app
             )
             record(outcome == .loggedIn ? .signedIn : .alreadyOnline, nil)
             UserDefaults.standard.set(false, forKey: SettingsKey.signedOutByUser)

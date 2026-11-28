@@ -74,7 +74,7 @@ run_case other-building utar-test "signed in" true
 IPS=($(hostname -I))
 IP1=${IPS[0]:-10.0.2.2}
 IP2=${IPS[1]:-$IP1}
-CAMPUS_HOSTS="A=10.0.2.2,B=$IP1,C=$IP2,D=10.0.2.2,E=$IP1,AUTH=$IP2" \
+CAMPUS_HOSTS="A=10.0.2.2,B=$IP1,C=$IP2,D=10.0.2.2,E=$IP1,AUTH=$IP2,F=$IP1" \
   nohup python3 scripts/mock_campus.py 18000 > campus.log 2>&1 &
 for _ in $(seq 1 60); do curl -s http://127.0.0.1:18000/status > /dev/null && break; sleep 1; done
 curl -sf http://127.0.0.1:18000/status > /dev/null || { echo "::error::The mock campus didn't start:"; cat campus.log; exit 1; }
@@ -83,7 +83,7 @@ PORTAL=http://127.0.0.1:18000
 PORTAL_FROM_EMULATOR=http://10.0.2.2:18000
 curl -s -X POST "$PORTAL/reset" > /dev/null
 # Walk from building to building: each one logs you out, so sign in again, then sign out.
-for building in A B C D E; do
+for building in A B C D E F; do
   curl -s -X POST "$PORTAL/move?to=$building" > /dev/null
   run_case "campus-$building" utar-test "signed in" true
   run_case "campus-$building-sign-out" utar-test "SignedOut" false --es testAction signOut

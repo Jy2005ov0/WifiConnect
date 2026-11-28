@@ -4089,6 +4089,34 @@
         }
       }
     },
+    "The login page said: %@": {
+      "localizations": {
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman log masuk berkata: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录页面提示：%@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログインページのメッセージ: %@"
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உள்நுழைவுப் பக்கம் கூறியது: %@"
+          }
+        }
+      }
+    },
     "The page with the clock that you swipe up. Turn it off to go straight to the Wi-Fi circle.": {
       "localizations": {
         "ms": {

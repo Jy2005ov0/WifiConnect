@@ -63,6 +63,7 @@
     <string name="wifi_check_needs_background">செயலி தானாக உள்நுழையும்போது Wi-Fi பெயரைப் படிக்க, இருப்பிடத்துக்கு “எப்போதும் அனுமதி” என்பதைத் தேர்ந்தெடுக்கவும். உங்கள் இருப்பிடம் பயன்படுத்தப்படவோ சேமிக்கப்படவோ மாட்டாது.</string>
     <string name="wifi_check_allow">அனுமதி</string>
     <string name="wifi_check_turn_on">இயக்கு</string>
+    <string name="error_rejected">உள்நுழைவுப் பக்கம் கூறியது: %1$s</string>
     <string name="error_not_school_portal">இந்த Wi-Fi-இன் உள்நுழைவுப் பக்கம் உங்கள் பள்ளியுடையது போலத் தெரியவில்லை, அதனால் செயலி தானாக உள்நுழையவில்லை. இருந்தாலும் உள்நுழைய வட்டத்தைத் தட்டவும்.</string>
     <string name="error_other_network">%1$s உங்கள் பள்ளி Wi-Fi அல்ல, அதனால் செயலி உள்நுழையவில்லை.</string>
     <string name="setting_auto_login">தானாக உள்நுழை</string>

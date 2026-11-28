@@ -10,7 +10,7 @@ Set up for **UTAR's `utarwifi`** out of the box, and works with other campuses t
 - **Step-by-step help:** tap **?** at the top left of the main page for a guide that walks you through setting up and signing in, one step at a time, with buttons that take you straight to the right place.
 - **Fully automatic:** on Android the app signs in by itself whenever you join the school Wi-Fi. On iPhone you set up a Shortcuts automation once.
 - **"Connected to utarwifi" notification** when the app signs you in on arrival.
-- **Every building:** each block's login page can sit at a different address. The app finds the right one each time.
+- **Every building:** each block's login page can sit at a different address. The app finds the right one each time, including Sangfor login pages (`/ac_portal/`) like UTAR's utarwifi, which have no normal form.
 - **Private:** your student ID and password are stored encrypted on your phone and are only sent to the Wi-Fi login page the app signs in to (see **Only on the school Wi-Fi** below).
 - **Apple-style design:** a clean layout on both phones, with Light, Dark or System appearance (☀️ / 🌙 button), and an icon that follows Dark Mode.
 - **Your language:** English, Bahasa Melayu, 简体中文 (Simplified Chinese), 日本語 (Japanese) and தமிழ் (Tamil), chosen in Settings › Language.

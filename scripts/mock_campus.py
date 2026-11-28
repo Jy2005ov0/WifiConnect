@@ -15,6 +15,10 @@ to the login page of the building you're in:
   D  A GET form with a relative action and a hidden token.
   E  location.replace() to the login page, which has a search form before the login
      form, a required checkbox and a CSRF token; the action is "./j_security_check".
+  F  A Sangfor access controller, like UTAR's real utarwifi: /ac_portal/proxy.html sends you
+     on with JavaScript to a page drawn by JavaScript, with no form at all. Signing in is a
+     background POST to /ac_portal/login.php (opr=pwdLogin) with the password RC4-scrambled
+     using auth_tag (the time in milliseconds) as the key, answered with JSON.
 
 Walking into another building logs you out of the Wi-Fi, as on campus. After signing
 in, each building's page has a link that signs you out again.
@@ -39,7 +43,7 @@ from urllib.parse import parse_qs, quote, urlparse
 
 STUDENT_ID = "2201234"
 PASSWORD = "utar-test"
-BUILDINGS = ["A", "B", "C", "D", "E"]
+BUILDINGS = ["A", "B", "C", "D", "E", "F"]
 
 PORTS = {}
 HOSTS = {}
@@ -154,6 +158,8 @@ class Campus(BaseHTTPRequestHandler):
                 return self.redirect(f"{target}/?orig=" + quote("http://captive.apple.com/hotspot-detect.html", safe=""))
             if building == "D":
                 return self.redirect(f"{target}/index.php?redir=" + quote("http://www.utar.edu.my/", safe=""), 307)
+            if building == "F":
+                return self.redirect(f"{target}/ac_portal/proxy.html?ip=10.1.2.3&url=" + quote("http://captive.apple.com/", safe=""))
             if building == "E":
                 return self.send(200, "<html><head><script type=\"text/javascript\">\n"
                                       f"  location.replace('{target}/hotspot/login.html?dst=http%3A%2F%2Fwww.utar.edu.my');\n"
@@ -316,6 +322,71 @@ class Campus(BaseHTTPRequestHandler):
                                   {"csrf": state["tokens"].get("E"), "accept": "1"})
             return self.failed(problems) if problems else self.redirect("/hotspot/status")
         return self.send(404, "not found")
+
+
+    # Building F: a Sangfor access controller, like UTAR's utarwifi.
+    def get_F(self, path):
+        if path == "/ac_portal/proxy.html":
+            return self.send(200, """<html><head><script type="text/javascript">
+                var vlan = 0, tabs = "pwd";
+                var target = "/ac_portal/default/pc.html?template=default&tabs=" + tabs + "&vlanid=" + vlan
+                    + "&url=" + encodeURIComponent(location.href);
+                window.location.href = target;
+                </script></head><body></body></html>""")
+        if path == "/ac_portal/default/pc.html":
+            return self.send(200, """<html><head><title>Sangfor</title>
+                <script src="/ac_portal/default/js/rc4.js"></script></head><body>
+                <div class="login-box">
+                  <input type="text" id="password_name" placeholder="Username">
+                  <input type="password" id="password_pwd" placeholder="Password">
+                  <button id="password_submitBtn" onclick="pwdLogin()">Login</button>
+                </div></body></html>""")
+        return self.send(404, "not found")
+
+    def post_F(self, path):
+        if path != "/ac_portal/login.php":
+            return self.send(404, "not found")
+        form = self.body_form()
+        if form.get("opr") == "logout":
+            state["authorized"] = False
+            state["signed_out"] += 1
+            return self.send(200, '{"success":true,"msg":"logout success"}', "application/json")
+        problems = []
+        tag = form.get("auth_tag", "")
+        if form.get("opr") != "pwdLogin":
+            problems.append("opr should be pwdLogin")
+        if not tag.isdigit():
+            problems.append("auth_tag should be the time in milliseconds")
+        if form.get("userName") != STUDENT_ID or form.get("pwd") != rc4_hex(PASSWORD, tag):
+            problems.append("wrong student ID or password (the password must be RC4-scrambled)")
+        if state["building"] != "F":
+            problems.append(f"signed in at building F while in building {state['building']}")
+        state["attempts"].append({"building": state["building"], "server": "F", "fields": sorted(form), "problems": problems})
+        if problems:
+            return self.send(200, '{"success":false,"msg":"user or password error"}', "application/json")
+        state["authorized"] = True
+        return self.send(200, json.dumps({"success": True, "msg": "logon success", "action": "location",
+                                          "pop": 0, "userName": STUDENT_ID, "location": ""}), "application/json")
+
+
+def rc4_hex(text, key):
+    """RC4 of text with key, as lowercase hex, like the Sangfor login page's JavaScript."""
+    if not key:
+        return ""
+    k = key.encode()
+    s = list(range(256))
+    j = 0
+    for i in range(256):
+        j = (j + s[i] + k[i % len(k)]) & 255
+        s[i], s[j] = s[j], s[i]
+    i = j = 0
+    out = []
+    for byte in text.encode():
+        i = (i + 1) & 255
+        j = (j + s[i]) & 255
+        s[i], s[j] = s[j], s[i]
+        out.append("%02x" % (byte ^ s[(s[i] + s[j]) & 255]))
+    return "".join(out)
 
 
 class Server(ThreadingHTTPServer):

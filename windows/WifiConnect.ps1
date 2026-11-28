@@ -183,6 +183,27 @@ function Get-Username([object[]]$Inputs) {
     return ($candidates | Select-Object -First 1).Name
 }
 
+# RC4 of $Text with $Key, as lowercase hex: how Sangfor login pages (UTAR's utarwifi) scramble the password.
+function Get-Rc4Hex([string]$Text, [string]$Key) {
+    $k = [Text.Encoding]::UTF8.GetBytes($Key)
+    $s = 0..255
+    $j = 0
+    for ($i = 0; $i -lt 256; $i++) {
+        $j = ($j + $s[$i] + $k[$i % $k.Length]) -band 255
+        $t = $s[$i]; $s[$i] = $s[$j]; $s[$j] = $t
+    }
+    $i = 0
+    $j = 0
+    $out = New-Object System.Text.StringBuilder
+    foreach ($b in [Text.Encoding]::UTF8.GetBytes($Text)) {
+        $i = ($i + 1) -band 255
+        $j = ($j + $s[$i]) -band 255
+        $t = $s[$i]; $s[$i] = $s[$j]; $s[$j] = $t
+        [void]$out.Append(([int]($b -bxor $s[($s[$i] + $s[$j]) -band 255])).ToString('x2'))
+    }
+    $out.ToString()
+}
+
 function Invoke-Page([Uri]$Url, $Session, [string]$Method = 'GET', $Body = $null, [Uri]$Referer = $null) {
     $params = @{
         Uri = $Url; Method = $Method; WebSession = $Session; UseBasicParsing = $true
@@ -286,11 +307,20 @@ if ($ssid -and $ssid -ne $network) {
 }
 
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-try {
-    $page = Get-Probe $session
-} catch {
-    Write-Log "Couldn't reach the Wi-Fi: $($_.Exception.Message)"
-    exit 1
+# Windows runs this the moment it joins the Wi-Fi, often before the connection carries anything:
+# keep trying for a few seconds before giving up.
+$page = $null
+for ($attempt = 0; ; $attempt++) {
+    try {
+        $page = Get-Probe $session
+        break
+    } catch {
+        if ($attempt -ge 5) {
+            Write-Log "Couldn't reach the Wi-Fi: $($_.Exception.Message)"
+            exit 1
+        }
+        Start-Sleep -Seconds 2
+    }
 }
 if (-not $page) {
     Write-Log 'Already online.'
@@ -298,11 +328,16 @@ if (-not $page) {
 }
 
 # Windows hides the Wi-Fi name when Location is off. Then only fill in a login page that looks like
-# the school's (a private campus address, or this laptop itself for the test), never a hotel's.
+# the school's (a private campus address, the last login page that worked, or this laptop itself
+# for the test), never a hotel's.
+$lastPortalPath = Join-Path (Split-Path $ConfigPath) 'last-portal.txt'
 if (-not $ssid) {
     $portalHost = $page.Url.Host
-    $campusLike = $false
-    if ($portalHost -match '^\d{1,3}(\.\d{1,3}){3}$') {
+    $lastPortal = if (Test-Path $lastPortalPath) { (Get-Content $lastPortalPath -Raw).Trim() } else { '' }
+    $campusLike = $lastPortal -and $portalHost -eq $lastPortal
+    if ($campusLike) {
+        # The last login page that worked.
+    } elseif ($portalHost -match '^\d{1,3}(\.\d{1,3}){3}$') {
         $o = $portalHost.Split('.') | ForEach-Object { [int]$_ }
         $campusLike = $o[0] -eq 10 -or $o[0] -eq 127 -or ($o[0] -eq 172 -and $o[1] -ge 16 -and $o[1] -le 31) -or
             ($o[0] -eq 192 -and $o[1] -eq 168)
@@ -316,58 +351,86 @@ if (-not $ssid) {
 }
 
 Write-Log "Login page: $($page.Url.AbsoluteUri)"
-$form = Find-LoginForm $page.Html $page.Url
-if (-not $form) {
-    Write-Log "Couldn't find a login form on the page."
-    Show-Notification "Couldn't sign in to $network" "The login page's form wasn't recognised."
-    exit 1
-}
-
 $password = Get-PlainPassword $config.Password
-$userField = if ($config.UsernameField) { $config.UsernameField } else { Get-Username $form.Inputs }
-$passField = if ($config.PasswordField) { $config.PasswordField } else { ($form.Inputs | Where-Object Type -eq 'password' | Select-Object -First 1).Name }
-
-# Same rules as the phone apps: keep hidden fields, tick checkboxes, send the first submit button.
-$pairs = New-Object System.Collections.Generic.List[string]
-$addedSubmit = $false
-foreach ($field in $form.Inputs) {
-    $value = $field.Value
-    $type = $field.Type
-    if ($type -eq 'password') {
-        if ($field.Name -eq $passField) { $value = $password }
-    } elseif ($type -eq 'checkbox') {
-        if (-not $value) { $value = 'on' }
-    } elseif ($type -eq 'radio') {
-        if (-not $field.Checked) { continue }
-    } elseif ($type -eq 'submit') {
-        if ($addedSubmit) { continue }
-        $addedSubmit = $true
-    } elseif ($type -eq 'image') {
-        # Browsers send where an image button was clicked, not its value.
-        if ($addedSubmit) { continue }
-        $addedSubmit = $true
-        $pairs.Add([Uri]::EscapeDataString($field.Name + '.x') + '=0')
-        $pairs.Add([Uri]::EscapeDataString($field.Name + '.y') + '=0')
-        continue
-    } elseif ($type -eq 'button' -or $type -eq 'reset' -or $type -eq 'file') {
-        continue
-    } elseif ($field.Name -eq $userField) {
-        $value = $config.StudentId
+if ($page.Url.AbsolutePath -like '/ac_portal/*') {
+    # A Sangfor login page (UTAR's utarwifi): drawn by JavaScript with no form; it signs in with a
+    # background request, the password RC4-scrambled with the time as the key. Newer controllers
+    # want it scrambled, older ones plain.
+    $loginUrl = [Uri]('{0}://{1}/ac_portal/login.php' -f $page.Url.Scheme, $page.Url.Authority)
+    $said = $null
+    $accepted = $false
+    foreach ($scrambled in $true, $false) {
+        $tag = [string][DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+        $sent = if ($scrambled) { Get-Rc4Hex $password $tag } else { $password }
+        $body = 'opr=pwdLogin&userName=' + [Uri]::EscapeDataString($config.StudentId) + '&pwd=' +
+            [Uri]::EscapeDataString($sent) + '&auth_tag=' + $tag + '&rememberPwd=0'
+        try {
+            $answer = Invoke-Page $loginUrl $session 'POST' $body $page.Url
+        } catch {
+            Write-Log "The login page didn't respond: $($_.Exception.Message)"
+            break
+        }
+        if ($answer.Html -match '["'']?success["'']?\s*:\s*["'']?true') { $accepted = $true; break }
+        if ($answer.Html -match '["'']?msg["'']?\s*:\s*["'']([^"'']*)') { $said = $Matches[1] }
     }
-    $pairs.Add([Uri]::EscapeDataString($field.Name) + '=' + [Uri]::EscapeDataString([string]$value))
-}
-$body = $pairs -join '&'
-
-try {
-    if ($form.Method -eq 'POST') {
-        [void](Invoke-Page $form.Action $session 'POST' $body $page.Url)
-    } else {
-        # Like a browser, the form's fields replace the action's own query.
-        $target = $form.Action.GetLeftPart([UriPartial]::Path) + '?' + $body
-        [void](Invoke-Page ([Uri]$target) $session 'GET' $null $page.Url)
+    if (-not $accepted -and $said) {
+        Write-Log "The login page said: $said"
+        Show-Notification "Couldn't sign in to $network" "The login page said: $said"
+        exit 1
     }
-} catch {
-    Write-Log "The login page didn't respond: $($_.Exception.Message)"
+} else {
+    $form = Find-LoginForm $page.Html $page.Url
+    if (-not $form) {
+        Write-Log "Couldn't find a login form on the page."
+        Show-Notification "Couldn't sign in to $network" "The login page's form wasn't recognised."
+        exit 1
+    }
+
+    $userField = if ($config.UsernameField) { $config.UsernameField } else { Get-Username $form.Inputs }
+    $passField = if ($config.PasswordField) { $config.PasswordField } else { ($form.Inputs | Where-Object Type -eq 'password' | Select-Object -First 1).Name }
+
+    # Same rules as the phone apps: keep hidden fields, tick checkboxes, send the first submit button.
+    $pairs = New-Object System.Collections.Generic.List[string]
+    $addedSubmit = $false
+    foreach ($field in $form.Inputs) {
+        $value = $field.Value
+        $type = $field.Type
+        if ($type -eq 'password') {
+            if ($field.Name -eq $passField) { $value = $password }
+        } elseif ($type -eq 'checkbox') {
+            if (-not $value) { $value = 'on' }
+        } elseif ($type -eq 'radio') {
+            if (-not $field.Checked) { continue }
+        } elseif ($type -eq 'submit') {
+            if ($addedSubmit) { continue }
+            $addedSubmit = $true
+        } elseif ($type -eq 'image') {
+            # Browsers send where an image button was clicked, not its value.
+            if ($addedSubmit) { continue }
+            $addedSubmit = $true
+            $pairs.Add([Uri]::EscapeDataString($field.Name + '.x') + '=0')
+            $pairs.Add([Uri]::EscapeDataString($field.Name + '.y') + '=0')
+            continue
+        } elseif ($type -eq 'button' -or $type -eq 'reset' -or $type -eq 'file') {
+            continue
+        } elseif ($field.Name -eq $userField) {
+            $value = $config.StudentId
+        }
+        $pairs.Add([Uri]::EscapeDataString($field.Name) + '=' + [Uri]::EscapeDataString([string]$value))
+    }
+    $body = $pairs -join '&'
+
+    try {
+        if ($form.Method -eq 'POST') {
+            [void](Invoke-Page $form.Action $session 'POST' $body $page.Url)
+        } else {
+            # Like a browser, the form's fields replace the action's own query.
+            $target = $form.Action.GetLeftPart([UriPartial]::Path) + '?' + $body
+            [void](Invoke-Page ([Uri]$target) $session 'GET' $null $page.Url)
+        }
+    } catch {
+        Write-Log "The login page didn't respond: $($_.Exception.Message)"
+    }
 }
 
 for ($attempt = 0; $attempt -lt 4; $attempt++) {
@@ -375,6 +438,7 @@ for ($attempt = 0; $attempt -lt 4; $attempt++) {
     try {
         if (-not (Get-Probe (New-Object Microsoft.PowerShell.Commands.WebRequestSession))) {
             Write-Log 'Signed in.'
+            Set-Content -Path $lastPortalPath -Value $page.Url.Host -Encoding UTF8
             Show-Notification "Connected to $network" "You're signed in and online."
             exit 0
         }

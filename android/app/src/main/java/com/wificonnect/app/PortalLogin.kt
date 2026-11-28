@@ -38,6 +38,8 @@ sealed class LoginError(@StringRes private val messageRes: Int, private val deta
     class OtherNetwork(name: String) : LoginError(R.string.error_other_network, name)
     /** Automatic sign-in skipped a login page that doesn't look like the school's. */
     object NotSchoolPortal : LoginError(R.string.error_not_school_portal)
+    /** The login page answered, but said no (e.g. a wrong password), in its own words. */
+    class Rejected(message: String) : LoginError(R.string.error_rejected, message)
 
     /** The message in the phone's language. */
     fun describe(context: Context): String =
@@ -69,18 +71,32 @@ class PortalLogin(private val network: Network) {
         password: String,
         settings: PortalSettings,
         allowPortal: ((URL) -> Boolean)? = null,
+        waitForWiFi: Boolean = false,
     ): LoginOutcome =
         withContext(Dispatchers.IO) {
             if (studentId.isEmpty() || password.isEmpty()) throw LoginError.MissingCredentials
 
-            val result = try {
-                probe()
-            } catch (e: IOException) {
-                throw LoginError.NotOnWiFi
+            // Sign-ins you didn't start yourself can begin as the Wi-Fi joins, before it carries
+            // anything: keep trying for a few seconds before giving up.
+            var result: ProbeResult? = null
+            for (attempt in 0 until if (waitForWiFi) 8 else 1) {
+                if (attempt > 0) delay(1_500)
+                result = try { probe() } catch (e: IOException) { null }
+                if (result != null) break
             }
-            val page = (result as? ProbeResult.Portal)?.page ?: return@withContext LoginOutcome.ALREADY_ONLINE
+            val page = (result ?: throw LoginError.NotOnWiFi).let { it as? ProbeResult.Portal }?.page
+                ?: return@withContext LoginOutcome.ALREADY_ONLINE
             trace.portalUrl = page.url
             if (allowPortal != null && !allowPortal(page.url)) throw LoginError.NotSchoolPortal
+
+            if (!settings.useCustomPortal && SangforPortal.isSangfor(page.url)) {
+                sangforLogIn(page.url, studentId, password)
+                repeat(4) { attempt ->
+                    if (attempt > 0) delay(1_500)
+                    if (runCatching { probe() }.getOrNull() == ProbeResult.Online) return@withContext LoginOutcome.LOGGED_IN
+                }
+                throw LoginError.StillOffline
+            }
 
             val submission = if (settings.useCustomPortal) {
                 // A path like "/login" is resolved against this building's login page, so one
@@ -125,6 +141,33 @@ class PortalLogin(private val network: Network) {
             throw submitError ?: LoginError.StillOffline
         }
 
+    /**
+     * Signs in to a Sangfor login page with its background request. Tries the scrambled password
+     * first (newer controllers), then the plain one (older controllers).
+     */
+    private fun sangforLogIn(portal: URL, studentId: String, password: String) {
+        val url = SangforPortal.loginUrl(portal)
+        var said: String? = null
+        for (scrambled in listOf(true, false)) {
+            val fields = SangforPortal.signInFields(studentId, password, scrambled)
+            trace.formAction = url
+            trace.method = "POST"
+            trace.fieldNames = fields.map { it.name }
+            val page = try {
+                submit(FormSubmission(url, "POST", fields), referer = portal)
+            } catch (e: IOException) {
+                throw LoginError.Network(e.message ?: e.javaClass.simpleName)
+            }
+            val (success, message) = SangforPortal.answer(page.html)
+            if (success) {
+                trace.signOutUrl = url
+                return
+            }
+            said = message ?: said
+        }
+        throw said?.let { LoginError.Rejected(it) } ?: LoginError.StillOffline
+    }
+
     /** True when this network is showing a login page, i.e. you've been signed out. */
     suspend fun needsSignIn(): Boolean = withContext(Dispatchers.IO) {
         runCatching { probe() is ProbeResult.Portal }.getOrDefault(false)
@@ -156,8 +199,13 @@ class PortalLogin(private val network: Network) {
     /** Opens the sign-out link, then checks the login page is back. */
     suspend fun signOut(url: URL) = withContext(Dispatchers.IO) {
         try {
-            // Some sign-out links are forms that only accept POST.
-            if (request(url).status == 405) request(url, method = "POST", body = "")
+            if (SangforPortal.isSangfor(url)) {
+                // Sangfor signs out with a background request, like signing in.
+                submit(FormSubmission(url, "POST", SangforPortal.signOutFields), referer = url)
+            } else if (request(url).status == 405) {
+                // Some sign-out links are forms that only accept POST.
+                request(url, method = "POST", body = "")
+            }
         } catch (e: IOException) {
             throw LoginError.Network(e.message ?: e.javaClass.simpleName)
         }
@@ -355,6 +403,7 @@ class PortalLogin(private val network: Network) {
                     Credentials.password(context),
                     PortalSettings.load(context),
                     allowPortal,
+                    waitForWiFi = trigger != SignInTrigger.APP,
                 )
                 if (outcome == LoginOutcome.LOGGED_IN) {
                     context.getSystemService(ConnectivityManager::class.java).reportNetworkConnectivity(wifi, true)

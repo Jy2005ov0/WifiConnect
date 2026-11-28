@@ -16,6 +16,8 @@ enum LoginError: LocalizedError {
     case stillSignedIn
     /// An automatic sign-in skipped a login page that doesn't look like the school's.
     case notSchoolPortal
+    /// The login page answered, but said no (e.g. a wrong password), in its own words.
+    case rejected(String)
 
     var errorDescription: String? {
         switch self {
@@ -37,6 +39,8 @@ enum LoginError: LocalizedError {
             return String(localized: "The sign-out link didn't sign you out.")
         case .notSchoolPortal:
             return String(localized: "This Wi-Fi's login page doesn't look like your school's, so the app didn't sign in by itself. Tap the circle to sign in anyway.")
+        case .rejected(let message):
+            return String(localized: "The login page said: \(message)")
         }
     }
 }
@@ -90,19 +94,24 @@ struct PortalLogin {
         password: String,
         settings: PortalSettings,
         trace: LoginTrace? = nil,
-        allowPortal: ((URL) -> Bool)? = nil
+        allowPortal: ((URL) -> Bool)? = nil,
+        waitForWiFi: Bool = false
     ) async throws -> LoginOutcome {
         guard !studentID.isEmpty, !password.isEmpty else { throw LoginError.missingCredentials }
 
-        let result: ProbeResult
-        do {
-            result = try await probe()
-        } catch {
-            throw LoginError.notOnWiFi
-        }
+        let result = try await probeWhenWiFiIsReady(waiting: waitForWiFi)
         guard case .portal(let page) = result else { return .alreadyOnline }
         trace?.portalURL = page.url
         if let allowPortal, !allowPortal(page.url) { throw LoginError.notSchoolPortal }
+
+        if !settings.useCustomPortal, SangforPortal.isSangfor(page.url) {
+            try await sangforLogIn(portal: page.url, studentID: studentID, password: password, trace: trace)
+            for attempt in 0..<4 {
+                if attempt > 0 { try? await Task.sleep(nanoseconds: 1_500_000_000) }
+                if case .online? = try? await probe() { return .loggedIn }
+            }
+            throw LoginError.stillOffline
+        }
 
         let submission: FormSubmission
         if settings.useCustomPortal {
@@ -155,6 +164,41 @@ struct PortalLogin {
         throw submitError ?? LoginError.stillOffline
     }
 
+    /// The Shortcuts automation runs the moment the iPhone joins the Wi-Fi, often before the
+    /// connection can carry anything: keep trying for a few seconds before giving up.
+    /// (Only for sign-ins you didn't start yourself: a tap with no Wi-Fi says so straight away.)
+    private func probeWhenWiFiIsReady(waiting: Bool) async throws -> ProbeResult {
+        for attempt in 0..<(waiting ? 8 : 1) {
+            if attempt > 0 { try? await Task.sleep(nanoseconds: 1_500_000_000) }
+            if Task.isCancelled { break }
+            if let result = try? await probe() { return result }
+        }
+        throw LoginError.notOnWiFi
+    }
+
+    /// Signs in to a Sangfor login page with its background request. Tries the scrambled password
+    /// first (newer controllers), then the plain one (older controllers).
+    private func sangforLogIn(portal: URL, studentID: String, password: String, trace: LoginTrace?) async throws {
+        guard let url = SangforPortal.loginURL(for: portal) else { throw LoginError.formNotFound }
+        var said: String?
+        for scrambled in [true, false] {
+            let fields = SangforPortal.signInFields(studentID: studentID, password: password, scrambled: scrambled)
+            trace?.formAction = url
+            trace?.method = "POST"
+            trace?.fieldNames = fields.map(\.name)
+            let page = try await submit(FormSubmission(url: url, method: "POST", fields: fields), referer: portal)
+            let answer = SangforPortal.answer(page?.html ?? "")
+            if answer.success {
+                let defaults = UserDefaults.standard
+                defaults.set(portal.absoluteString, forKey: SettingsKey.lastPortalURL)
+                defaults.set(url.absoluteString, forKey: SettingsKey.detectedSignOutURL)
+                return
+            }
+            said = answer.message ?? said
+        }
+        throw said.map(LoginError.rejected) ?? LoginError.stillOffline
+    }
+
     /// Finds the login form on the current network, for filling in the manual settings.
     func detectForm() async throws -> HTMLForm? {
         let result: ProbeResult
@@ -202,12 +246,17 @@ struct PortalLogin {
         guard let url, url.host != nil else { throw LoginError.noSignOutLink }
 
         do {
-            let (_, response) = try await session.data(from: url)
-            // Some sign-out links are forms that only accept POST.
-            if (response as? HTTPURLResponse)?.statusCode == 405 {
-                var request = URLRequest(url: url)
-                request.httpMethod = "POST"
-                _ = try await session.data(for: request)
+            if SangforPortal.isSangfor(url) {
+                // Sangfor signs out with a background request, like signing in.
+                _ = try await submit(FormSubmission(url: url, method: "POST", fields: SangforPortal.signOutFields), referer: url)
+            } else {
+                let (_, response) = try await session.data(from: url)
+                // Some sign-out links are forms that only accept POST.
+                if (response as? HTTPURLResponse)?.statusCode == 405 {
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "POST"
+                    _ = try await session.data(for: request)
+                }
             }
         } catch {
             throw LoginError.network(error.localizedDescription)

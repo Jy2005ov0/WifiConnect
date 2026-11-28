@@ -63,6 +63,7 @@
     <string name="wifi_check_needs_background">位置情報で「常に許可」を選ぶと、アプリが自動でサインインするときに Wi-Fi 名を読み取れます。位置情報は使用・保存しません。</string>
     <string name="wifi_check_allow">許可</string>
     <string name="wifi_check_turn_on">オンにする</string>
+    <string name="error_rejected">ログインページのメッセージ: %1$s</string>
     <string name="error_not_school_portal">この Wi-Fi のログインページは学校のものではないようなので、自動ではサインインしませんでした。円をタップするとサインインできます。</string>
     <string name="error_other_network">%1$s は学校の Wi-Fi ではないため、サインインしませんでした。</string>
     <string name="setting_auto_login">自動でサインイン</string>

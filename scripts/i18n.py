@@ -122,6 +122,7 @@ TABLE = [
      "请为位置权限选择\u201c始终允许\u201d，这样应用自动登录时才能读取 Wi-Fi 名称。不会使用或保存你的位置。"),
     ("wifi_check_allow", "Allow", "Benarkan", "允许"),
     ("wifi_check_turn_on", "Turn On", "Hidupkan", "打开"),
+    ("error_rejected", "The login page said: {0}", "Halaman log masuk berkata: {0}", "登录页面提示：{0}"),
     ("error_not_school_portal", "This Wi-Fi's login page doesn't look like your school's, so the app didn't sign in by itself. Tap the circle to sign in anyway.",
      "Halaman log masuk Wi-Fi ini tidak kelihatan seperti milik universiti anda, jadi aplikasi tidak log masuk sendiri. Ketik bulatan untuk log masuk juga.",
      "这个 Wi-Fi 的登录页面看起来不是学校的，所以应用没有自动登录。点按圆圈仍可登录。"),
